@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--导入属性配置-->
+    <properties resource="application.properties"></properties>
+    <context id="MysqlContext" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!--通用Mapper配置-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="${mapper.mappers}"/>
+        </plugin>
+        <!--数据库配置-->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+        </jdbcConnection>
+        <!-- 对于生成的pojo所在包 -->
+        <javaModelGenerator targetPackage="${mybatis.type-aliases-package}" targetProject="src/main/java">
+            <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 是否对model添加 构造函数 -->
+            <property name="constructorBased" value="true"/>
+            <!-- 是否对类CHAR类型的列的数据进行trim操作 -->
+            <property name="trimStrings" value="true"/>
+            <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法 -->
+            <property name="immutable" value="false"/>
+        </javaModelGenerator>
+
+        <!-- 对于生成的mapper所在目录 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
+                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
+                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
+                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
+        -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ok.okhelper.dao" targetProject="src/main/java"/>
+
+
+
+        <table tableName="sys_store"></table>
+
+    </context>
+</generatorConfiguration>
