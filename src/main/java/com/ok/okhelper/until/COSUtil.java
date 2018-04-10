@@ -10,21 +10,28 @@ import com.qcloud.cos.region.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by zc on 2017/6/16.
  */
+
+@Component
 public class COSUtil {
     private static final Logger logger = LoggerFactory.getLogger(COSUtil.class);
 
     private COSClient cosClient;
-    @Value("${cos.appId}")
-    private long appId;
-    private String secretId;
-    private String secretKey;
-    // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
-    private String bucketName = "mybucket-1251668577";
 
+    @Value("${cos.secretId}")
+    private String secretId;
+
+    @Value("${cos.secretKey}")
+    private String secretKey;
+
+    @Value("${cos.bucketName}")
+    private String bucketName;
+
+    @Value("${cos.region}")
     private String region;
 
     private COSUtil() {
