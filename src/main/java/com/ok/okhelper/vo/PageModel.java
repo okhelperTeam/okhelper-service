@@ -36,7 +36,7 @@ public class PageModel<T> {
 
 
     //数据
-    private List<T> results=new ArrayList<T>();
+    private List<T> results=new ArrayList<>();
 
 
     public PageModel() {

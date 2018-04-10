@@ -1,6 +1,7 @@
 package com.ok.okhelper.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.http.HttpStatus;
 
@@ -8,7 +9,7 @@ import java.io.Serializable;
 
 
 //去掉空值得空key
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServerResponse<T> implements Serializable {
     private int status;
     private String msg;

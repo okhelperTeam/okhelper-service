@@ -9,30 +9,25 @@ import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 /**
  * Created by zc on 2017/6/16.
  */
 
-@Component
 public class COSUtil {
     private static final Logger logger = LoggerFactory.getLogger(COSUtil.class);
 
     private COSClient cosClient;
 
-    @Value("${cos.secretId}")
-    private String secretId;
+    private String secretId = PropertiesUtil.getProperty("cos.secretId");
 
-    @Value("${cos.secretKey}")
-    private String secretKey;
+    private String secretKey = PropertiesUtil.getProperty("cos.secretKey");
 
-    @Value("${cos.bucketName}")
-    private String bucketName;
+    private String bucketName = PropertiesUtil.getProperty("cos.bucketName");
 
-    @Value("${cos.region}")
-    private String region;
+    private String region = PropertiesUtil.getProperty("cos.region");
 
     private COSUtil() {
         // 1 初始化用户身份信息(secretId, secretKey)
@@ -44,12 +39,21 @@ public class COSUtil {
     }
 
 
-    public static Boolean uploadFile(String cosPath, String localPath) {
+    public static Boolean uploadFile(String cosPath, File localfile) {
         COSUtil cosUtil = new COSUtil();
 
-        PutObjectRequest putObjectRequest = new PutObjectRequest(cosUtil.bucketName, cosPath, localPath);
-        PutObjectResult putObjectResult = cosUtil.cosClient.putObject(putObjectRequest);
-        String etag = putObjectResult.getETag();  // 获取文件的etag
+        try {
+            PutObjectRequest putObjectRequest = new PutObjectRequest(cosUtil.bucketName, cosPath, localfile);
+            PutObjectResult putObjectResult = cosUtil.cosClient.putObject(putObjectRequest);
+
+            String etag = putObjectResult.getETag();  // 获取文件的etag
+            logger.info(etag);
+        } catch (RuntimeException exception) {
+            logger.error(exception.getMessage());
+            return false;
+        }
+
+
         return true;
     }
 

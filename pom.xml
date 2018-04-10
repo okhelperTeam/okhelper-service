@@ -9,10 +9,7 @@
     <packaging>jar</packaging>
 
     <name>okhelper</name>
-    <description>WMS Maven Project</description>Permission
-    Role
-    User
-
+    <description>WMS Maven Project</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -133,18 +130,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-                <!-- mybatis逆向工程 -->
-                <plugin>
-                    <groupId>org.mybatis.generator</groupId>
-                    <artifactId>mybatis-generator-maven-plugin</artifactId>
-                    <version>1.3.2</version>
-                    <configuration>
-                        <!--配置文件的位置-->
-                        <configurationFile>src/main/resources/Personal-GeneratorConfig.xml</configurationFile>
-                        <verbose>true</verbose>
-                        <overwrite>true</overwrite>
-                    </configuration>
-                </plugin>
         </plugins>
     </build>
 
