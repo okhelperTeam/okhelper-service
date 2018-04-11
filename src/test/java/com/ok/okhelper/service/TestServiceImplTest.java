@@ -1,8 +1,8 @@
-package com.ok.okhelper.service.impl;
+package com.ok.okhelper.service;
 
 import com.ok.okhelper.OkhelperApplication;
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.po.SysUser;
+import com.ok.okhelper.po.User;
 import com.ok.okhelper.service.TestService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +26,7 @@ public class TestServiceImplTest {
 
     @Test
     public void test() {
-        testService.get()
-
-
+        ServerResponse<List<User>> listServerResponse = testService.get();
+        System.out.println(listServerResponse + "------------------");
     }
 }

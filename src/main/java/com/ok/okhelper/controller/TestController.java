@@ -1,7 +1,7 @@
 package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.po.SysUser;
+import com.ok.okhelper.po.User;
 import com.ok.okhelper.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +19,8 @@ public class TestController {
 
 
     @GetMapping("/get")
-    public ServerResponse<List<SysUser>> getInfo() {
+    public ServerResponse<List<User>> getInfo() {
         return testService.get();
     }
 
-    @GetMapping("/transactional")
-    public boolean update() {
-        return testService.update((long) 1);
-    }
 }

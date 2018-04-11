@@ -1,7 +1,7 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.po.SysUser;
+import com.ok.okhelper.po.User;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public interface TestService {
-     ServerResponse<List<SysUser>> get();
+    ServerResponse<List<User>> get();
 
-     boolean update(Long userId);
+    boolean update(Long userId);
 }

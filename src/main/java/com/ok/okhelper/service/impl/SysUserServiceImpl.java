@@ -1,8 +1,8 @@
 package com.ok.okhelper.service.impl;
 
 import com.ok.okhelper.bo.UserBo;
-import com.ok.okhelper.dao.SysUserMapper;
-import com.ok.okhelper.po.SysUser;
+import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.po.User;
 import com.ok.okhelper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class SysUserServiceImpl implements UserService {
-	
+
 	@Autowired
-	SysUserMapper sysUserMapper;
-	
+	UserMapper userMapper;
+
 	@Override
-	public SysUser findUserByUserNme(Integer username) {
-		
-		return sysUserMapper.selectByPrimaryKey(username);
+	public User findUserByUserNme(Integer username) {
+
+		return userMapper.selectByPrimaryKey(username);
 	}
-	
+
 	@Override
 	public UserBo findUserRolePersmission(Integer userId) {
 		return null;

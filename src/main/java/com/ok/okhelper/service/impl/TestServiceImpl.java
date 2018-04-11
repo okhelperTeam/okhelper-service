@@ -1,8 +1,8 @@
 package com.ok.okhelper.service.impl;
 
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.dao.SysUserMapper;
-import com.ok.okhelper.po.SysUser;
+import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.po.User;
 import com.ok.okhelper.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
 
     @Autowired
-    private SysUserMapper userMapper;
+    private UserMapper userMapper;
 
 
     @Override
-    public ServerResponse<List<SysUser>> get() {
-        List<SysUser> sysUsers = userMapper.selectAll();
-        return ServerResponse.createBySuccess(sysUsers);
+    public ServerResponse<List<User>> get() {
+        List<User> Users = userMapper.selectAll();
+        return ServerResponse.createBySuccess(Users);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public boolean update(Long userId) {
-        SysUser user1 = userMapper.selectByPrimaryKey(userId);
+        User user1 = userMapper.selectByPrimaryKey(userId);
         user1.setUserNick("lalala");
         int count1 = userMapper.updateByPrimaryKey(user1);
         int a = 1 / 0;
