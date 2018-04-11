@@ -7,6 +7,11 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+/**
+ * Created by zc on 2018/4/9.
+ *
+ * @param <T>
+ */
 
 //去掉空值得空key
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -54,28 +59,28 @@ public class ServerResponse<T> implements Serializable {
     }
 
 
-    public static <T> ServerResponse createBySuccess() {
-        return new ServerResponse<T>(HttpStatus.OK.value());
+    public static <T> ServerResponse<T> createBySuccess() {
+        return new ServerResponse<>(HttpStatus.OK.value());
     }
 
-    public static <T> ServerResponse createBySuccess(T data) {
-        return new ServerResponse<T>(HttpStatus.OK.value(), data);
+    public static <T> ServerResponse<T> createBySuccess(T data) {
+        return new ServerResponse<>(HttpStatus.OK.value(), data);
     }
 
-    public static <T> ServerResponse createBySuccess(String msg, T data) {
-        return new ServerResponse<T>(HttpStatus.OK.value(), msg, data);
+    public static <T> ServerResponse<T> createBySuccess(String msg, T data) {
+        return new ServerResponse<>(HttpStatus.OK.value(), msg, data);
     }
 
-    public static <T> ServerResponse createBySuccessMessage(String msg) {
-        return new ServerResponse<T>(HttpStatus.OK.value(), msg);
+    public static <T> ServerResponse<T> createBySuccessMessage(String msg) {
+        return new ServerResponse<>(HttpStatus.OK.value(), msg);
     }
 
     //500
-    public static <T> ServerResponse createDefaultErrorMessage(String errorMessage) {
-        return new ServerResponse<T>(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage);
+    public static <T> ServerResponse<T> createDefaultErrorMessage(String errorMessage) {
+        return new ServerResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage);
     }
 
-    public static <T> ServerResponse createByErrorCodeMessage(int errorCode, String errorMessage) {
-        return new ServerResponse<T>(errorCode, errorMessage);
+    public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String errorMessage) {
+        return new ServerResponse<>(errorCode, errorMessage);
     }
 }

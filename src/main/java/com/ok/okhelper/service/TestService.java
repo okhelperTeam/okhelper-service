@@ -2,7 +2,6 @@ package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.po.SysUser;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,5 +10,7 @@ import java.util.List;
  */
 
 public interface TestService {
-    public ServerResponse<List<SysUser>> get();
+     ServerResponse<List<SysUser>> get();
+
+     boolean update(Long userId);
 }

@@ -2,6 +2,7 @@ package com.ok.okhelper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -9,6 +10,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 
 @SpringBootApplication
+@EnableTransactionManagement
 @MapperScan(basePackages = {"com.ok.okhelper.dao"})
 public class OkhelperApplication {
 

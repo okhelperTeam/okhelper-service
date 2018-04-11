@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zc on 2018/4/8.
+ * Created by zc on 2018/4/10.
  */
 public class GeneratorDisplay {
     public void generator() throws Exception{

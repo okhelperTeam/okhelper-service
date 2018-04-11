@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 /**
@@ -22,5 +21,10 @@ public class TestController {
     @GetMapping("/get")
     public ServerResponse<List<SysUser>> getInfo() {
         return testService.get();
+    }
+
+    @GetMapping("/transactional")
+    public boolean update() {
+        return testService.update((long) 1);
     }
 }

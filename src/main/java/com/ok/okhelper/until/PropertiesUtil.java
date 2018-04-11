@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+/**
+ * Created by zc on 2018/4/10.
+ */
 @Slf4j
 public class PropertiesUtil {
 
@@ -37,7 +40,6 @@ public class PropertiesUtil {
         }
         return value.trim();
     }
-
 
 
 }
