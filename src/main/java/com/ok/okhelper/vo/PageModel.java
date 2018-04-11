@@ -2,6 +2,8 @@ package com.ok.okhelper.vo;
 
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.exception.IllegalException;
+import lombok.Data;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -9,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zc on 2017/6/15.
+ * Created by zc on 2018/4/10.
  */
+
+@Data
 public class PageModel<T> {
 /*
 分页模型
@@ -39,13 +43,9 @@ public class PageModel<T> {
     private List<T> results=new ArrayList<>();
 
 
-    public PageModel() {
-    }
-
-
     public static PageModel convertToPageModel(PageInfo pageResult){
         PageModel pageModel=new PageModel();
-        if(pageResult.getSize()==0&&pageResult.getPageNum()>1){ServerResponse.createBySuccessMessage("没有数据了");}
+        if(pageResult.getSize()==0&&pageResult.getPageNum()>1){throw new IllegalException("没有更多了"); }
         pageModel.setPageNum(pageResult.getPageNum());
         pageModel.setLimit(pageResult.getPageSize());
         pageModel.setPageCount(pageResult.getPages());
@@ -54,51 +54,4 @@ public class PageModel<T> {
         return pageModel;
     }
 
-    public boolean isPaging() {
-        return paging;
-    }
-
-    public void setPaging(boolean paging) {
-        this.paging = paging;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    public int getPageCount() {
-        return pageCount;
-    }
-
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
-    public List<T> getResults() {
-        return results;
-    }
-
-    public void setResults(List<T> results) {
-        this.results = results;
-    }
 }

@@ -40,7 +40,14 @@ public class GlobalExceptionHandler implements ErrorController {
     //参数错误 400
     @ExceptionHandler(ServletRequestBindingException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public Object handServletIllegalException(Exception e) {
+    public Object handServletIllegalException(ServletRequestBindingException e) {
+        return ServerResponse.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    //参数错误 400 手动
+    @ExceptionHandler(IllegalException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Object handServletIllegalException(IllegalException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
