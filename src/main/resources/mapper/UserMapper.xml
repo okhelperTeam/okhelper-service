@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ok.okhelper.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.ok.okhelper.po.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_password" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pass_problem" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pass_answer" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_nick" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_sex" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="user_birthday" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
+    </constructor>
+  </resultMap>
+</mapper>
