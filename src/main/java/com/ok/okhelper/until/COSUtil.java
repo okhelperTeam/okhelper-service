@@ -7,8 +7,7 @@ import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 
@@ -16,8 +15,8 @@ import java.io.File;
  * Created by zc on 2017/6/16.
  */
 
+@Slf4j
 public class COSUtil {
-    private static final Logger logger = LoggerFactory.getLogger(COSUtil.class);
 
     private COSClient cosClient;
 
@@ -47,9 +46,9 @@ public class COSUtil {
             PutObjectResult putObjectResult = cosUtil.cosClient.putObject(putObjectRequest);
 
             String etag = putObjectResult.getETag();  // 获取文件的etag
-            logger.info(etag);
+            log.info(etag);
         } catch (RuntimeException exception) {
-            logger.error(exception.getMessage());
+            log.error(exception.getMessage());
             return false;
         }
 

@@ -2,6 +2,8 @@ package com.ok.okhelper.exception;
 
 
 import com.ok.okhelper.common.ServerResponse;
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -38,27 +40,33 @@ public class GlobalExceptionHandler implements ErrorController {
     //参数错误 400
     @ExceptionHandler(ServletRequestBindingException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public Object handServletIllegalException(Exception e) {
+    public Object handServletIllegalException(ServletRequestBindingException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
+    //参数错误 400 手动
+    @ExceptionHandler(IllegalException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Object handServletIllegalException(IllegalException e) {
+        return ServerResponse.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
 
-    //未授权 401
-    @ExceptionHandler(UnAuthorizedException.class)
+    // 未登陆 401
+    @ExceptionHandler(UnauthenticatedException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public Object handUnauthorizedException(UnAuthorizedException e) {
+    public Object handUnauthorizedException(UnauthenticatedException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 
-    //拒绝访问 409
-    @ExceptionHandler(ForbiddenException.class)
+    // 权限不足 403
+    @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public Object handIllegalException(ForbiddenException e) {
+    public Object handIllegalException(UnauthorizedException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.FORBIDDEN.value(), e.getMessage());
     }
 
 
-    //未找到资源 404
+    // 未找到资源 404
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public Object handNotFoundException(NotFoundException e) {
@@ -97,6 +105,7 @@ public class GlobalExceptionHandler implements ErrorController {
     public Object handleError() {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.NOT_FOUND.value(), "Request resource not found");
     }
+
 
 
     @Override
