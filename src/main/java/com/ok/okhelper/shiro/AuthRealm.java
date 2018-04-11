@@ -4,6 +4,8 @@ package com.ok.okhelper.shiro;
 import com.ok.okhelper.bo.PermissionBo;
 import com.ok.okhelper.bo.RoleBo;
 import com.ok.okhelper.bo.UserBo;
+import com.ok.okhelper.po.SysUser;
+import com.ok.okhelper.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -23,35 +25,49 @@ import java.util.*;
 */
 public class AuthRealm extends AuthorizingRealm {
 //    @Autowired
-//    private UserService userService;
+    private UserService userService;
     
     //认证.登录
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        UsernamePasswordToken utoken=(UsernamePasswordToken) token;//获取用户输入的token
-        String username = utoken.getUsername();
-        UserBo user = null;
-//        User user = userService.findUserByUserNme(username);
-        Object credentials = user.getPassword();
-        
-        //3)realmName：当前realm对象的name，调用父类的getName()方法即可
-        String realmName = getName();
-        ByteSource credentialsSalt = ByteSource.Util.bytes(username);//使用账号作为盐值
-        
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, credentials, credentialsSalt, realmName);
-        return info;//放入shiro.调用CredentialsMatcher检验密码
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
+    
+        // 解密获得username，用于和数据库进行对比
+        String token = (String) auth.getCredentials();
+        String username = JWTUtil.getUsername(token);
+        if (username == null) {
+            throw new AuthenticationException("token invalid");
+        }
+    
+        SysUser userBean = userService.findUserByUserNme(Integer.valueOf(username));
+        if (userBean == null) {
+            throw new AuthenticationException("User didn't existed!");
+        }
+    
+        if (! JWTUtil.verify(token, username, userBean.getUserPassword())) {
+            throw new AuthenticationException("Username or password error");
+        }
+    
+    
+    
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(token, token, getName());
+
+
+      return info;//放入shiro.调用CredentialsMatcher检验密码
     }
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
-        
-        String username = (String) getAvailablePrincipal(principal);
     
-        UserBo user = null;
-//        User user = userService.findUserByUserNme(username);
-//        User user = CreateMap.createUser().get();
+        String username = JWTUtil.getUsername(principal.toString());
+        
+        //TODO优化
+        UserBo userBo = userService.findUserRolePersmission(Integer.valueOf(username));
+        
+        
+        
+        
         List<String> permissions=new ArrayList<>();
-        List<RoleBo> roles = user.getRoles();
+        List<RoleBo> roles = userBo.getRoles();
         Set<String> roleSet = new HashSet<>();
         for(RoleBo r:roles) {
             
@@ -60,6 +76,7 @@ public class AuthRealm extends AuthorizingRealm {
             for(RoleBo role : roles) {
                 for(PermissionBo p : role.getPermissionList())
                     permissions.add(p.getUrl()+":"+p.getAction());
+                    
             }
         }
         SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
