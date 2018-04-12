@@ -17,4 +17,10 @@ public class PasswordHelp {
         return new SimpleHash(hashAlgorithmName,password,salt,hashIterations);
         
     }
+    
+    
+    public static void main(String[] args) {
+        String s = passwordSalt("ztt","12345").toString();
+        System.out.println(passwordSalt("ztt",12345));
+    }
 }

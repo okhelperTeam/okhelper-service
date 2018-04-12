@@ -10,8 +10,6 @@ import java.util.List;
 *Data:Created in 17:07 2018/4/11
 */
 @Service
-public interface SysPermissionService {
-	
-	//获取权限URL
-	List<String> findAllPermissionUrl();
+public interface PermissionService {
+
 }

@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserMapper extends MyMapper<User> {
+
+	Long findUserIdByName(String userName);
+	
+	User findUserByUserName(String userName);
+
 }

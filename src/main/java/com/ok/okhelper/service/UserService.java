@@ -16,8 +16,7 @@ public interface UserService {
 	*Data:Created in  .21:30 2018/4/10
 	*/
 
-    public User findUserByUserNme(Integer username);
+    public User findUserByUserNme(String username);
 
 
-	public UserBo findUserRolePersmission(Integer userId);
 }

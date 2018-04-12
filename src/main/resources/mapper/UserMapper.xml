@@ -23,4 +23,12 @@
       <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
     </constructor>
   </resultMap>
+  
+  
+  <select id="findUserIdByName" resultType="long" parameterType="java.lang.String">
+    select user.id from user WHERE user.user_name = #{userName}
+  </select>
+  <select id="findUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from user WHERE user.user_name = #{userName}
+  </select>
 </mapper>
