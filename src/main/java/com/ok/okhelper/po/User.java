@@ -47,12 +47,6 @@ public class User {
     private String userAvatar;
 
     /**
-     * 手机
-     */
-    @Column(name = "user_phone")
-    private String userPhone;
-
-    /**
      * 邮箱
      */
     @Column(name = "user_email")
@@ -93,7 +87,7 @@ public class User {
      */
     private Long operator;
 
-    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userPhone, String userEmail, String userSex, Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator) {
+    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -101,7 +95,6 @@ public class User {
         this.passAnswer = passAnswer;
         this.userNick = userNick;
         this.userAvatar = userAvatar;
-        this.userPhone = userPhone;
         this.userEmail = userEmail;
         this.userSex = userSex;
         this.userBirthday = userBirthday;
@@ -239,24 +232,6 @@ public class User {
      */
     public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar == null ? null : userAvatar.trim();
-    }
-
-    /**
-     * 获取手机
-     *
-     * @return user_phone - 手机
-     */
-    public String getUserPhone() {
-        return userPhone;
-    }
-
-    /**
-     * 设置手机
-     *
-     * @param userPhone 手机
-     */
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone == null ? null : userPhone.trim();
     }
 
     /**

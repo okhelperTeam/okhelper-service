@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	public ServerResponse getToken(String userName, String password) {
 		
 		if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
-			return ServerResponse.createDefaultErrorMessage("用户名或密码为空");
+			return ServerResponse.createByErrorCodeMessage(401, "用户名或密码为空");
 		}
 		
 		
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		User user = findUserByUserNme(userName);
 		
 		if(user == null){
-			return ServerResponse.createDefaultErrorMessage("用户名不存在");
+			return ServerResponse.createByErrorCodeMessage(401, "用户名不存在");
 		}
 		
 		//加密
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 		
 		String dbPassword = user.getUserPassword();
 		if(!dbPassword.equals(inPassword)){
-			return ServerResponse.createDefaultErrorMessage("密码不正确");
+			return ServerResponse.createByErrorCodeMessage(401, "密码不正确");
 		}
 		
 		Long userId = user.getId();

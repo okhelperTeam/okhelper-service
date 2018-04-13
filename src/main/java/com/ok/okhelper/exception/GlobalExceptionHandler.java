@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ControllerAdvice
-public class GlobalExceptionHandler implements ErrorController {
+public class GlobalExceptionHandler {
 
-    private static final String ERROR_PATH = "/error";
+//    private static final String ERROR_PATH = "/error";
 
     //参数错误 400(bean 校验)
     @ExceptionHandler(BindException.class)
@@ -100,16 +100,15 @@ public class GlobalExceptionHandler implements ErrorController {
 
 
     //重写404错误
-    @RequestMapping(value = ERROR_PATH)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public Object handleError() {
-        return ServerResponse.createByErrorCodeMessage(HttpStatus.NOT_FOUND.value(), "Request resource not found");
-    }
+//    @RequestMapping(value = ERROR_PATH)
+//    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+//    public Object handleError() {
+//        return ServerResponse.createByErrorCodeMessage(HttpStatus.NOT_FOUND.value(), "Request resource not found1");
+//    }
 
 
-
-    @Override
-    public String getErrorPath() {
-        return ERROR_PATH;
-    }
+//    @Override
+//    public String getErrorPath() {
+//        return ERROR_PATH;
+//    }
 }
