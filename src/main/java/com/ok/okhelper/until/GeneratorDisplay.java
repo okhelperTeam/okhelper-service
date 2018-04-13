@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by zc on 2018/4/10.
+ * Mybatis 逆向工程
  */
 public class GeneratorDisplay {
     public void generator() throws Exception{

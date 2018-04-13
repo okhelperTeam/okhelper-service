@@ -17,6 +17,6 @@ public class COSUtilTest {
 
     @Test
     public void tsetUpload() {
-        COSUtil.uploadFile("/1.png", new File("/Users/zc/Desktop/rbac.png"));
+        COSUtil.uploadFile("/2.png", new File("/Users/zc/Desktop/rbac.png"));
     }
 }

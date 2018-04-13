@@ -46,7 +46,7 @@ public class COSUtil {
             PutObjectResult putObjectResult = cosUtil.cosClient.putObject(putObjectRequest);
 
             String etag = putObjectResult.getETag();  // 获取文件的etag
-            log.info(etag);
+            log.debug(etag);
         } catch (RuntimeException exception) {
             log.error(exception.getMessage());
             return false;

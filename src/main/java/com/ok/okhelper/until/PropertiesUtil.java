@@ -8,6 +8,7 @@ import java.util.Properties;
 
 /**
  * Created by zc on 2018/4/10.
+ * 配置文件读取工具
  */
 @Slf4j
 public class PropertiesUtil {
