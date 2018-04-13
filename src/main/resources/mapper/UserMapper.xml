@@ -30,4 +30,9 @@
   <select id="findUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select * from user WHERE user.user_name = #{userName}
   </select>
+
+
+  <select id="findStoreIdByUserId" resultType="long" parameterType="java.lang.Long">
+    select store_id from store_user WHERE user_id = #{userId}
+  </select>
 </mapper>

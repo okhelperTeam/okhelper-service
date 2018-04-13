@@ -17,9 +17,11 @@
     </constructor>
   </resultMap>
 
-  <!--<select id="findRoleByUserId" parameterType="int" resultType="BaseResultMap">-->
-    <!--select * from role where id = WHERE-->
-  <!--</select>-->
+  <select id="findRoleByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    select * from role where role.id in ( SELECT role_id from user_role where user_id = #{userId} )
+
+  </select>
 
 
 

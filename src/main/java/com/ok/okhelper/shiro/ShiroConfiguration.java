@@ -105,7 +105,7 @@ public class ShiroConfiguration {
 ////        filterChainDefinitionMap.put("", "anon"); //表示可以匿名访问
 ////        filterChainDefinitionMap.put("/loginUser", "anon");
 ////        filterChainDefinitionMap.put("/logout*","anon");
-////        filterChainDefinitionMap.put("/user/getUser","anon");
+////        filterChainDefinitionMap.put("/user/loginUser","anon");
 ////        filterChainDefinitionMap.put("/jsp/index.jsp*","authc");
 ////        filterChainDefinitionMap.put("/*", "authc");//表示需要认证才可以访问
 ////        filterChainDefinitionMap.put("/user/*", "authc");//表示需要认证才可以访问
