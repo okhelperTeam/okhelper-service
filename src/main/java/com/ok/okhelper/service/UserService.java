@@ -1,6 +1,7 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.bo.UserBo;
+import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.po.User;
 
 /*
@@ -18,5 +19,7 @@ public interface UserService {
 
     public User findUserByUserNme(String username);
 
+    
+    ServerResponse getToken(String userName, String password);
 
 }

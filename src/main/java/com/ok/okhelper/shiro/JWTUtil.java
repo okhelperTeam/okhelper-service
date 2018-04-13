@@ -7,7 +7,9 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /*
 *Author:zhangxin_an
@@ -59,13 +61,14 @@ public class JWTUtil {
 	 * @param secret 用户的密码
 	 * @return 加密的token
 	 */
-	public static String sign(String username, String secret) {
+	public static String sign(String username, String secret,String []permissions) {
 		try {
 			Date date = new Date(System.currentTimeMillis()+EXPIRE_TIME);
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			// 附带username信息
 			return JWT.create()
 					.withClaim("username", username)
+					.withArrayClaim("permissions",permissions)
 					.withExpiresAt(date)
 					.sign(algorithm);
 		} catch (UnsupportedEncodingException e) {
@@ -75,12 +78,34 @@ public class JWTUtil {
 	
 	
 	public static void main(String[] args) {
-		String token = sign("0",SECRET);
-		System.out.println(token);
-		System.out.println(verify("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjM0MjcyMjAsInVzZXJuYW1lIjoiMCJ9.Nj7Vvrlu4_YLwTuFxZmdIIf6nYlKpmiYbZp-T_tT0GY","0",SECRET));
-		String token1 = sign("0",SECRET);
-		System.out.println(token1);
-		System.out.println(verify(token,"0",SECRET));
+		List<String> code = new ArrayList<>();
+		for(int i = 0;i<1000;i++){
+			code.add("user:afa"+i);
+		}
+		String []codeStrings = (String[]) code.toArray(new String[code.size()]);
+		
+		for(String s : codeStrings){
+			System.out.print(s+"\t");
+		}
+		String token = sign("zxa","token",codeStrings);
+		
+		String []c = getPermissions(token);
+		System.out.println("\n解析");
+		
+		for(String s : c){
+			System.out.print(s+"\t");
+		}
+		
+	}
+
+	public static String[] getPermissions(String token) {
+		try {
+			DecodedJWT jwt = JWT.decode(token);
+			return jwt.getClaim("permissions").asArray(String.class);
+		} catch (JWTDecodeException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }

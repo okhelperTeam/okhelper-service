@@ -71,7 +71,7 @@ public class ShiroConfiguration {
         
         filterRuleMap.put("/**", "jwt");
 
-//        filterRuleMap.put("/*","anon");
+        filterRuleMap.put("/aaaa","anon");
 //        filterRuleMap.put("/*", "authc");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;

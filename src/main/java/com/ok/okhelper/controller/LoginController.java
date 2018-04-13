@@ -1,11 +1,6 @@
 package com.ok.okhelper.controller;
 
-import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.dao.UserMapper;
-import com.ok.okhelper.po.User;
 import com.ok.okhelper.service.UserService;
-import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.PasswordHelp;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +33,9 @@ public class LoginController {
   
     @RequestMapping("/loginUser")
     public Object loginUser(String username, String password, HttpServletRequest request, HttpServletResponse response) {
-        String inPassword = PasswordHelp.passwordSalt(username, password).toString();
+        
 
-
-        User userBean = userService.findUserByUserNme(username);
-
-        if (userBean.getUserPassword().equals(inPassword)) {
-            return ServerResponse.createBySuccess("Login success", JWTUtil.sign(username, inPassword));
-        } else {
-            return ServerResponse.createBySuccessMessage("User didn't existed!");
-        }
+        return userService.getToken(username,password);
     
     
     }
