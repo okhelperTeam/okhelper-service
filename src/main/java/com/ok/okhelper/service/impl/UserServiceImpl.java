@@ -16,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,8 @@ public class UserServiceImpl implements UserService {
 	public ServerResponse getToken(String userName, String password) {
 		
 		if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
-			return ServerResponse.createByErrorCodeMessage(401, "用户名或密码为空");
+			throw new UnauthenticatedException("用户名或密码为空");
+//			return ServerResponse.createByErrorCodeMessage(401, "");
 		}
 		
 		
@@ -54,7 +56,7 @@ public class UserServiceImpl implements UserService {
 		User user = findUserByUserNme(userName);
 		
 		if(user == null){
-			return ServerResponse.createByErrorCodeMessage(401, "用户名不存在");
+			throw new UnauthenticatedException("用户名不存在");
 		}
 		
 		//加密
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService {
 		
 		String dbPassword = user.getUserPassword();
 		if(!dbPassword.equals(inPassword)){
-			return ServerResponse.createByErrorCodeMessage(401, "密码不正确");
+			throw new UnauthenticatedException("密码不正确");
 		}
 		
 		Long userId = user.getId();
