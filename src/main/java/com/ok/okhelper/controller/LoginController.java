@@ -30,7 +30,7 @@ public class LoginController {
     @PostMapping("/user/login")
     public ServerResponse loginUser(String username, String password, HttpServletRequest request, HttpServletResponse response) {
         return userService.getToken(username,password);
-    }
+}
 
     @RequestMapping("/logout")
     public Object logOut(HttpSession session) {
