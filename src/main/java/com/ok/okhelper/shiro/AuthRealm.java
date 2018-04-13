@@ -1,14 +1,9 @@
 package com.ok.okhelper.shiro;
 
 
-import com.ok.okhelper.bo.PermissionBo;
-import com.ok.okhelper.bo.RoleBo;
-import com.ok.okhelper.bo.UserBo;
 import com.ok.okhelper.dao.PermissionMapper;
 import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.po.User;
-import com.ok.okhelper.service.PermissionService;
-import com.ok.okhelper.service.RoleService;
 import com.ok.okhelper.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -19,11 +14,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /*
 *Author:zhangxin_an
