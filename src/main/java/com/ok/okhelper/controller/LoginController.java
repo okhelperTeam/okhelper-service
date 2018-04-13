@@ -38,16 +38,9 @@ public class LoginController {
   
     @RequestMapping("/loginUser")
     public Object loginUser(String username, String password, HttpServletRequest request, HttpServletResponse response) {
-        String inPassword = PasswordHelp.passwordSalt(username, password).toString();
+        
 
-
-        User userBean = userService.findUserByUserNme(username);
-
-        if (userBean.getUserPassword().equals(inPassword)) {
-            return ServerResponse.createBySuccess("Login success", JWTUtil.sign(username, inPassword));
-        } else {
-            return ServerResponse.createBySuccessMessage("User didn't existed!");
-        }
+        return userService.getToken(username,password);
     
     
     }

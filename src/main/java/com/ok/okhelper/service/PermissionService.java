@@ -11,5 +11,5 @@ import java.util.List;
 */
 @Service
 public interface PermissionService {
-
+	List<String> findAddPermissionCode(Long userId);
 }
