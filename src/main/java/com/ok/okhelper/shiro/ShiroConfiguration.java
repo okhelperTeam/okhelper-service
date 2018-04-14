@@ -70,6 +70,7 @@ public class ShiroConfiguration {
         filterRuleMap.put("/404", "anon");
         filterRuleMap.put("/druid/**", "anon");
         filterRuleMap.put("/user/login", "anon");
+        filterRuleMap.put("/user/register", "anon");
 
         filterRuleMap.put("/**", "jwt");
 

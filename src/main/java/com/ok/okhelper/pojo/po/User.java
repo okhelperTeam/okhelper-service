@@ -7,6 +7,7 @@ public class User {
     /**
      * 主键
      */
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
     private Long id;
 

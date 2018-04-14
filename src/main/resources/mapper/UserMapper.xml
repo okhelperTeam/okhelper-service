@@ -35,4 +35,11 @@
   <select id="findStoreIdByUserId" resultType="long" parameterType="java.lang.Long">
     select store_id from store_user WHERE user_id = #{userId}
   </select>
+
+
+  <!--<insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" >-->
+      <!--INSERT INTO user(user_name,user_password) va-->
+  <!--</insert>-->
+
+
 </mapper>

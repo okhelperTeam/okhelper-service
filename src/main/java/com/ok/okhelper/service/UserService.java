@@ -1,6 +1,7 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
 
 /*
@@ -20,5 +21,7 @@ public interface UserService {
 
     
     ServerResponse loginUser(String userName, String password);
+    
+    ServerResponse userRegister(UserDto userDto);
 
 }

@@ -3,6 +3,8 @@ package com.ok.okhelper.service.impl;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.UserVo;
@@ -11,11 +13,17 @@ import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.PasswordHelp;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.ServletRequestBindingException;
 
 import java.util.List;
 
@@ -26,6 +34,8 @@ import java.util.List;
 */
 @Service
 public class UserServiceImpl implements UserService {
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private UserMapper userMapper;
@@ -59,7 +69,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		//加密
-		String inPassword = PasswordHelp.passwordSalt(userName, password).toString();
+		String inPassword = PasswordHelp.passwordSalt(userName, password);
 		
 		String dbPassword = user.getUserPassword();
 		if(!dbPassword.equals(inPassword)){
@@ -96,6 +106,45 @@ public class UserServiceImpl implements UserService {
 		userVo.setToken(token);
 		
 		return ServerResponse.createBySuccess(userVo);
+	}
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/4/14 18:52
+	* @Params [userDto]  
+	* @Return com.ok.okhelper.common.ServerResponse  
+	* @Description:注册
+	*/  
+	@Override
+	public ServerResponse userRegister(UserDto userDto) {
+		logger.info("Enter userRegister"+userDto);
+		if( StringUtils.isBlank(userDto.getUserName())
+				&& StringUtils.isBlank(userDto.getUserPassword())
+				&& userDto.getUserBirthday() != null){
+			new IllegalException("注册信息不完善（用户名，密码，生日不为空）");
+		}
+		
+		//密码加密
+		userDto.setUserPassword(PasswordHelp.passwordSalt(userDto.getUserName(),userDto.getUserPassword()));
+		
+		
+		User user = new User();
+		BeanUtils.copyProperties(userDto,user);
+		
+		try {
+			
+			userMapper.insertSelective(user);
+		}catch (Exception e){
+			
+			throw new IllegalException("注册失败");
+		}
+		
+		ServerResponse serverResponse = ServerResponse.createBySuccess();
+		
+		logger.info("EXit userRegister"+userDto);
+		
+		return serverResponse;
+		
 	}
 	
 	

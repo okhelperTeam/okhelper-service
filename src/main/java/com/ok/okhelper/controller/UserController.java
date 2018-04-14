@@ -1,6 +1,7 @@
 package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +19,33 @@ import javax.servlet.http.HttpSession;
 *Data:Created in 21:56 2018/4/9
 */
 @RestController
-public class LoginController {
+public class UserController {
     
     @Autowired
     private UserService userService;
 
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/14 18:32
+    * @Params [username, password]  
+    * @Return com.ok.okhelper.common.ServerResponse  
+    * @Description:用户登录
+    */  
     @PostMapping("/user/login")
     public ServerResponse loginUser(String username, String password) {
         return userService.loginUser(username,password);
 }
+
+
+    @PostMapping("/user/register")
+    public ServerResponse register(UserDto userDto){
+        
+        return userService.userRegister(userDto);
+    }
+
+
+
 
     @RequestMapping("/logout")
     public Object logOut(HttpSession session) {

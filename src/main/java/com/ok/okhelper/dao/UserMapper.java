@@ -1,5 +1,6 @@
 package com.ok.okhelper.dao;
 
+import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.until.MyMapper;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,6 @@ public interface UserMapper extends MyMapper<User> {
 	User findUserByUserName(String userName);
 	
 	List<Long> findStoreIdByUserId(Long userId);
-
+	
+//	int register(UserDto userDto);
 }
