@@ -14,7 +14,7 @@ public class ExceptionController {
 
     @RequestMapping("/401")
     public String handle401() {
-        throw new UnauthenticatedException("we");
+        throw new UnauthenticatedException("未登录/验证失败");
     }
 
 }
