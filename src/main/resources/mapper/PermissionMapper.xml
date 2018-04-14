@@ -22,7 +22,7 @@
   <select id="findAddPermissionCode" resultType="string" parameterType="java.lang.Long">
     SELECT permission.permission_code from permission  WHERE permission.id in
 (SELECT permission_id FROM role_permission  WHERE role_id in
-    (SELECT role_id FROM sys_user_role WHERE user_id = #{userId}) )
+    (SELECT role_id FROM user_role WHERE user_id = #{userId}) )
 
   </select>
 </mapper>

@@ -1,6 +1,5 @@
 package com.ok.okhelper.until;
 
-import com.ok.okhelper.bo.UserBo;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
@@ -20,7 +19,7 @@ public class PasswordHelp {
     
     
     public static void main(String[] args) {
-        String s = passwordSalt("ztt","12345").toString();
+        String s = passwordSalt("zc","12345").toString();
         System.out.println(passwordSalt("ztt",12345));
     }
 }

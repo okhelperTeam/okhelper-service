@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface RoleMapper extends MyMapper<Role> {
 	
-//	public List<Role> findRoleByUserId(Integer userId);
+	List<Role> findRoleByUserId(Long userId);
 	
 }

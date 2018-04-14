@@ -2,10 +2,6 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +24,8 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/user/login")
-    public ServerResponse loginUser(String username, String password, HttpServletRequest request, HttpServletResponse response) {
-        return userService.getToken(username,password);
+    public ServerResponse loginUser(String username, String password) {
+        return userService.loginUser(username,password);
 }
 
     @RequestMapping("/logout")
