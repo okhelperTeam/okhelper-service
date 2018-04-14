@@ -3,16 +3,14 @@ package com.ok.okhelper.service.impl;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.UserMapper;
-import com.ok.okhelper.po.Role;
-import com.ok.okhelper.po.User;
-import com.ok.okhelper.pojo.bo.UserBo;
+import com.ok.okhelper.pojo.po.Role;
+import com.ok.okhelper.pojo.po.User;
+import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.PermissionService;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.PasswordHelp;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.beans.BeanUtils;
@@ -71,12 +69,12 @@ public class UserServiceImpl implements UserService {
 		Long userId = user.getId();
 		
 		//传值给前端封装类
-		UserBo userBo = new UserBo();
-		BeanUtils.copyProperties(user,userBo);
+		UserVo userVo = new UserVo();
+		BeanUtils.copyProperties(user, userVo);
 		
 		List<Role> roles = roleMapper.findRoleByUserId(user.getId());
 		if(!CollectionUtils.isEmpty(roles)){
-			userBo.setRoleList(roles);
+			userVo.setRoleList(roles);
 		}
 		
 		//获取用户权限
@@ -85,7 +83,7 @@ public class UserServiceImpl implements UserService {
 		
 		if(!CollectionUtils.isEmpty(permissionList)) {
 			permissionArrays = permissionList.toArray(new String[permissionList.size()]);
-			userBo.setPermissionCodes(permissionList);
+			userVo.setPermissionCodes(permissionList);
 		}
 		String token = JWTUtil.sign(userName, inPassword,permissionArrays);
 		
@@ -93,11 +91,11 @@ public class UserServiceImpl implements UserService {
 		List<Long> storeIds= userMapper.findStoreIdByUserId(userId);
 		
 		if(!CollectionUtils.isEmpty(storeIds)){
-			userBo.setStoreIds(storeIds);
+			userVo.setStoreIds(storeIds);
 		}
-		userBo.setToken(token);
+		userVo.setToken(token);
 		
-		return ServerResponse.createBySuccess(userBo);
+		return ServerResponse.createBySuccess(userVo);
 	}
 	
 	

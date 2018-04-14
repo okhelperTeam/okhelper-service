@@ -1,9 +1,9 @@
-package com.ok.okhelper.po;
+package com.ok.okhelper.pojo.po;
 
 import java.util.Date;
 import javax.persistence.*;
 
-public class Permission {
+public class Store {
     /**
      * 主键
      */
@@ -11,28 +11,27 @@ public class Permission {
     private Long id;
 
     /**
-     * 归属菜单,前端判断并展示菜单使用,
+     * 店铺名称
      */
-    @Column(name = "menu_code")
-    private String menuCode;
+    @Column(name = "store_name")
+    private String storeName;
 
     /**
-     * 菜单的中文释义
+     * 店铺地址
      */
-    @Column(name = "menu_name")
-    private String menuName;
+    @Column(name = "store_address")
+    private String storeAddress;
 
     /**
-     * 权限的代码/通配符,对应代码中@RequiresPermissions 的value
+     * 店铺图像
      */
-    @Column(name = "permission_code")
-    private String permissionCode;
+    @Column(name = "store_phtoo")
+    private String storePhtoo;
 
     /**
-     * 本权限的中文释义
+     * 描述
      */
-    @Column(name = "permission_name")
-    private String permissionName;
+    private String description;
 
     /**
      * 创建日期
@@ -57,19 +56,26 @@ public class Permission {
      */
     private Long operator;
 
-    public Permission(Long id, String menuCode, String menuName, String permissionCode, String permissionName, Date createTime, Date updateTime, String deleteStatus, Long operator) {
+    /**
+     * 负责人
+     */
+    @Column(name = "leader_id")
+    private Long leaderId;
+
+    public Store(Long id, String storeName, String storeAddress, String storePhtoo, String description, Date createTime, Date updateTime, String deleteStatus, Long operator, Long leaderId) {
         this.id = id;
-        this.menuCode = menuCode;
-        this.menuName = menuName;
-        this.permissionCode = permissionCode;
-        this.permissionName = permissionName;
+        this.storeName = storeName;
+        this.storeAddress = storeAddress;
+        this.storePhtoo = storePhtoo;
+        this.description = description;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
         this.operator = operator;
+        this.leaderId = leaderId;
     }
 
-    public Permission() {
+    public Store() {
         super();
     }
 
@@ -92,75 +98,75 @@ public class Permission {
     }
 
     /**
-     * 获取归属菜单,前端判断并展示菜单使用,
+     * 获取店铺名称
      *
-     * @return menu_code - 归属菜单,前端判断并展示菜单使用,
+     * @return store_name - 店铺名称
      */
-    public String getMenuCode() {
-        return menuCode;
+    public String getStoreName() {
+        return storeName;
     }
 
     /**
-     * 设置归属菜单,前端判断并展示菜单使用,
+     * 设置店铺名称
      *
-     * @param menuCode 归属菜单,前端判断并展示菜单使用,
+     * @param storeName 店铺名称
      */
-    public void setMenuCode(String menuCode) {
-        this.menuCode = menuCode == null ? null : menuCode.trim();
+    public void setStoreName(String storeName) {
+        this.storeName = storeName == null ? null : storeName.trim();
     }
 
     /**
-     * 获取菜单的中文释义
+     * 获取店铺地址
      *
-     * @return menu_name - 菜单的中文释义
+     * @return store_address - 店铺地址
      */
-    public String getMenuName() {
-        return menuName;
+    public String getStoreAddress() {
+        return storeAddress;
     }
 
     /**
-     * 设置菜单的中文释义
+     * 设置店铺地址
      *
-     * @param menuName 菜单的中文释义
+     * @param storeAddress 店铺地址
      */
-    public void setMenuName(String menuName) {
-        this.menuName = menuName == null ? null : menuName.trim();
+    public void setStoreAddress(String storeAddress) {
+        this.storeAddress = storeAddress == null ? null : storeAddress.trim();
     }
 
     /**
-     * 获取权限的代码/通配符,对应代码中@RequiresPermissions 的value
+     * 获取店铺图像
      *
-     * @return permission_code - 权限的代码/通配符,对应代码中@RequiresPermissions 的value
+     * @return store_phtoo - 店铺图像
      */
-    public String getPermissionCode() {
-        return permissionCode;
+    public String getStorePhtoo() {
+        return storePhtoo;
     }
 
     /**
-     * 设置权限的代码/通配符,对应代码中@RequiresPermissions 的value
+     * 设置店铺图像
      *
-     * @param permissionCode 权限的代码/通配符,对应代码中@RequiresPermissions 的value
+     * @param storePhtoo 店铺图像
      */
-    public void setPermissionCode(String permissionCode) {
-        this.permissionCode = permissionCode == null ? null : permissionCode.trim();
+    public void setStorePhtoo(String storePhtoo) {
+        this.storePhtoo = storePhtoo == null ? null : storePhtoo.trim();
     }
 
     /**
-     * 获取本权限的中文释义
+     * 获取描述
      *
-     * @return permission_name - 本权限的中文释义
+     * @return description - 描述
      */
-    public String getPermissionName() {
-        return permissionName;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * 设置本权限的中文释义
+     * 设置描述
      *
-     * @param permissionName 本权限的中文释义
+     * @param description 描述
      */
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName == null ? null : permissionName.trim();
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     /**
@@ -233,5 +239,23 @@ public class Permission {
      */
     public void setOperator(Long operator) {
         this.operator = operator;
+    }
+
+    /**
+     * 获取负责人
+     *
+     * @return leader_id - 负责人
+     */
+    public Long getLeaderId() {
+        return leaderId;
+    }
+
+    /**
+     * 设置负责人
+     *
+     * @param leaderId 负责人
+     */
+    public void setLeaderId(Long leaderId) {
+        this.leaderId = leaderId;
     }
 }

@@ -1,7 +1,6 @@
-package com.ok.okhelper.pojo.bo;
+package com.ok.okhelper.pojo.vo;
 
-import com.ok.okhelper.po.Permission;
-import com.ok.okhelper.po.Role;
+import com.ok.okhelper.pojo.po.Role;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ import java.util.List;
 *Data:Created in 22:32 2018/4/13
 */
 @Data
-public class UserBo {
+public class UserVo {
 	/**
 	 * 主键
 	 */

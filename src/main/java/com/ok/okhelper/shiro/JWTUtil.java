@@ -19,7 +19,7 @@ import java.util.List;
 public class JWTUtil {
 	
 	// 过期时间5分钟
-	private static final long EXPIRE_TIME = 5*60*1000;
+	private static final long EXPIRE_TIME = 30*60*1000;
 	public final  static String AUTH_TOKEN = "token";
 	public final  static String SECRET = "token";
 	

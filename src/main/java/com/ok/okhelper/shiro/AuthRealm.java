@@ -3,7 +3,7 @@ package com.ok.okhelper.shiro;
 
 import com.ok.okhelper.dao.PermissionMapper;
 import com.ok.okhelper.dao.UserMapper;
-import com.ok.okhelper.po.User;
+import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -73,7 +73,7 @@ public class AuthRealm extends AuthorizingRealm {
         
         
 //        //TODO优化
-//        UserBo userBo = new UserBo();
+//        UserVo userBo = new UserVo();
 //
 //        Long userId = userMapper.findUserIdByName(username);
         

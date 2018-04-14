@@ -1,4 +1,4 @@
-package com.ok.okhelper.po;
+package com.ok.okhelper.pojo.po;
 
 import java.util.Date;
 import javax.persistence.*;

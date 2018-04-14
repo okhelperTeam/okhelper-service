@@ -1,7 +1,6 @@
-package com.ok.okhelper.vo;
+package com.ok.okhelper.pojo.vo;
 
 import com.github.pagehelper.PageInfo;
-import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import lombok.Data;
 

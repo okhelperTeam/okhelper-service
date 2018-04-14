@@ -1,7 +1,7 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.po.User;
+import com.ok.okhelper.pojo.po.User;
 
 /*
 *Author:zhangxin_an
