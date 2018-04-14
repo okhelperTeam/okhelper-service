@@ -48,9 +48,9 @@ public class Role {
      * 店铺id
      */
     @Column(name = "store_id")
-    private String storeId;
+    private Long storeId;
 
-    public Role(Long id, String roleName, Date createTime, Date updateTime, String deleteStatus, String description, Long operator, String storeId) {
+    public Role(Long id, String roleName, Date createTime, Date updateTime, String deleteStatus, String description, Long operator, Long storeId) {
         this.id = id;
         this.roleName = roleName;
         this.createTime = createTime;
@@ -196,7 +196,7 @@ public class Role {
      *
      * @return store_id - 店铺id
      */
-    public String getStoreId() {
+    public Long getStoreId() {
         return storeId;
     }
 
@@ -205,7 +205,7 @@ public class Role {
      *
      * @param storeId 店铺id
      */
-    public void setStoreId(String storeId) {
-        this.storeId = storeId == null ? null : storeId.trim();
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
     }
 }

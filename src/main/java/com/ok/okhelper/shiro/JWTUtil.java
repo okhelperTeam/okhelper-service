@@ -20,7 +20,7 @@ public class JWTUtil {
 	
 	// 过期时间5分钟
 	private static final long EXPIRE_TIME = 30*60*1000;
-	public final  static String AUTH_TOKEN = "token";
+    public final static String ISSUER = "okhelper";
 	public final  static String SECRET = "token";
 	
 	/**
@@ -34,6 +34,7 @@ public class JWTUtil {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			JWTVerifier verifier = JWT.require(algorithm)
 					.withClaim("username", username)
+                    .withIssuer(ISSUER)
 					.build();
 			DecodedJWT jwt = verifier.verify(token);
 			return true;
@@ -54,49 +55,66 @@ public class JWTUtil {
 			return null;
 		}
 	}
-	
+
+    /**
+     * 获取用户ID
+     *
+     * @param token
+     * @return
+     */
+    public static Long getUserId(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("userId").asLong();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
 	/**
 	 * 生成签名,5min后过期
 	 * @param username 用户名
 	 * @param secret 用户的密码
 	 * @return 加密的token
-	 */
-	public static String sign(String username, String secret,String []permissions) {
+     */
+    public static String sign(Long userId, String username, String secret, String[] permissions) {
 		try {
 			Date date = new Date(System.currentTimeMillis()+EXPIRE_TIME);
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			// 附带username信息
 			return JWT.create()
+                    .withClaim("userId", userId)
 					.withClaim("username", username)
-					.withArrayClaim("permissions",permissions)
+                    .withArrayClaim("permissions", permissions)
+                    .withIssuer(ISSUER)
 					.withExpiresAt(date)
 					.sign(algorithm);
 		} catch (UnsupportedEncodingException e) {
 			return null;
-		}
-	}
-	
-	
-	public static void main(String[] args) {
-		List<String> code = new ArrayList<>();
-		for(int i = 0;i<1000;i++){
-			code.add("user:afa"+i);
-		}
-		String []codeStrings = (String[]) code.toArray(new String[code.size()]);
-		
-		for(String s : codeStrings){
-			System.out.print(s+"\t");
-		}
-		String token = sign("zxa","token",codeStrings);
-		
-		String []c = getPermissions(token);
-		System.out.println("\n解析");
-		
-		for(String s : c){
-			System.out.print(s+"\t");
-		}
-		
-	}
+        }
+    }
+
+
+//	public static void main(String[] args) {
+//		List<String> code = new ArrayList<>();
+//		for(int i = 0;i<1000;i++){
+//			code.add("user:afa"+i);
+//		}
+//		String []codeStrings = (String[]) code.toArray(new String[code.size()]);
+//
+//		for(String s : codeStrings){
+//			System.out.print(s+"\t");
+//		}
+//		String token = sign((long) 3,"zxa","token",codeStrings);
+//
+//		String []c = getPermissions(token);
+//		System.out.println("\n解析");
+//
+//		for(String s : c){
+//			System.out.print(s+"\t");
+//		}
+//
+//	}
 
 	public static String[] getPermissions(String token) {
 		try {

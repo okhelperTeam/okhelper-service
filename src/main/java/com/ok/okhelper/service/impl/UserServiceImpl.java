@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 			permissionArrays = permissionList.toArray(new String[permissionList.size()]);
 			userVo.setPermissionCodes(permissionList);
 		}
-		String token = JWTUtil.sign(userName, inPassword,permissionArrays);
+        String token = JWTUtil.sign(userId, userName, inPassword, permissionArrays);
 		
 		
 		List<Long> storeIds= userMapper.findStoreIdByUserId(userId);

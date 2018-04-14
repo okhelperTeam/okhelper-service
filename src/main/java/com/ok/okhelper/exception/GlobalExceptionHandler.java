@@ -6,6 +6,7 @@ import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -41,6 +42,14 @@ public class GlobalExceptionHandler implements ErrorController{
     @ExceptionHandler(ServletRequestBindingException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public Object handServletIllegalException(ServletRequestBindingException e) {
+        return ServerResponse.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+
+    //参数错误 400
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Object handHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
@@ -94,7 +103,6 @@ public class GlobalExceptionHandler implements ErrorController{
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Object defaultErrorHandler(Exception e) {
-        //打日志。。。。
         return ServerResponse.createDefaultErrorMessage(e.getMessage());
     }
 
