@@ -45,10 +45,10 @@
         <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.ok.okhelper.dao" targetProject="src/main/java"/>-->
 
 
-        <!--<table tableName="permission"></table>-->
+        <table tableName="permission"></table>
         <table tableName="user"></table>
-        <!--<table tableName="role"></table>-->
-        <!--<table tableName="store"></table>-->
+        <table tableName="role"></table>
+        <table tableName="store"></table>
 
     </context>
 </generatorConfiguration>

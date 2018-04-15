@@ -9,15 +9,15 @@ import org.apache.shiro.util.ByteSource;
 *Data:Created in 22:52 2018/4/9
 */
 public class PasswordHelp {
-    public static Object  passwordSalt(String userName,Object password){
+    public static String passwordSalt(String userName, Object password) {
         String hashAlgorithmName = "MD5";//加密方式
         ByteSource salt = ByteSource.Util.bytes(userName);//以账号作为盐值
         int hashIterations = 1024;//加密1024次
-        return new SimpleHash(hashAlgorithmName,password,salt,hashIterations);
+        return new SimpleHash(hashAlgorithmName, password, salt, hashIterations).toString();
         
     }
-    
-    
+
+
     public static void main(String[] args) {
         String s = passwordSalt("zc","12345").toString();
         System.out.println(passwordSalt("ztt",12345));
