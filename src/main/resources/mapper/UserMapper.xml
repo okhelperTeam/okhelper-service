@@ -20,10 +20,12 @@
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR" />
       <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="last_login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
     </constructor>
   </resultMap>
-  
-  
+
+
   <select id="findUserIdByName" resultType="long" parameterType="java.lang.String">
     select user.id from user WHERE user.user_name = #{userName}
   </select>
@@ -33,6 +35,6 @@
 
 
   <select id="findStoreIdByUserId" resultType="long" parameterType="java.lang.Long">
-    select store_id from store_user WHERE user_id = #{userId}
+    select store_id from  user WHERE user.id = #{userId}
   </select>
 </mapper>

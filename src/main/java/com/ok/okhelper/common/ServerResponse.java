@@ -71,6 +71,10 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<>(HttpStatus.OK.value(), msg, data);
     }
 
+    public static <T> ServerResponse<T> createBySuccessCodeMessages(int code, String msg) {
+        return new ServerResponse<>(code, msg);
+    }
+
     public static <T> ServerResponse<T> createBySuccessMessage(String msg) {
         return new ServerResponse<>(HttpStatus.OK.value(), msg);
     }

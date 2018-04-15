@@ -34,4 +34,9 @@ public class RoleDto {
      * 店铺id
      */
     private Long storeId;
+
+    /**
+     * 操作者
+     */
+    private Long operator;
 }

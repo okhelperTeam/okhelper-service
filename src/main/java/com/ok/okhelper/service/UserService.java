@@ -18,7 +18,7 @@ public interface UserService {
 
     public User findUserByUserNme(String username);
 
-    
-    ServerResponse loginUser(String userName, String password);
+
+    ServerResponse loginUser(String userName, String password, String ip);
 
 }

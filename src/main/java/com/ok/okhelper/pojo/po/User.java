@@ -11,7 +11,7 @@ public class User {
     private Long id;
 
     /**
-     * 登录账号
+     * 登录账号-手机号
      */
     @Column(name = "user_name")
     private String userName;
@@ -87,7 +87,19 @@ public class User {
      */
     private Long operator;
 
-    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator) {
+    /**
+     * 最后一次登陆IP
+     */
+    @Column(name = "last_login_ip")
+    private String lastLoginIp;
+
+    /**
+     * 所属商店Id
+     */
+    @Column(name = "store_id")
+    private Long storeId;
+
+    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator, String lastLoginIp, Long storeId) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -102,6 +114,8 @@ public class User {
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
         this.operator = operator;
+        this.lastLoginIp = lastLoginIp;
+        this.storeId = storeId;
     }
 
     public User() {
@@ -127,18 +141,18 @@ public class User {
     }
 
     /**
-     * 获取登录账号
+     * 获取登录账号-手机号
      *
-     * @return user_name - 登录账号
+     * @return user_name - 登录账号-手机号
      */
     public String getUserName() {
         return userName;
     }
 
     /**
-     * 设置登录账号
+     * 设置登录账号-手机号
      *
-     * @param userName 登录账号
+     * @param userName 登录账号-手机号
      */
     public void setUserName(String userName) {
         this.userName = userName == null ? null : userName.trim();
@@ -358,5 +372,41 @@ public class User {
      */
     public void setOperator(Long operator) {
         this.operator = operator;
+    }
+
+    /**
+     * 获取最后一次登陆IP
+     *
+     * @return last_login_ip - 最后一次登陆IP
+     */
+    public String getLastLoginIp() {
+        return lastLoginIp;
+    }
+
+    /**
+     * 设置最后一次登陆IP
+     *
+     * @param lastLoginIp 最后一次登陆IP
+     */
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp == null ? null : lastLoginIp.trim();
+    }
+
+    /**
+     * 获取所属商店ID
+     *
+     * @return store_id - 所属商店ID
+     */
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    /**
+     * 设置所属商店ID
+     *
+     * @param storeId 所属商店ID
+     */
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
     }
 }

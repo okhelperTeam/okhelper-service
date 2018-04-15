@@ -12,7 +12,7 @@ public interface UserMapper extends MyMapper<User> {
 	Long findUserIdByName(String userName);
 	
 	User findUserByUserName(String userName);
-	
-	List<Long> findStoreIdByUserId(Long userId);
+
+    Long findStoreIdByUserId(Long userId);
 
 }

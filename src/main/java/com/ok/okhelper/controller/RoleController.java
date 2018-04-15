@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author: zc
  * @description:角色控制器
@@ -24,17 +26,21 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @PostMapping("/")
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     @RequiresPermissions("user:post")
-    public ServerResponse<String> postRole(RoleDto roleDto) {
+    public ServerResponse<String> postRole(@Valid RoleDto roleDto) {
         Subject subject = SecurityUtils.getSubject();
         Long userId = JWTUtil.getUserId(subject.getPrincipal().toString());
+        Long storeId = JWTUtil.getStoreId(subject.getPrincipal().toString());
+        roleDto.setStoreId(storeId);
+        roleDto.setOperator(userId);
 
-        if (!roleService.postRole(userId, roleDto)) {
+
+        if (!roleService.postRole(roleDto)) {
             throw new IllegalException("创建失败");
         }
-        return ServerResponse.createBySuccessMessage("创建成功");
+        return ServerResponse.createBySuccessCodeMessages(HttpStatus.CREATED.value(), "角色创建成功");
     }
 
 

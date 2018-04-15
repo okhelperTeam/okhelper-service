@@ -77,13 +77,16 @@ public class UserVo {
 	 * 操作者
 	 */
 	private Long operator;
+
+    /**
+     * 所属商店Id
+     */
+    @Column(name = "store_id")
+    private Long storeId;
 	
 	private List<Role> roleList;
 	
 	private List<String> permissionCodes;
 	
 	private String token;
-	
-	//所属商店Id
-	private List<Long> storeIds;
 }

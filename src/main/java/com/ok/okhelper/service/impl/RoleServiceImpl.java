@@ -19,9 +19,8 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
     @Override
-    public Boolean postRole(Long operator, RoleDto roleDto) {
+    public Boolean postRole(RoleDto roleDto) {
         Role role = new Role();
-        role.setOperator(operator);
         BeanUtils.copyProperties(roleDto, role);
         return roleMapper.insertSelective(role) > 0;
     }

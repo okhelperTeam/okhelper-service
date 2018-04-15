@@ -2,6 +2,8 @@ package com.ok.okhelper.exception;
 
 
 import com.ok.okhelper.common.ServerResponse;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -61,16 +63,16 @@ public class GlobalExceptionHandler implements ErrorController{
     }
 
     // 未登陆 401
-    @ExceptionHandler(UnauthenticatedException.class)
+    @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public Object handUnauthorizedException(UnauthenticatedException e) {
+    public Object handUnauthorizedException(AuthenticationException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
     }
 
     // 权限不足 403
-    @ExceptionHandler({UnauthorizedException.class})
+    @ExceptionHandler({AuthorizationException.class})
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public Object handIllegalException(UnauthorizedException e) {
+    public Object handIllegalException(AuthorizationException e) {
         return ServerResponse.createByErrorCodeMessage(HttpStatus.FORBIDDEN.value(), e.getMessage());
     }
 
