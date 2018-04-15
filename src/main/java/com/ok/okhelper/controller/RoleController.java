@@ -43,5 +43,11 @@ public class RoleController {
         return ServerResponse.createBySuccessCodeMessages(HttpStatus.CREATED.value(), "角色创建成功");
     }
 
+    @RequiresPermissions("user:kkk")
+    @RequestMapping("/o")
+    public String in() {
+        return "ok";
+    }
+
 
 }

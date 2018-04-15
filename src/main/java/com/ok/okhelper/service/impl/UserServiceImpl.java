@@ -13,17 +13,13 @@ import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.PasswordHelp;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.ServletRequestBindingException;
 
 import java.util.List;
 
@@ -100,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
         userVo.setStoreId(storeId);
 
-        String token = JWTUtil.sign(userId, userName, inPassword, permissionArrays, storeId);
+        String token = JWTUtil.sign(userId, userName, inPassword, storeId);
 
         userVo.setToken(token);
 

@@ -94,7 +94,7 @@ public class JWTUtil {
      * @param secret   用户的密码
      * @return 加密的token
      */
-    public static String sign(Long userId, String username, String secret, String[] permissions, Long storeId) {
+    public static String sign(Long userId, String username, String secret, Long storeId) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -102,7 +102,6 @@ public class JWTUtil {
             return JWT.create()
                     .withClaim("userId", userId)
                     .withClaim("username", username)
-                    .withArrayClaim("permissions", permissions)
                     .withClaim("storeId", storeId)
                     .withIssuer(ISSUER)
                     .withExpiresAt(date)
@@ -133,15 +132,5 @@ public class JWTUtil {
 //		}
 //
 //	}
-
-    public static String[] getPermissions(String token) {
-        try {
-            DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("permissions").asArray(String.class);
-        } catch (JWTDecodeException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 }

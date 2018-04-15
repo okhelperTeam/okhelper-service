@@ -14,6 +14,7 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -124,7 +125,6 @@ public class ShiroConfiguration {
     //配置核心安全事务管理器
     @Bean(name = "securityManager")
     public SecurityManager securityManager(@Qualifier("authRealm") AuthRealm authRealm) {
-//        System.err.println("--------------shiro已经加载----------------");
         DefaultWebSecurityManager manager = new DefaultWebSecurityManager();
 
         /*
@@ -137,7 +137,15 @@ public class ShiroConfiguration {
         subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
         manager.setSubjectDAO(subjectDAO);
         manager.setRealm(authRealm);
+        // 自定义缓存实现 使用redis
+//        authRealm.setCacheManager(redisShiroCacheManager());
         return manager;
+    }
+
+
+    @Bean(name = "redisShiroCacheManager")
+    public RedisShiroCacheManager redisShiroCacheManager() {
+        return new RedisShiroCacheManager();
     }
 
     //配置自定义的权限登录器
@@ -145,6 +153,13 @@ public class ShiroConfiguration {
     public AuthRealm authRealm(@Qualifier("credentialsMatcher") CredentialsMatcher matcher) {
         AuthRealm authRealm = new AuthRealm();
         authRealm.setCredentialsMatcher(matcher);
+        authRealm.setCachingEnabled(true);
+        authRealm.setAuthenticationCachingEnabled(true);
+        authRealm.setAuthorizationCachingEnabled(true);
+        // 自定义缓存实现 使用redis
+        authRealm.setCacheManager(redisShiroCacheManager());
+        authRealm.setAuthenticationCacheName("authenticationCache");
+        authRealm.setAuthorizationCacheName("authorizationCache");
         return authRealm;
     }
 
