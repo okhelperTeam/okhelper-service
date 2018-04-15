@@ -30,5 +30,6 @@ public interface UserService {
     * @Description:用户注册
     */  
     ServerResponse userRegister(UserDto userDto);
-
+    
+    ServerResponse checkUserName(String userName);
 }

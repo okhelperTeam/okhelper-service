@@ -147,5 +147,18 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
+	@Override
+	public ServerResponse checkUserName(String userName) {
+		
+		if(StringUtils.isBlank(userName)){
+			throw new IllegalException("用户名为空");
+		}
+		
+		if( CollectionUtils.isEmpty(userMapper.checkUserName(userName)) ){
+			return ServerResponse.createBySuccess();
+		}
+		throw new IllegalException("用户名重复");
+	}
+	
 	
 }

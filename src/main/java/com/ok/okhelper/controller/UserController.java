@@ -50,7 +50,12 @@ public class UserController {
         return userService.userRegister(userDto);
     }
 
-
+    @GetMapping("user/checkUserName")
+    public ServerResponse checkUserName(String userName){
+        return userService.checkUserName(userName);
+    }
+    
+    
 
 
     @RequestMapping("/logout")

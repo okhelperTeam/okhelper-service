@@ -36,6 +36,10 @@
     select store_id from store_user WHERE user_id = #{userId}
   </select>
 
+  
+  <select id="checkUserName" resultType="string" parameterType="java.lang.String">
+    select user_name from user where user_name = #{userName}
+  </select>
 
   <!--<insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" >-->
       <!--INSERT INTO user(user_name,user_password) va-->
