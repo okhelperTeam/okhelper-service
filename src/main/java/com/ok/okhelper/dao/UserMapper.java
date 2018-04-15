@@ -17,8 +17,10 @@ public interface UserMapper extends MyMapper<User> {
     Long findStoreIdByUserId(Long userId);
 
     List<String> checkUserName(String userName);
-    
+
     List<Long> getUserListByStoreId(Long storeId);
+
+    String getPassWordByUserId(Long user_id);
 
 //	int register(UserDto userDto);
 }

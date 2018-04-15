@@ -3,7 +3,10 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.service.UserService;
+import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.shiro.RedisShiroCacheManager;
 import com.ok.okhelper.until.IpUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /*
-*Author:zhangxin_an
-*Description:
-*Data:Created in 21:56 2018/4/9
-*/
+ *Author:zhangxin_an
+ *Description:
+ *Data:Created in 21:56 2018/4/9
+ */
 @RestController
 public class UserController {
-    
+
     @Autowired
     private UserService userService;
 
@@ -38,7 +41,7 @@ public class UserController {
     public ServerResponse loginUser(String username, String password, HttpServletRequest request) {
         String ip = IpUtil.getIpAddr(request);
         return userService.loginUser(username, password, ip);
-}
+    }
 
     /*
      * @Author zhangxin_an
@@ -57,11 +60,11 @@ public class UserController {
     public ServerResponse checkUserName(String userName) {
         return userService.checkUserName(userName);
     }
-    
+
     @RequiresPermissions("user/userList:get")
     @GetMapping("user/userList")
-    public ServerResponse getUserListByStoreId(HttpServletRequest request){
-        String token  = request.getHeader("token");
+    public ServerResponse getUserListByStoreId(HttpServletRequest request) {
+        String token = request.getHeader("token");
         return userService.getUserListByStoreId(token);
     }
 
@@ -71,6 +74,12 @@ public class UserController {
 //        Subject subject = SecurityUtils.getSubject();
 //        subject.logout();
 //        session.removeAttribute("user");
+//        try {
+//            ShiroAuthorizationHelper.clearAuthorizationInfo(JWTUtil.getToken());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         return "登出";
     }
 

@@ -50,5 +50,9 @@
     SELECT id FROM user where store_id = #{storeId}
   </select>
 
+  <select id="getPassWordByUserId" resultType="string" parameterType="long">
+      select user_password from user where id=#{user_id}
+  </select>
+
 
 </mapper>

@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -88,7 +90,6 @@ public class JWTUtil {
 
 
     /**
-     * 生成签名,5min后过期
      *
      * @param username 用户名
      * @param secret   用户的密码
@@ -107,6 +108,42 @@ public class JWTUtil {
                     .withExpiresAt(date)
                     .sign(algorithm);
         } catch (UnsupportedEncodingException e) {
+            return null;
+        }
+    }
+
+
+    public static String getToken() {
+        Subject subject = SecurityUtils.getSubject();
+        return subject.getPrincipal().toString();
+    }
+
+
+    public static String getUserame() {
+        try {
+            DecodedJWT jwt = JWT.decode(getToken());
+            return jwt.getClaim("username").asString();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
+
+    public static Long getUserId() {
+        try {
+            DecodedJWT jwt = JWT.decode(getToken());
+            return jwt.getClaim("userId").asLong();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
+
+    public static Long getStoreId() {
+        try {
+            DecodedJWT jwt = JWT.decode(getToken());
+            return jwt.getClaim("storeId").asLong();
+        } catch (JWTDecodeException e) {
             return null;
         }
     }
