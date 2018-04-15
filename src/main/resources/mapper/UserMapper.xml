@@ -46,6 +46,9 @@
   <!--<insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" >-->
   <!--INSERT INTO user(user_name,user_password) va-->
   <!--</insert>-->
+  <select id="getUserListByStoreId" resultType="long" parameterType="java.lang.Long">
+    SELECT id FROM user where store_id = #{storeId}
+  </select>
 
 
 </mapper>

@@ -4,6 +4,7 @@ import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.until.IpUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +58,12 @@ public class UserController {
         return userService.checkUserName(userName);
     }
     
-    
+    @RequiresPermissions("user/userList:get")
+    @GetMapping("user/userList")
+    public ServerResponse getUserListByStoreId(HttpServletRequest request){
+        String token  = request.getHeader("token");
+        return userService.getUserListByStoreId(token);
+    }
 
 
     @RequestMapping("/logout")
