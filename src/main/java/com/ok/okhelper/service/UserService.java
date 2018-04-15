@@ -31,4 +31,6 @@ public interface UserService {
     ServerResponse userRegister(UserDto userDto);
 
     ServerResponse checkUserName(String userName);
+    
+    ServerResponse getUserListByStoreId(String token);
 }

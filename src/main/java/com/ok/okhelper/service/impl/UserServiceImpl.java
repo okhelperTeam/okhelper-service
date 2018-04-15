@@ -1,5 +1,6 @@
 package com.ok.okhelper.service.impl;
 
+import com.auth0.jwt.JWT;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.UserMapper;
@@ -25,6 +26,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.ServletRequestBindingException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -101,7 +103,9 @@ public class UserServiceImpl implements UserService {
         userVo.setStoreId(storeId);
 
         String token = JWTUtil.sign(userId, userName, inPassword, permissionArrays, storeId);
-
+        boolean b = JWTUtil.verify(token,userName,inPassword);
+        
+        
         userVo.setToken(token);
 
         return ServerResponse.createBySuccess(userVo);
@@ -157,5 +161,48 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createBySuccess();
         }
         throw new IllegalException("用户名重复");
+    }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/15 10:40
+    * @Params [token]  
+    * @Return com.ok.okhelper.common.ServerResponse  
+    * @Description:
+    */  
+    @Override
+    public ServerResponse getUserListByStoreId(String token) {
+        Long userId = JWTUtil.getUserId(token);
+        Long storeId = JWTUtil.getStoreId(token);
+        List<Long> userIdList = userMapper.getUserListByStoreId(storeId);
+        
+        if(CollectionUtils.isEmpty(userIdList)){
+            return  ServerResponse.createBySuccess("无员工数据",null);
+        }
+        
+        userIdList.remove(userId);
+        List<UserVo> userVos = new ArrayList<>();
+        userIdList.forEach(id->{
+            UserVo userVo = new UserVo();
+            
+            //获取用户
+            User user = userMapper.selectByPrimaryKey(id);
+            if(user == null){
+                throw  new IllegalException("用户不存在");
+            }
+            
+            
+            //获取用户角色
+            List<Role> roles = roleMapper.findRoleByUserId(user.getId());
+            if (!CollectionUtils.isEmpty(roles)) {
+                userVo.setRoleList(roles);
+            }
+            BeanUtils.copyProperties(user,userVo);
+            userVo.setRoleList(roles);
+            
+            userVos.add(userVo);
+        });
+        
+        return ServerResponse.createBySuccess(userVos);
     }
 }
