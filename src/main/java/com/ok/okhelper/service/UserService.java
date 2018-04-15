@@ -22,6 +22,13 @@ public interface UserService {
     
     ServerResponse loginUser(String userName, String password);
     
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/15 8:27
+    * @Params [userDto]  
+    * @Return com.ok.okhelper.common.ServerResponse  
+    * @Description:用户注册
+    */  
     ServerResponse userRegister(UserDto userDto);
 
 }
