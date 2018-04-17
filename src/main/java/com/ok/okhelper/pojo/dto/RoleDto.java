@@ -3,6 +3,7 @@ package com.ok.okhelper.pojo.dto;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -13,11 +14,16 @@ import java.util.Date;
  */
 @Data
 public class RoleDto {
+    /**
+     * 主键
+     */
+    @Id
+    private Long id;
 
     /**
      * 角色名称
      */
-    @NotNull
+    @NotNull(message = "角色名称不能为空")
     private String roleName;
 
     /**

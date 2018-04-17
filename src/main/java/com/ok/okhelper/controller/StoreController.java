@@ -43,7 +43,7 @@ public class StoreController {
 
         Store store = storeService.postStore(storeDto);
 
-        String token = JWTUtil.sign(JWTUtil.getUserId(), JWTUtil.getUserame(), password, store.getId());
+        String token = JWTUtil.sign(JWTUtil.getUserId(), JWTUtil.getUsername(), password, store.getId());
 
         OpenStore openStore = new OpenStore();
         BeanUtils.copyProperties(store, openStore);

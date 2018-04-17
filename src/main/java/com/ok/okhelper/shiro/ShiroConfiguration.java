@@ -138,7 +138,7 @@ public class ShiroConfiguration {
         manager.setSubjectDAO(subjectDAO);
         manager.setRealm(authRealm);
         // 自定义缓存实现 使用redis
-//        authRealm.setCacheManager(redisShiroCacheManager());
+//        manager.setCacheManager(redisShiroCacheManager());
         return manager;
     }
 
