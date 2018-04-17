@@ -101,12 +101,12 @@ public class GlobalExceptionHandler implements ErrorController{
     }
 
 
-//    //默认异常 500(默认)
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-//    public Object defaultErrorHandler(Exception e) {
-//        return ServerResponse.createDefaultErrorMessage(e.getMessage());
-//    }
+    //默认异常 500(默认)
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public Object defaultErrorHandler(Exception e) {
+        return ServerResponse.createDefaultErrorMessage(e.getMessage());
+    }
 
 
     //重写404错误

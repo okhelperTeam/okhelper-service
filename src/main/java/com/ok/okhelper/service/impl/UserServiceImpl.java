@@ -135,7 +135,6 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isBlank(userAndStoreDto.getUserName())
                 || StringUtils.isBlank(userAndStoreDto.getUserPassword())
                 || StringUtils.isBlank(userAndStoreDto.getStoreName())
-                || StringUtils.isBlank(userAndStoreDto.getStoreAddress())
                 || StringUtils.isBlank(userAndStoreDto.getStorePhone())
                 )
         {
