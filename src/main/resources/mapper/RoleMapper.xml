@@ -24,7 +24,7 @@
   </select>
 
   <insert id="insertUserRole" parameterType="map">
-    insert into user_role (user_id,role_id,operator) values (#{user_id},#{role_id},#{operator})
+    insert into user_role (user_id,role_id) values (#{user_id},#{role_id})
   </insert>
 
 

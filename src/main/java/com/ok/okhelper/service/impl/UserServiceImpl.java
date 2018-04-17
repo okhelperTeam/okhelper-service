@@ -1,12 +1,15 @@
 package com.ok.okhelper.service.impl;
 
-import com.auth0.jwt.JWT;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.RoleMapper;
+import com.ok.okhelper.dao.StoreMapper;
 import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.Role;
+import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.PermissionService;
@@ -22,6 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private StoreMapper storeMapper;
 
     @Autowired
     private PermissionService permissionService;
@@ -63,6 +71,10 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new AuthenticationException("用户名不存在");
         }
+        
+        if(user.getDeleteStatus() .equals("0")){
+            throw new UnauthenticatedException("用户状态异常");
+        }
 
         //加密
         String inPassword = PasswordHelp.passwordSalt(userName, password).toString();
@@ -76,34 +88,38 @@ public class UserServiceImpl implements UserService {
 
         user.setLastLoginIp(ip);
         userMapper.updateByPrimaryKeySelective(user);
+    
+    
+        UserVo userVo = getUser(user);
+      
 
+        return ServerResponse.createBySuccess(userVo);
+    }
+    
+    
+    
+    private UserVo getUser(User user){
         //传值给前端封装类
         UserVo userVo = new UserVo();
+        Long userId = user.getId();
         BeanUtils.copyProperties(user, userVo);
-
         List<Role> roles = roleMapper.findRoleByUserId(user.getId());
         if (!CollectionUtils.isEmpty(roles)) {
             userVo.setRoleList(roles);
         }
-
+    
         //获取用户权限
         List<String> permissionList = permissionService.findAddPermissionCode(userId);
-        String[] permissionArrays = null;
-
+    
         if (!CollectionUtils.isEmpty(permissionList)) {
-            permissionArrays = permissionList.toArray(new String[permissionList.size()]);
             userVo.setPermissionCodes(permissionList);
         }
-
-        Long storeId = userMapper.findStoreIdByUserId(userId);
-
-        userVo.setStoreId(storeId);
-
-        String token = JWTUtil.sign(userId, userName, inPassword, storeId);
-
+    
+    
+        String token = JWTUtil.sign(userId, user.getUserName(), user.getUserPassword(), user.getStoreId());
+    
         userVo.setToken(token);
-
-        return ServerResponse.createBySuccess(userVo);
+        return userVo;
     }
 
     /*
@@ -111,37 +127,52 @@ public class UserServiceImpl implements UserService {
      * @Date 2018/4/14 18:52
      * @Params [userDto]
      * @Return com.ok.okhelper.common.ServerResponse
-     * @Description:注册
+     * @Description:店长注册
      */
     @Override
-    public ServerResponse userRegister(UserDto userDto) {
-        logger.info("Enter userRegister" + userDto);
-        if (StringUtils.isBlank(userDto.getUserName())
-                && StringUtils.isBlank(userDto.getUserPassword())
-                && userDto.getUserBirthday() != null) {
-            new IllegalException("注册信息不完善（用户名，密码，生日不为空）");
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    public UserVo userRegister(UserAndStoreDto userAndStoreDto) {
+        logger.info("Enter userRegister" + userAndStoreDto);
+        if (StringUtils.isBlank(userAndStoreDto.getUserName())
+                || StringUtils.isBlank(userAndStoreDto.getUserPassword())
+                || StringUtils.isBlank(userAndStoreDto.getStoreName())
+                || StringUtils.isBlank(userAndStoreDto.getStorePhone())
+                )
+        {
+            new IllegalException("注册信息不完善（用户名，密码,店铺信息不能为空）");
         }
 
         //密码加密
-        userDto.setUserPassword(PasswordHelp.passwordSalt(userDto.getUserName(), userDto.getUserPassword()));
+        String secret = PasswordHelp.passwordSalt(userAndStoreDto.getUserName(), userAndStoreDto.getUserPassword());
+        userAndStoreDto.setUserPassword(secret);
 
 
         User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-
+        BeanUtils.copyProperties(userAndStoreDto, user);
+    
+        Store store = new Store();
+        BeanUtils.copyProperties(userAndStoreDto,store);
+    
+        
         try {
-
             userMapper.insertSelective(user);
-        } catch (Exception e) {
-
-            throw new IllegalException("注册失败");
+            Long userId = user.getId();
+            store.setLeaderId(userId);
+            storeMapper.insert(store);
+            user.setStoreId(store.getId());
+            userMapper.updateByPrimaryKey(user);
+            Long roleId = (long) ConstEnum.ROLE_STOREMANAGER.getCode();
+            roleMapper.insertUserRole(userId, roleId);
+    
+        }catch (Exception e){
+            throw  new RuntimeException("注册失败");
         }
+        UserVo userVo = getUser(user);
 
-        ServerResponse serverResponse = ServerResponse.createBySuccess();
 
-        logger.info("EXit userRegister" + userDto);
+        logger.info("EXit userRegister" + userVo);
 
-        return serverResponse;
+        return userVo;
 
     }
 
@@ -199,5 +230,57 @@ public class UserServiceImpl implements UserService {
         });
         
         return ServerResponse.createBySuccess(userVos);
+    }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/17 20:31
+    * @Params [userDto]  
+    * @Return com.ok.okhelper.common.ServerResponse  
+    * @Description:增加员工
+    */  
+    @Override
+    public ServerResponse addEmployee(UserDto userDto) {
+    
+        logger.info("Enter addEmployee" + userDto);
+        
+        Long userId = JWTUtil.getUserId();
+        Long storeId = JWTUtil.getStoreId();
+        
+        if( userId == null || storeId == null){
+            throw new UnauthenticatedException("用户Id或店铺Id为空");
+        }
+        if (StringUtils.isBlank(userDto.getUserName())
+                || StringUtils.isBlank(userDto.getUserPassword())
+                )
+        {
+            new IllegalException("添加员工信息不完善（用户名，密码不为空）");
+        }
+    
+        //密码加密
+        userDto.setUserPassword(PasswordHelp.passwordSalt(userDto.getUserName(), userDto.getUserPassword()));
+    
+    
+        User user = new User();
+        user.setStoreId(storeId);
+        user.setOperator(userId);
+        BeanUtils.copyProperties(userDto, user);
+    
+    
+        try {
+    
+            userMapper.insertSelective(user);
+        }catch (Exception e){
+            throw new IllegalException("注册失败");
+        }
+    
+    
+    
+    
+        ServerResponse serverResponse = ServerResponse.createBySuccess("添加成功");
+    
+        logger.info("EXit addEmployee" + serverResponse);
+    
+        return serverResponse;
     }
 }

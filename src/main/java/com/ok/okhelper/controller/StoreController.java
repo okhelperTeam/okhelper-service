@@ -36,10 +36,8 @@ public class StoreController {
     @PostMapping
 //    @RequiresPermissions("store:post")
     public ServerResponse<OpenStore> postStore(@Valid StoreDto storeDto) {
-        storeDto.setLeaderId(JWTUtil.getUserId());
-        storeDto.setOperator(JWTUtil.getUserId());
 
-        String password = userMapper.getPassWordByUserId(JWTUtil.getUserId());
+        String password = userMapper.getPassWordByUserId(storeDto.getLeaderId());
 
         Store store = storeService.postStore(storeDto);
 

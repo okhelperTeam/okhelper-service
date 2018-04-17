@@ -15,6 +15,12 @@ public class Store {
      */
     @Column(name = "store_name")
     private String storeName;
+    
+    /**
+     * 店铺电话
+     */
+    @Column(name = "store_phone")
+    private String storePhone;
 
     /**
      * 店铺地址
@@ -62,9 +68,10 @@ public class Store {
     @Column(name = "leader_id")
     private Long leaderId;
 
-    public Store(Long id, String storeName, String storeAddress, String storePhtoo, String description, Date createTime, Date updateTime, String deleteStatus, Long operator, Long leaderId) {
+    public Store(Long id, String storeName,String storePhone ,String storeAddress, String storePhtoo, String description, Date createTime, Date updateTime, String deleteStatus, Long operator, Long leaderId) {
         this.id = id;
         this.storeName = storeName;
+        this.storeName = storePhone;
         this.storeAddress = storeAddress;
         this.storePhtoo = storePhtoo;
         this.description = description;
@@ -114,7 +121,15 @@ public class Store {
     public void setStoreName(String storeName) {
         this.storeName = storeName == null ? null : storeName.trim();
     }
-
+    
+    public String getStorePhone() {
+        return storePhone;
+    }
+    
+    public void setStorePhone(String storePhone) {
+        this.storePhone = storePhone;
+    }
+    
     /**
      * 获取店铺地址
      *

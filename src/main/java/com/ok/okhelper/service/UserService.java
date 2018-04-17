@@ -1,8 +1,12 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
+import com.ok.okhelper.pojo.vo.UserVo;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
  *Author:zhangxin_an
@@ -28,9 +32,12 @@ public interface UserService {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description:用户注册
      */
-    ServerResponse userRegister(UserDto userDto);
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    UserVo userRegister(UserAndStoreDto userAndStoreDto);
 
     ServerResponse checkUserName(String userName);
     
     ServerResponse getUserListByStoreId(String token);
+    
+    ServerResponse addEmployee(UserDto userDto);
 }

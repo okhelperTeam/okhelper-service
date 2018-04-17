@@ -58,6 +58,11 @@ public class User {
      */
     @Column(name = "user_sex")
     private String userSex;
+    /**
+     * 手机号
+     */
+    @Column(name = "user_phone")
+    private String userPhone;
 
     /**
      * 生日
@@ -100,7 +105,7 @@ public class User {
     @Column(name = "store_id")
     private Long storeId;
 
-    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator, String lastLoginIp, Long storeId) {
+    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, String userPhone,Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator, String lastLoginIp, Long storeId) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -110,6 +115,7 @@ public class User {
         this.userAvatar = userAvatar;
         this.userEmail = userEmail;
         this.userSex = userSex;
+        this.userPhone = userPhone;
         this.userBirthday = userBirthday;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -283,6 +289,25 @@ public class User {
      */
     public void setUserSex(String userSex) {
         this.userSex = userSex == null ? null : userSex.trim();
+    }
+    
+    
+    /**
+     * 获取手机号
+     *
+     * @return user_phone - 手机号
+     */
+    public String getUserPhone() {
+        return userPhone;
+    }
+    
+    /**
+     * 设置手机号
+     *
+     * @param userPhone 手机号
+     */
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone == null ? null : userPhone.trim();
     }
 
     /**
