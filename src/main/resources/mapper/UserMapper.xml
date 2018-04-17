@@ -15,6 +15,7 @@
       <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="user_sex" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="user_Phone" javaType="java.lang.String" jdbcType="CHAR" />
       <arg column="user_birthday" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />

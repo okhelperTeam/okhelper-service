@@ -1,22 +1,29 @@
 package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.shiro.RedisShiroCacheManager;
 import com.ok.okhelper.until.IpUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.UserDataHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.logging.Logger;
 
 /*
  *Author:zhangxin_an
@@ -25,6 +32,7 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 public class UserController {
+    org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserService userService;
@@ -48,12 +56,29 @@ public class UserController {
      * @Date 2018/4/15 8:27
      * @Params [userDto]
      * @Return com.ok.okhelper.common.ServerResponse
-     * @Description:用户注册
+     * @Description:店长注册
      */
+    @Transactional
     @PostMapping("/user/register")
-    public ServerResponse register(UserDto userDto) {
-
-        return userService.userRegister(userDto);
+    public ServerResponse register(UserAndStoreDto userAndStoreDto) {
+        UserVo userVo;
+           userVo  = userService.userRegister(userAndStoreDto);
+       
+        return ServerResponse.createBySuccess(userVo);
+    }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/17 20:47
+    * @Params [userDto]  
+    * @Return com.ok.okhelper.common.ServerResponse  
+    * @Description:添加员工
+    */  
+    @RequiresPermissions("addEmployee")
+    @PostMapping("/user/addEmployee")
+    public ServerResponse addEmployee(UserDto userDto) {
+        
+        return userService.addEmployee(userDto);
     }
 
     @GetMapping("user/checkUserName")

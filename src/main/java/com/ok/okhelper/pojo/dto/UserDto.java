@@ -1,6 +1,7 @@
 package com.ok.okhelper.pojo.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -60,6 +61,7 @@ public class UserDto {
     /**
      * 生日
      */
+    @DateTimeFormat(pattern = "yyyy-yy-mm")
     private Date userBirthday;
 
     /**
@@ -72,5 +74,10 @@ public class UserDto {
      * 操作者
      */
     private Long operator;
+    
+    /*
+    *所属店铺
+    */  
+    private Long storeId;
 
 }

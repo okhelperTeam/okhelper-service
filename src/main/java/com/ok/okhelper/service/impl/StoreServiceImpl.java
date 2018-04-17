@@ -3,6 +3,7 @@ package com.ok.okhelper.service.impl;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.StoreMapper;
 import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.StoreDto;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.Store;
@@ -34,9 +35,8 @@ public class StoreServiceImpl implements StoreService {
     public Store postStore(StoreDto storeDto) {
         Store store = new Store();
         BeanUtils.copyProperties(storeDto, store);
-        int i = storeMapper.insertSelective(store);
-        Store newStore = storeMapper.selectOne(store);
-        Long store_id = newStore.getId();
+        storeMapper.insertSelective(store);
+        Long store_id = store.getId();
 
         User user = new User();
         Long user_id = storeDto.getLeaderId();
@@ -44,8 +44,6 @@ public class StoreServiceImpl implements StoreService {
         user.setStoreId(store_id);
         userMapper.updateByPrimaryKeySelective(user);
 
-        roleMapper.insertUserRole(user_id, (long) 2, user_id);
-
-        return newStore;
+        return store;
     }
 }

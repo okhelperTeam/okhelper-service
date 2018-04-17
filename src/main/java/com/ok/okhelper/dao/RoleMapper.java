@@ -12,5 +12,5 @@ public interface RoleMapper extends MyMapper<Role> {
 	
 	List<Role> findRoleByUserId(Long userId);
 
-    int insertUserRole(@Param("user_id") Long user_id, @Param("role_id") Long role_id, @Param("operator") Long operator);
+    int insertUserRole(@Param("user_id") Long user_id, @Param("role_id") Long role_id);
 }
