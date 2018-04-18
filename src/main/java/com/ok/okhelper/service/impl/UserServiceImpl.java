@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(propagation= Propagation.REQUIRES_NEW)
     public void userRegister(UserAndStoreDto userAndStoreDto) {
-        logger.info("Enter userRegister" + userAndStoreDto);
+//        logger.info("Enter userRegister" + userAndStoreDto);
         if (StringUtils.isBlank(userAndStoreDto.getUserName())
                 || StringUtils.isBlank(userAndStoreDto.getUserPassword())
                 || StringUtils.isBlank(userAndStoreDto.getStoreName())
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
             store.setLeaderId(userId);
             storeMapper.insertSelective(store);
             user.setStoreId(store.getId());
-            userMapper.updateByPrimaryKey(user);
+            userMapper.updateByPrimaryKeySelective(user);
             Long roleId = (long) ConstEnum.ROLE_STOREMANAGER.getCode();
             roleMapper.insertUserRole(userId, roleId);
     
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        logger.info("EXit userRegister" );
+//        logger.info("EXit userRegister" );
 
 
     }
