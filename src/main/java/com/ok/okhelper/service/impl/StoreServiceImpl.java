@@ -30,20 +30,4 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private RoleMapper roleMapper;
 
-    @Override
-    @Transactional
-    public Store postStore(StoreDto storeDto) {
-        Store store = new Store();
-        BeanUtils.copyProperties(storeDto, store);
-        storeMapper.insertSelective(store);
-        Long store_id = store.getId();
-
-        User user = new User();
-        Long user_id = storeDto.getLeaderId();
-        user.setId(user_id);
-        user.setStoreId(store_id);
-        userMapper.updateByPrimaryKeySelective(user);
-
-        return store;
-    }
 }

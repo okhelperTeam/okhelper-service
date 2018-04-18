@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ok.okhelper.dao.StoreMapper">
-  <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.Store">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="store_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="store_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="store_address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="store_photo" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR" />
-      <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="leader_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-    </constructor>
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.Store">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="store_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="store_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="store_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="store_photo" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="leader_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
 </mapper>

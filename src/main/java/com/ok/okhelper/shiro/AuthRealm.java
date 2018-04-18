@@ -3,6 +3,7 @@ package com.ok.okhelper.shiro;
 
 import com.ok.okhelper.dao.PermissionMapper;
 import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
@@ -48,6 +49,10 @@ public class AuthRealm extends AuthorizingRealm {
         if (userBean == null) {
             throw new AuthenticationException("User didn't existed!");
         }
+
+//        if(ConstEnum.getCode().equals(userBean.getDeleteStatus())){
+//
+//        }
 
         if (!JWTUtil.verify(token, username, userBean.getUserPassword())) {
             throw new AuthenticationException("token 失效");

@@ -2,7 +2,7 @@ package com.ok.okhelper.config;
 
 /**
  * @author: zc
- * @description:
+ * @description: Redis缓存管理器配置
  * @date: 2018/4/15
  */
 

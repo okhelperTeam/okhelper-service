@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ok.okhelper.dao.PermissionMapper">
-  <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.Permission">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="menu_code" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="menu_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="permission_code" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="permission_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR" />
-      <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
-    </constructor>
-  </resultMap>
-  
-  
-  <select id="findAddPermissionCode" resultType="string" parameterType="java.lang.Long">
-    SELECT permission.permission_code from permission  WHERE permission.id in
-(SELECT permission_id FROM role_permission  WHERE role_id in
-    (SELECT role_id FROM user_role WHERE user_id = #{userId}) )
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.Permission">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="menu_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="menu_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="permission_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="permission_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
 
-  </select>
+
+    <select id="findAddPermissionCode" resultType="java.lang.String" parameterType="java.lang.Long">
+        SELECT permission.permission_code
+        from permission
+        WHERE permission.id in
+              (SELECT permission_id
+               FROM role_permission
+               WHERE role_id in
+                     (SELECT role_id
+                      FROM user_role
+                      WHERE user_id = #{userId}))
+
+    </select>
 </mapper>

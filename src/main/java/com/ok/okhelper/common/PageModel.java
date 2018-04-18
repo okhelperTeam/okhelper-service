@@ -1,4 +1,4 @@
-package com.ok.okhelper.pojo.vo;
+package com.ok.okhelper.common;
 
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.exception.IllegalException;

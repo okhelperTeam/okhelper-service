@@ -9,5 +9,5 @@ import com.ok.okhelper.pojo.po.Store;
  * @date: 2018/4/15
  */
 public interface StoreService {
-    Store postStore(StoreDto storeDto);
+
 }

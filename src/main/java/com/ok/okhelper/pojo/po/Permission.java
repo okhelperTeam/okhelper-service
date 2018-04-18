@@ -8,6 +8,7 @@ public class Permission {
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
     private Long id;
 
     /**

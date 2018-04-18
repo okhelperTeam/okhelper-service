@@ -2,6 +2,7 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.vo.UserVo;
@@ -14,15 +15,13 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.UserDataHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.logging.Logger;
 
 /*
@@ -91,6 +90,12 @@ public class UserController {
     public ServerResponse getUserListByStoreId(HttpServletRequest request) {
         String token = request.getHeader("token");
         return userService.getUserListByStoreId(token);
+    }
+
+
+    @PutMapping("/user/role")
+    public ServerResponse changeRoleFromUser(@Valid UserAndRoleDto userAndRoleDto) {
+        return userService.changeRole(userAndRoleDto);
     }
 
 

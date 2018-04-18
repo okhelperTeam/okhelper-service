@@ -1,59 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ok.okhelper.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.User">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="user_password" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="pass_problem" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="pass_answer" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="user_nick" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="user_sex" javaType="java.lang.String" jdbcType="CHAR" />
-      <arg column="user_Phone" javaType="java.lang.String" jdbcType="CHAR" />
-      <arg column="user_birthday" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR" />
-      <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="last_login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-    </constructor>
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.User">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_password" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="pass_problem" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="pass_answer" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_nick" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_sex" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="user_Phone" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="user_birthday" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="last_login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
+
+    <select id="findUserIdByName" resultType="java.lang.Long" parameterType="java.lang.String">
+        select user.id
+        from user
+        WHERE user.user_name = #{userName}
+    </select>
+    <select id="findUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from user
+        WHERE user.user_name = #{userName}
+    </select>
 
 
-  <select id="findUserIdByName" resultType="long" parameterType="java.lang.String">
-    select user.id from user WHERE user.user_name = #{userName}
-  </select>
-  <select id="findUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select * from user WHERE user.user_name = #{userName}
-  </select>
+    <select id="findStoreIdByUserId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        select store_id
+        from user
+        WHERE user.id = #{userId}
+    </select>
 
 
-  <select id="findStoreIdByUserId" resultType="long" parameterType="java.lang.Long">
-    select store_id from  user WHERE user.id = #{userId}
-  </select>
+    <select id="checkUserName" resultType="java.lang.String" parameterType="java.lang.String">
+        select user_name
+        from user
+        where user_name = #{userName}
+    </select>
 
+    <!--<insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" >-->
+    <!--INSERT INTO user(user_name,user_password) va-->
+    <!--</insert>-->
+    <select id="getUserListByStoreId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT id
+        FROM user
+        where store_id = #{storeId}
+    </select>
 
-  <select id="checkUserName" resultType="string" parameterType="java.lang.String">
-    select user_name from user where user_name = #{userName}
-  </select>
+    <select id="getPassWordByUserId" resultType="java.lang.String" parameterType="long">
+        select user_password
+        from user
+        where id = #{user_id}
+    </select>
 
-  <!--<insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" >-->
-  <!--INSERT INTO user(user_name,user_password) va-->
-  <!--</insert>-->
-  <select id="getUserListByStoreId" resultType="long" parameterType="java.lang.Long">
-    SELECT id FROM user where store_id = #{storeId}
-  </select>
+    <delete id="deleteAllRoleFromUser">
+        delete from user_role
+        where user_role.user_id = #{user_id}
+    </delete>
 
-  <select id="getPassWordByUserId" resultType="string" parameterType="long">
-      select user_password from user where id=#{user_id}
-  </select>
+    <insert id="insertRoleToUser">
+        insert into user_role (user_id, role_id, operator) values (#{user_id}, #{role_id}, #{operator})
+    </insert>
 
 
 </mapper>

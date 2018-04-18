@@ -1,6 +1,7 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
@@ -40,4 +41,6 @@ public interface UserService {
     ServerResponse getUserListByStoreId(String token);
     
     ServerResponse addEmployee(UserDto userDto);
+
+    ServerResponse changeRole(UserAndRoleDto userAndRoleDto);
 }
