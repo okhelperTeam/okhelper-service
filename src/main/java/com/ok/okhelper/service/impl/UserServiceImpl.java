@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
                 || StringUtils.isBlank(userAndStoreDto.getStorePhone())
                 )
         {
-            new IllegalException("注册信息不完善（用户名，密码,店铺信息不能为空）");
+            throw new IllegalException("注册信息不完善（用户名，密码,店铺信息不能为空）");
         }
 
         //密码加密
@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
             userMapper.insertSelective(user);
             Long userId = user.getId();
             store.setLeaderId(userId);
-            storeMapper.insert(store);
+            storeMapper.insertSelective(store);
             user.setStoreId(store.getId());
             userMapper.updateByPrimaryKey(user);
             Long roleId = (long) ConstEnum.ROLE_STOREMANAGER.getCode();
