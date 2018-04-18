@@ -60,10 +60,9 @@ public class UserController {
     @Transactional
     @PostMapping("/user/register")
     public ServerResponse register(UserAndStoreDto userAndStoreDto) {
-        UserVo userVo;
-           userVo  = userService.userRegister(userAndStoreDto);
+        userService.userRegister(userAndStoreDto);
        
-        return ServerResponse.createBySuccess(userVo);
+        return ServerResponse.createBySuccess("注册成功");
     }
     
     /*

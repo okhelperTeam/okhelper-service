@@ -133,15 +133,16 @@ public class UserServiceImpl implements UserService {
      * @Description:店长注册
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public UserVo userRegister(UserAndStoreDto userAndStoreDto) {
-        logger.info("Enter userRegister" + userAndStoreDto);
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    public void userRegister(UserAndStoreDto userAndStoreDto) {
+//        logger.info("Enter userRegister" + userAndStoreDto);
         if (StringUtils.isBlank(userAndStoreDto.getUserName())
                 || StringUtils.isBlank(userAndStoreDto.getUserPassword())
                 || StringUtils.isBlank(userAndStoreDto.getStoreName())
                 || StringUtils.isBlank(userAndStoreDto.getStorePhone())
-                ) {
-            new IllegalException("注册信息不完善（用户名，密码,店铺信息不能为空）");
+                )
+        {
+            throw new IllegalException("注册信息不完善（用户名，密码,店铺信息不能为空）");
         }
 
         //密码加密
@@ -160,21 +161,19 @@ public class UserServiceImpl implements UserService {
             userMapper.insertSelective(user);
             Long userId = user.getId();
             store.setLeaderId(userId);
-            storeMapper.insert(store);
+            storeMapper.insertSelective(store);
             user.setStoreId(store.getId());
-            userMapper.updateByPrimaryKey(user);
+            userMapper.updateByPrimaryKeySelective(user);
             Long roleId = (long) ConstEnum.ROLE_STOREMANAGER.getCode();
             roleMapper.insertUserRole(userId, roleId);
 
         } catch (Exception e) {
             throw new RuntimeException("注册失败");
         }
-        UserVo userVo = getUser(user);
 
 
-        logger.info("EXit userRegister" + userVo);
+//        logger.info("EXit userRegister" );
 
-        return userVo;
 
     }
 

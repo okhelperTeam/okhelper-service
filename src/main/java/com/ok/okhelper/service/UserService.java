@@ -33,8 +33,7 @@ public interface UserService {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description:用户注册
      */
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
-    UserVo userRegister(UserAndStoreDto userAndStoreDto);
+    void userRegister(UserAndStoreDto userAndStoreDto);
 
     ServerResponse checkUserName(String userName);
     
