@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(propagation= Propagation.REQUIRES_NEW)
-    public UserVo userRegister(UserAndStoreDto userAndStoreDto) {
+    public void userRegister(UserAndStoreDto userAndStoreDto) {
         logger.info("Enter userRegister" + userAndStoreDto);
         if (StringUtils.isBlank(userAndStoreDto.getUserName())
                 || StringUtils.isBlank(userAndStoreDto.getUserPassword())
@@ -167,12 +167,10 @@ public class UserServiceImpl implements UserService {
         }catch (Exception e){
             throw  new RuntimeException("注册失败");
         }
-        UserVo userVo = getUser(user);
 
 
-        logger.info("EXit userRegister" + userVo);
+        logger.info("EXit userRegister" );
 
-        return userVo;
 
     }
 
