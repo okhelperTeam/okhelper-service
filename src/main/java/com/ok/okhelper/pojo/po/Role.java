@@ -7,8 +7,8 @@ public class Role {
     /**
      * 主键
      */
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
     private Long id;
 
     /**
@@ -16,6 +16,16 @@ public class Role {
      */
     @Column(name = "role_name")
     private String roleName;
+
+    /**
+     * 描述
+     */
+    private String description;
+
+    /**
+     * 操作者
+     */
+    private Long operator;
 
     /**
      * 创建日期
@@ -33,17 +43,7 @@ public class Role {
      * 状态 0废除，1激活
      */
     @Column(name = "delete_status")
-    private String deleteStatus;
-
-    /**
-     * 描述
-     */
-    private String description;
-
-    /**
-     * 操作者
-     */
-    private Long operator;
+    private Integer deleteStatus;
 
     /**
      * 店铺id
@@ -51,14 +51,14 @@ public class Role {
     @Column(name = "store_id")
     private Long storeId;
 
-    public Role(Long id, String roleName, Date createTime, Date updateTime, String deleteStatus, String description, Long operator, Long storeId) {
+    public Role(Long id, String roleName, String description, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long storeId) {
         this.id = id;
         this.roleName = roleName;
+        this.description = description;
+        this.operator = operator;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
-        this.description = description;
-        this.operator = operator;
         this.storeId = storeId;
     }
 
@@ -103,6 +103,42 @@ public class Role {
     }
 
     /**
+     * 获取描述
+     *
+     * @return description - 描述
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置描述
+     *
+     * @param description 描述
+     */
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
+    }
+
+    /**
+     * 获取操作者
+     *
+     * @return operator - 操作者
+     */
+    public Long getOperator() {
+        return operator;
+    }
+
+    /**
+     * 设置操作者
+     *
+     * @param operator 操作者
+     */
+    public void setOperator(Long operator) {
+        this.operator = operator;
+    }
+
+    /**
      * 获取创建日期
      *
      * @return create_time - 创建日期
@@ -143,7 +179,7 @@ public class Role {
      *
      * @return delete_status - 状态 0废除，1激活
      */
-    public String getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
@@ -152,44 +188,8 @@ public class Role {
      *
      * @param deleteStatus 状态 0废除，1激活
      */
-    public void setDeleteStatus(String deleteStatus) {
-        this.deleteStatus = deleteStatus == null ? null : deleteStatus.trim();
-    }
-
-    /**
-     * 获取描述
-     *
-     * @return description - 描述
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 设置描述
-     *
-     * @param description 描述
-     */
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
-    }
-
-    /**
-     * 获取操作者
-     *
-     * @return operator - 操作者
-     */
-    public Long getOperator() {
-        return operator;
-    }
-
-    /**
-     * 设置操作者
-     *
-     * @param operator 操作者
-     */
-    public void setOperator(Long operator) {
-        this.operator = operator;
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
     /**

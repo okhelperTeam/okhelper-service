@@ -17,6 +17,9 @@ public class Store {
     @Column(name = "store_name")
     private String storeName;
 
+    /**
+     * 联系电话
+     */
     @Column(name = "store_phone")
     private String storePhone;
 
@@ -38,6 +41,11 @@ public class Store {
     private String description;
 
     /**
+     * 操作者
+     */
+    private Long operator;
+
+    /**
      * 创建日期
      */
     @Column(name = "create_time")
@@ -53,12 +61,7 @@ public class Store {
      * 状态 0废除，1激活
      */
     @Column(name = "delete_status")
-    private String deleteStatus;
-
-    /**
-     * 操作者
-     */
-    private Long operator;
+    private Integer deleteStatus;
 
     /**
      * 负责人
@@ -66,17 +69,17 @@ public class Store {
     @Column(name = "leader_id")
     private Long leaderId;
 
-    public Store(Long id, String storeName, String storePhone, String storeAddress, String storePhoto, String description, Date createTime, Date updateTime, String deleteStatus, Long operator, Long leaderId) {
+    public Store(Long id, String storeName, String storePhone, String storeAddress, String storePhoto, String description, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long leaderId) {
         this.id = id;
         this.storeName = storeName;
         this.storePhone = storePhone;
         this.storeAddress = storeAddress;
         this.storePhoto = storePhoto;
         this.description = description;
+        this.operator = operator;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
-        this.operator = operator;
         this.leaderId = leaderId;
     }
 
@@ -121,14 +124,18 @@ public class Store {
     }
 
     /**
-     * @return store_phone
+     * 获取联系电话
+     *
+     * @return store_phone - 联系电话
      */
     public String getStorePhone() {
         return storePhone;
     }
 
     /**
-     * @param storePhone
+     * 设置联系电话
+     *
+     * @param storePhone 联系电话
      */
     public void setStorePhone(String storePhone) {
         this.storePhone = storePhone == null ? null : storePhone.trim();
@@ -189,6 +196,24 @@ public class Store {
     }
 
     /**
+     * 获取操作者
+     *
+     * @return operator - 操作者
+     */
+    public Long getOperator() {
+        return operator;
+    }
+
+    /**
+     * 设置操作者
+     *
+     * @param operator 操作者
+     */
+    public void setOperator(Long operator) {
+        this.operator = operator;
+    }
+
+    /**
      * 获取创建日期
      *
      * @return create_time - 创建日期
@@ -229,7 +254,7 @@ public class Store {
      *
      * @return delete_status - 状态 0废除，1激活
      */
-    public String getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
@@ -238,26 +263,8 @@ public class Store {
      *
      * @param deleteStatus 状态 0废除，1激活
      */
-    public void setDeleteStatus(String deleteStatus) {
-        this.deleteStatus = deleteStatus == null ? null : deleteStatus.trim();
-    }
-
-    /**
-     * 获取操作者
-     *
-     * @return operator - 操作者
-     */
-    public Long getOperator() {
-        return operator;
-    }
-
-    /**
-     * 设置操作者
-     *
-     * @param operator 操作者
-     */
-    public void setOperator(Long operator) {
-        this.operator = operator;
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
     /**

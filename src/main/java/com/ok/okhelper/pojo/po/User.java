@@ -7,8 +7,8 @@ public class User {
     /**
      * 主键
      */
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
     private Long id;
 
     /**
@@ -58,6 +58,7 @@ public class User {
      */
     @Column(name = "user_sex")
     private String userSex;
+
     /**
      * 手机号
      */
@@ -69,6 +70,17 @@ public class User {
      */
     @Column(name = "user_birthday")
     private Date userBirthday;
+
+    /**
+     * 最后一次登陆IP
+     */
+    @Column(name = "last_login_ip")
+    private String lastLoginIp;
+
+    /**
+     * 操作者
+     */
+    private Long operator;
 
     /**
      * 创建日期
@@ -86,26 +98,15 @@ public class User {
      * 状态 0废除，1激活
      */
     @Column(name = "delete_status")
-    private String deleteStatus;
+    private Integer deleteStatus;
 
     /**
-     * 操作者
-     */
-    private Long operator;
-
-    /**
-     * 最后一次登陆IP
-     */
-    @Column(name = "last_login_ip")
-    private String lastLoginIp;
-
-    /**
-     * 所属商店Id
+     * 所属商店Id  null 游离状态 0平台管理员
      */
     @Column(name = "store_id")
     private Long storeId;
 
-    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, String userPhone,Date userBirthday, Date createTime, Date updateTime, String deleteStatus, Long operator, String lastLoginIp, Long storeId) {
+    public User(Long id, String userName, String userPassword, String passProblem, String passAnswer, String userNick, String userAvatar, String userEmail, String userSex, String userPhone, Date userBirthday, String lastLoginIp, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long storeId) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -117,11 +118,11 @@ public class User {
         this.userSex = userSex;
         this.userPhone = userPhone;
         this.userBirthday = userBirthday;
+        this.lastLoginIp = lastLoginIp;
+        this.operator = operator;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
-        this.operator = operator;
-        this.lastLoginIp = lastLoginIp;
         this.storeId = storeId;
     }
 
@@ -290,8 +291,7 @@ public class User {
     public void setUserSex(String userSex) {
         this.userSex = userSex == null ? null : userSex.trim();
     }
-    
-    
+
     /**
      * 获取手机号
      *
@@ -300,7 +300,7 @@ public class User {
     public String getUserPhone() {
         return userPhone;
     }
-    
+
     /**
      * 设置手机号
      *
@@ -326,6 +326,42 @@ public class User {
      */
     public void setUserBirthday(Date userBirthday) {
         this.userBirthday = userBirthday;
+    }
+
+    /**
+     * 获取最后一次登陆IP
+     *
+     * @return last_login_ip - 最后一次登陆IP
+     */
+    public String getLastLoginIp() {
+        return lastLoginIp;
+    }
+
+    /**
+     * 设置最后一次登陆IP
+     *
+     * @param lastLoginIp 最后一次登陆IP
+     */
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp == null ? null : lastLoginIp.trim();
+    }
+
+    /**
+     * 获取操作者
+     *
+     * @return operator - 操作者
+     */
+    public Long getOperator() {
+        return operator;
+    }
+
+    /**
+     * 设置操作者
+     *
+     * @param operator 操作者
+     */
+    public void setOperator(Long operator) {
+        this.operator = operator;
     }
 
     /**
@@ -369,7 +405,7 @@ public class User {
      *
      * @return delete_status - 状态 0废除，1激活
      */
-    public String getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
@@ -378,59 +414,23 @@ public class User {
      *
      * @param deleteStatus 状态 0废除，1激活
      */
-    public void setDeleteStatus(String deleteStatus) {
-        this.deleteStatus = deleteStatus == null ? null : deleteStatus.trim();
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
     /**
-     * 获取操作者
+     * 获取所属商店Id  null 游离状态 0平台管理员
      *
-     * @return operator - 操作者
-     */
-    public Long getOperator() {
-        return operator;
-    }
-
-    /**
-     * 设置操作者
-     *
-     * @param operator 操作者
-     */
-    public void setOperator(Long operator) {
-        this.operator = operator;
-    }
-
-    /**
-     * 获取最后一次登陆IP
-     *
-     * @return last_login_ip - 最后一次登陆IP
-     */
-    public String getLastLoginIp() {
-        return lastLoginIp;
-    }
-
-    /**
-     * 设置最后一次登陆IP
-     *
-     * @param lastLoginIp 最后一次登陆IP
-     */
-    public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp == null ? null : lastLoginIp.trim();
-    }
-
-    /**
-     * 获取所属商店ID
-     *
-     * @return store_id - 所属商店ID
+     * @return store_id - 所属商店Id  null 游离状态 0平台管理员
      */
     public Long getStoreId() {
         return storeId;
     }
 
     /**
-     * 设置所属商店ID
+     * 设置所属商店Id  null 游离状态 0平台管理员
      *
-     * @param storeId 所属商店ID
+     * @param storeId 所属商店Id  null 游离状态 0平台管理员
      */
     public void setStoreId(Long storeId) {
         this.storeId = storeId;

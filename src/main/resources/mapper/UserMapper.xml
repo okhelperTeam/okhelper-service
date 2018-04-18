@@ -15,52 +15,52 @@
             <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="user_email" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="user_sex" javaType="java.lang.String" jdbcType="CHAR"/>
-            <arg column="user_Phone" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="user_phone" javaType="java.lang.String" jdbcType="CHAR"/>
             <arg column="user_birthday" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="last_login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
             <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-            <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR"/>
-            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="last_login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
 
-    <select id="findUserIdByName" resultType="java.lang.Long" parameterType="java.lang.String">
+    <select id="findUserIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
         select user.id
         from user
         WHERE user.user_name = #{userName}
     </select>
-    <select id="findUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="findUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select *
         from user
         WHERE user.user_name = #{userName}
     </select>
 
 
-    <select id="findStoreIdByUserId" resultType="java.lang.Long" parameterType="java.lang.Long">
+    <select id="findStoreIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
         select store_id
         from user
         WHERE user.id = #{userId}
     </select>
 
 
-    <select id="checkUserName" resultType="java.lang.String" parameterType="java.lang.String">
+    <select id="checkUserName" parameterType="java.lang.String" resultType="java.lang.String">
         select user_name
         from user
         where user_name = #{userName}
     </select>
 
-    <!--<insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" >-->
+    <!--&lt;insert id="register"  parameterType="com.ok.okhelper.pojo.dto.UserDto" &gt;-->
     <!--INSERT INTO user(user_name,user_password) va-->
-    <!--</insert>-->
-    <select id="getUserListByStoreId" resultType="java.lang.Long" parameterType="java.lang.Long">
+    <!--&lt;/insert&gt;-->
+    <select id="getUserListByStoreId" parameterType="java.lang.Long" resultType="java.lang.Long">
         SELECT id
         FROM user
         where store_id = #{storeId}
     </select>
 
-    <select id="getPassWordByUserId" resultType="java.lang.String" parameterType="long">
+    <select id="getPassWordByUserId" parameterType="long" resultType="java.lang.String">
         select user_password
         from user
         where id = #{user_id}

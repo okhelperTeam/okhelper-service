@@ -11,15 +11,15 @@
             <arg column="menu_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="permission_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="permission_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
             <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-            <arg column="delete_status" javaType="java.lang.String" jdbcType="CHAR"/>
-            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         </constructor>
     </resultMap>
 
 
-    <select id="findAddPermissionCode" resultType="java.lang.String" parameterType="java.lang.Long">
+    <select id="findAddPermissionCode" parameterType="java.lang.Long" resultType="java.lang.String">
         SELECT permission.permission_code
         from permission
         WHERE permission.id in

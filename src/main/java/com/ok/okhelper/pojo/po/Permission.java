@@ -36,6 +36,11 @@ public class Permission {
     private String permissionName;
 
     /**
+     * 操作者
+     */
+    private Long operator;
+
+    /**
      * 创建日期
      */
     @Column(name = "create_time")
@@ -51,23 +56,18 @@ public class Permission {
      * 状态 0废除，1激活
      */
     @Column(name = "delete_status")
-    private String deleteStatus;
+    private Integer deleteStatus;
 
-    /**
-     * 操作者
-     */
-    private Long operator;
-
-    public Permission(Long id, String menuCode, String menuName, String permissionCode, String permissionName, Date createTime, Date updateTime, String deleteStatus, Long operator) {
+    public Permission(Long id, String menuCode, String menuName, String permissionCode, String permissionName, Long operator, Date createTime, Date updateTime, Integer deleteStatus) {
         this.id = id;
         this.menuCode = menuCode;
         this.menuName = menuName;
         this.permissionCode = permissionCode;
         this.permissionName = permissionName;
+        this.operator = operator;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
-        this.operator = operator;
     }
 
     public Permission() {
@@ -165,6 +165,24 @@ public class Permission {
     }
 
     /**
+     * 获取操作者
+     *
+     * @return operator - 操作者
+     */
+    public Long getOperator() {
+        return operator;
+    }
+
+    /**
+     * 设置操作者
+     *
+     * @param operator 操作者
+     */
+    public void setOperator(Long operator) {
+        this.operator = operator;
+    }
+
+    /**
      * 获取创建日期
      *
      * @return create_time - 创建日期
@@ -205,7 +223,7 @@ public class Permission {
      *
      * @return delete_status - 状态 0废除，1激活
      */
-    public String getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
@@ -214,25 +232,7 @@ public class Permission {
      *
      * @param deleteStatus 状态 0废除，1激活
      */
-    public void setDeleteStatus(String deleteStatus) {
-        this.deleteStatus = deleteStatus == null ? null : deleteStatus.trim();
-    }
-
-    /**
-     * 获取操作者
-     *
-     * @return operator - 操作者
-     */
-    public Long getOperator() {
-        return operator;
-    }
-
-    /**
-     * 设置操作者
-     *
-     * @param operator 操作者
-     */
-    public void setOperator(Long operator) {
-        this.operator = operator;
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 }

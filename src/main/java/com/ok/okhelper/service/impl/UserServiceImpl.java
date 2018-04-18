@@ -30,8 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +46,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
     @Autowired
     private RoleMapper roleMapper;
+
     @Autowired
     private StoreMapper storeMapper;
 
@@ -249,12 +249,12 @@ public class UserServiceImpl implements UserService {
         Long storeId = JWTUtil.getStoreId();
 
         if (userId == null || storeId == null) {
-            throw new UnauthenticatedException("用户Id或店铺Id为空");
+            throw new IllegalException("用户Id或店铺Id为空");
         }
         if (StringUtils.isBlank(userDto.getUserName())
                 || StringUtils.isBlank(userDto.getUserPassword())
                 ) {
-            new IllegalException("添加员工信息不完善（用户名，密码不为空）");
+            throw new IllegalException("添加员工信息不完善（用户名，密码不为空）");
         }
 
         //密码加密

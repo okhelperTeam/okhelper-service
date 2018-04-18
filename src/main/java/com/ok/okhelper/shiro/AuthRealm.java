@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /*
- *Author:zhangxin_an
+ *Author:zhangxin_an，zc
  *Description:
  *Data:Created in 21:25 2018/4/9
  */
@@ -50,9 +50,9 @@ public class AuthRealm extends AuthorizingRealm {
             throw new AuthenticationException("User didn't existed!");
         }
 
-//        if(ConstEnum.getCode().equals(userBean.getDeleteStatus())){
-//
-//        }
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(userBean.getDeleteStatus())) {
+            throw new AuthenticationException("当前账户不可用");
+        }
 
         if (!JWTUtil.verify(token, username, userBean.getUserPassword())) {
             throw new AuthenticationException("token 失效");
@@ -77,25 +77,6 @@ public class AuthRealm extends AuthorizingRealm {
             info.addStringPermissions(addPermissionCode);
         }
 
-
-//        //TODO优化
-//        UserVo userBo = new UserVo();
-//        Long userId = userMapper.findUserIdByName(username);
-//        List<String> permissions=new ArrayList<>();
-//        permissions = permissionMapper.findAddPermissionCode(userId);
-//        List<RoleBo> roles = userBo.getRoles();
-//        Set<String> roleSet = new HashSet<>();
-//        for(RoleBo r:roles) {
-//
-//            roleSet.add(r.getName());
-//
-//            for(RoleBo role : roles) {
-//                for(PermissionBo p : role.getPermissionList())
-//                    permissions.add(p.getUrl()+":"+p.getAction());
-//
-//            }
-//        }
-//        info.addRoles(roleSet);
         return info;
     }
 

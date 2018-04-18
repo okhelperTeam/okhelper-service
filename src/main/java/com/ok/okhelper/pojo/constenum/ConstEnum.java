@@ -17,26 +17,26 @@ public enum ConstEnum {
 	
 	// 成员变量
 	private String description;
-	private int code;
-	
-	 ConstEnum(String description, int code) {
+	private Integer code;
+
+	ConstEnum(String description, Integer code) {
 		this.description = description;
 		this.code = code;
 	}
-	
-	public void setCode(int code) {
+
+	public void setCode(Integer code) {
 		this.code = code;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
-	public int getCode() {
+
+	public Integer getCode() {
 		return code;
 	}
 }
