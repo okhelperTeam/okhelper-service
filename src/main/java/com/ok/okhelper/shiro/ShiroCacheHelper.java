@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author: zc
- * @description:Shiro缓存帮助类
+ * @description: Shiro缓存帮助类
  * @date: 2018/4/16
  */
 
@@ -21,9 +21,11 @@ public class ShiroCacheHelper {
 
 
     /**
-     * 根据userId清空缓存重的权限
-     *
-     * @param userId
+     * @Author zc
+     * @Date 2018/4/18 上午12:54
+     * @Param [userId]
+     * @Return void
+     * @Description: 根据userId清空用户权限缓存
      */
     public void clearAuthorizationCache(Long userId) {
         SimplePrincipalCollection simplePrincipalCollection = new SimplePrincipalCollection(userId, AuthRealm.class.getName());
@@ -33,7 +35,11 @@ public class ShiroCacheHelper {
 
 
     /**
-     * 清除当前用户Token认证缓存
+     * @Author zc
+     * @Date 2018/4/18 上午8:30
+     * @Param []
+     * @Return void
+     * @Description: 清除当前用户Token认证缓存
      */
     public void clearCurrentAuthenticationCache() {
         Cache<Object, Object> cache = redisShiroCacheManager.getCache(AuthRealm.class + ".authenticationCache");

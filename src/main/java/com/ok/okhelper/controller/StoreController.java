@@ -33,22 +33,20 @@ public class StoreController {
     @Autowired
     private UserMapper userMapper;
 
-    @PostMapping
+//    @PostMapping
 //    @RequiresPermissions("store:post")
-    public ServerResponse<OpenStore> postStore(@Valid StoreDto storeDto) {
-
-        String password = userMapper.getPassWordByUserId(storeDto.getLeaderId());
-
-        Store store = storeService.postStore(storeDto);
-
-        String token = JWTUtil.sign(JWTUtil.getUserId(), JWTUtil.getUsername(), password, store.getId());
-
-        OpenStore openStore = new OpenStore();
-        BeanUtils.copyProperties(store, openStore);
-        openStore.setToken(token);
-
-
-        return ServerResponse.createBySuccess("店铺创建成功", openStore);
-
-    }
+//    public ServerResponse<OpenStore> postStore(@Valid StoreDto storeDto) {
+//
+//        String password = userMapper.getPassWordByUserId(storeDto.getLeaderId());
+//
+//        Store store = storeService.postStore(storeDto);
+//
+//        String token = JWTUtil.sign(JWTUtil.getUserId(), JWTUtil.getUsername(), password, store.getId());
+//
+//        OpenStore openStore = new OpenStore();
+//        BeanUtils.copyProperties(store, openStore);
+//        openStore.setToken(token);
+//
+//        return ServerResponse.createBySuccess("店铺创建成功", openStore);
+//    }
 }

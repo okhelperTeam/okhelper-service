@@ -15,10 +15,7 @@ public class Store {
      */
     @Column(name = "store_name")
     private String storeName;
-    
-    /**
-     * 店铺电话
-     */
+
     @Column(name = "store_phone")
     private String storePhone;
 
@@ -31,8 +28,8 @@ public class Store {
     /**
      * 店铺图像
      */
-    @Column(name = "store_phtoo")
-    private String storePhtoo;
+    @Column(name = "store_photo")
+    private String storePhoto;
 
     /**
      * 描述
@@ -68,12 +65,12 @@ public class Store {
     @Column(name = "leader_id")
     private Long leaderId;
 
-    public Store(Long id, String storeName,String storePhone ,String storeAddress, String storePhtoo, String description, Date createTime, Date updateTime, String deleteStatus, Long operator, Long leaderId) {
+    public Store(Long id, String storeName, String storePhone, String storeAddress, String storePhoto, String description, Date createTime, Date updateTime, String deleteStatus, Long operator, Long leaderId) {
         this.id = id;
         this.storeName = storeName;
-        this.storeName = storePhone;
+        this.storePhone = storePhone;
         this.storeAddress = storeAddress;
-        this.storePhtoo = storePhtoo;
+        this.storePhoto = storePhoto;
         this.description = description;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -121,15 +118,21 @@ public class Store {
     public void setStoreName(String storeName) {
         this.storeName = storeName == null ? null : storeName.trim();
     }
-    
+
+    /**
+     * @return store_phone
+     */
     public String getStorePhone() {
         return storePhone;
     }
-    
+
+    /**
+     * @param storePhone
+     */
     public void setStorePhone(String storePhone) {
-        this.storePhone = storePhone;
+        this.storePhone = storePhone == null ? null : storePhone.trim();
     }
-    
+
     /**
      * 获取店铺地址
      *
@@ -151,19 +154,19 @@ public class Store {
     /**
      * 获取店铺图像
      *
-     * @return store_phtoo - 店铺图像
+     * @return store_photo - 店铺图像
      */
-    public String getStorePhtoo() {
-        return storePhtoo;
+    public String getStorePhoto() {
+        return storePhoto;
     }
 
     /**
      * 设置店铺图像
      *
-     * @param storePhtoo 店铺图像
+     * @param storePhoto 店铺图像
      */
-    public void setStorePhtoo(String storePhtoo) {
-        this.storePhtoo = storePhtoo == null ? null : storePhtoo.trim();
+    public void setStorePhoto(String storePhoto) {
+        this.storePhoto = storePhoto == null ? null : storePhoto.trim();
     }
 
     /**

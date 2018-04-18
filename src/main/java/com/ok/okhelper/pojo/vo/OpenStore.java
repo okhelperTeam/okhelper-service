@@ -34,8 +34,8 @@ public class OpenStore {
     /**
      * 店铺图像
      */
-    @Column(name = "store_phtoo")
-    private String storePhtoo;
+    @Column(name = "store_photo")
+    private String storePhoto;
 
     /**
      * 描述
