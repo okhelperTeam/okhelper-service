@@ -4,6 +4,7 @@ import com.ok.okhelper.until.PropertiesUtil;
 import com.ok.okhelper.until.RedisOperator;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -45,6 +46,10 @@ public class RedisCache<K, V> implements Cache<K, V> {
      */
     @Override
     public V get(K key) throws CacheException {
+        if (key instanceof SimplePrincipalCollection) {
+            SimplePrincipalCollection simplePrincipalCollection = new SimplePrincipalCollection(JWTUtil.getUserId(((SimplePrincipalCollection) key).getPrimaryPrincipal().toString()), AuthRealm.class.getName());
+            key = (K) simplePrincipalCollection;
+        }
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -53,6 +58,10 @@ public class RedisCache<K, V> implements Cache<K, V> {
      */
     @Override
     public V put(K key, V value) throws CacheException {
+        if (key instanceof SimplePrincipalCollection) {
+            SimplePrincipalCollection simplePrincipalCollection = new SimplePrincipalCollection(JWTUtil.getUserId(((SimplePrincipalCollection) key).getPrimaryPrincipal().toString()), AuthRealm.class.getName());
+            key = (K) simplePrincipalCollection;
+        }
         redisTemplate.opsForValue().set(key, value, this.expireTime, TimeUnit.SECONDS);
         return value;
     }

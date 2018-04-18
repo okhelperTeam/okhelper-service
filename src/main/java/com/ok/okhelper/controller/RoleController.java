@@ -5,12 +5,16 @@ import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.dto.RoleDto;
 import com.ok.okhelper.service.RoleService;
 import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.shiro.ShiroCacheHelper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -25,6 +29,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private ShiroCacheHelper shiroCacheHelper;
+
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -43,11 +50,18 @@ public class RoleController {
         return ServerResponse.createBySuccessCodeMessages(HttpStatus.CREATED.value(), "角色创建成功");
     }
 
-    @RequiresPermissions("user:kkk")
     @RequestMapping("/o")
     public String in() {
-        return "ok";
+        shiroCacheHelper.clearAuthorizationCache(JWTUtil.getUserId());
+        shiroCacheHelper.clearCurrentAuthenticationCache();
+        return "oko";
     }
 
+    @RequiresPermissions("warehouse:delete")
+    @RequestMapping("/k")
+    public String ou() {
+
+        return "okk";
+    }
 
 }

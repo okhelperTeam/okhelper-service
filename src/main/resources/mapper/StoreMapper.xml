@@ -8,9 +8,9 @@
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="store_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="store_Phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="store_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="store_address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="store_phtoo" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="store_photo" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />

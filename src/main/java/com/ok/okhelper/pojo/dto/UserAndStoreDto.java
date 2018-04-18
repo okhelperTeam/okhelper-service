@@ -81,8 +81,13 @@ public class UserAndStoreDto {
 	/**
 	 * 店铺图像
 	 */
-	@Column(name = "store_phtoo")
-	private String storePhtoo;
+	@Column(name = "store_photo")
+	private String storePhoto;
+
+	/**
+	 * 店铺联系电话
+	 */
+	@Column(name = "store_phone")
 	private String storePhone;
 	
 	/**

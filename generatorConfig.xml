@@ -34,7 +34,7 @@
         </javaModelGenerator>
 
         <!-- 对于生成的mapper所在目录 -->
-        <!--<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
 
 
         <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
@@ -42,12 +42,12 @@
                 type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
                 type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
         -->
-        <!--<javaClientGenerator type="XMLMAPPER" targetPackage="com.ok.okhelper.dao" targetProject="src/main/java"/>-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ok.okhelper.dao" targetProject="src/main/java"/>
 
 
-        <table tableName="permission"></table>
-        <table tableName="user"></table>
-        <table tableName="role"></table>
+        <!--<table tableName="permission"></table>-->
+        <!--<table tableName="user"></table>-->
+        <!--<table tableName="role"></table>-->
         <table tableName="store"></table>
 
     </context>

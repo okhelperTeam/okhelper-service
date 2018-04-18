@@ -119,7 +119,7 @@ public class JWTUtil {
     }
 
 
-    public static String getUserame() {
+    public static String getUsername() {
         try {
             DecodedJWT jwt = JWT.decode(getToken());
             return jwt.getClaim("username").asString();

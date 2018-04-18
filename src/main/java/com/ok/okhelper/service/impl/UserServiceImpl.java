@@ -18,6 +18,7 @@ import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.PasswordHelp;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,14 +62,14 @@ public class UserServiceImpl implements UserService {
     public ServerResponse loginUser(String userName, String password, String ip) {
 
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
-            throw new UnauthenticatedException("用户名或密码为空");
+            throw new AuthenticationException("用户名或密码为空");
         }
 
         User user = findUserByUserNme(userName);
 
 
         if (user == null) {
-            throw new UnauthenticatedException("用户名不存在");
+            throw new AuthenticationException("用户名不存在");
         }
         
         if(user.getDeleteStatus() .equals("0")){
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
         String dbPassword = user.getUserPassword();
         if (!dbPassword.equals(inPassword)) {
-            throw new UnauthenticatedException("密码不正确");
+            throw new AuthenticationException("密码不正确");
         }
 
         Long userId = user.getId();
