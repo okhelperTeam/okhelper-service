@@ -148,26 +148,4 @@ public class JWTUtil {
         }
     }
 
-
-//	public static void main(String[] args) {
-//		List<String> code = new ArrayList<>();
-//		for(int i = 0;i<1000;i++){
-//			code.add("user:afa"+i);
-//		}
-//		String []codeStrings = (String[]) code.toArray(new String[code.size()]);
-//
-//		for(String s : codeStrings){
-//			System.out.print(s+"\t");
-//		}
-//		String token = sign((long) 3,"zxa","token",codeStrings);
-//
-//		String []c = getPermissions(token);
-//		System.out.println("\n解析");
-//
-//		for(String s : c){
-//			System.out.print(s+"\t");
-//		}
-//
-//	}
-
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author: zc
- * @description:
+ * @description:商店控制器
  * @date: 2018/4/15
  */
 

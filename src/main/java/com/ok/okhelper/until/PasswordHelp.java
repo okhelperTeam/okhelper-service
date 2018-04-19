@@ -17,9 +17,4 @@ public class PasswordHelp {
         
     }
 
-
-    public static void main(String[] args) {
-        String s = passwordSalt("zc","12345").toString();
-        System.out.println(passwordSalt("ztt",12345));
-    }
 }
