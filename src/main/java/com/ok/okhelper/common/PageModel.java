@@ -14,6 +14,7 @@ import java.util.List;
  */
 
 @Data
+@SuppressWarnings("unchecked")
 public class PageModel<T> {
 /*
 分页模型

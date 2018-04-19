@@ -5,11 +5,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ok.okhelper.until.PropertiesUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.Objects;
 
 /*
  *Author:zhangxin_an
@@ -18,10 +20,10 @@ import java.util.Date;
  */
 public class JWTUtil {
 
-    // 过期时间5分钟
-    private static final long EXPIRE_TIME = 30 * 60 * 1000;
-    public final static String ISSUER = "okhelper";
-    public final static String SECRET = "token";
+    private static final long EXPIRE_TIME_PREFIX = Long.parseLong(Objects.requireNonNull(PropertiesUtil.getProperty("token.jwt.expireTime")));
+    private static final long EXPIRE_TIME = EXPIRE_TIME_PREFIX * 1000;
+    private final static String ISSUER = "OkHelper";
+//    public final static String SECRET = "token";
 
     /**
      * 校验token是否正确

@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
-            <version>RELEASE</version>
+            <version>5.4.2</version>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j</artifactId>
@@ -150,9 +150,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--<configuration>-->
+                <configuration>
                     <!--<fork>true</fork>-->
-                <!--</configuration>-->
+                    <executable>true</executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>

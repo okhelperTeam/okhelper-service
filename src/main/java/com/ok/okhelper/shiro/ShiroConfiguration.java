@@ -1,12 +1,5 @@
 package com.ok.okhelper.shiro;
 
-/*
- *Author:zhangxin_an
- *Description:
- *Data:Created in 21:52 2018/4/9
- */
-
-import com.ok.okhelper.service.UserService;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
@@ -14,7 +7,6 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
- *Author:zhangxin_an
+ *Author:zhangxin_an,zc
  *Description:
  *Data:Created in
  */
@@ -34,16 +26,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfiguration {
 
-    //    @Autowired
-    UserService userService;
-
-
-//    @Bean(name="jwtFilter")
-//    @Order(2)
-//    public JwtAuthenticationTokenFilter myAuthFilter() {
-//        return new JwtAuthenticationTokenFilter();
-//    }
-
+    //shiro过滤器链
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager manager) {
 
@@ -65,61 +48,22 @@ public class ShiroConfiguration {
          * http://shiro.apache.org/web.html#urls-
          */
         final Map<String, String> filterRuleMap = new HashMap<>();
-//        // 所有请求通过我们自己的JWT Filter
-//         访问401和404页面不通过我们的Filter
+
+        // 访问401和404页面不通过我们的Filter
         filterRuleMap.put("/401", "anon");
         filterRuleMap.put("/404", "anon");
         filterRuleMap.put("/druid/**", "anon");
         filterRuleMap.put("/user/login", "anon");
         filterRuleMap.put("/user/register", "anon");
-
         filterRuleMap.put("/user/checkUserName", "anon");
+
+        // 所有请求通过我们自己的JWT Filter
         filterRuleMap.put("/**", "jwt");
 
-//      filterRuleMap.put("/*", "authc");
+//        filterRuleMap.put("/*", "authc");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
 
-
-//        ShiroFilterFactoryBean bean=new ShiroFilterFactoryBean();
-//        bean.setSecurityManager(manager);
-//// 添加自己的过滤器并且取名为jwt
-//        Map<String, Filter> filterMap = new HashMap<>();
-//        filterMap.put("jwt", new JWTFilter());
-//        bean.setFilters(filterMap);
-//
-//        bean.setUnauthorizedUrl("/401");
-//
-//        /*
-//         * 自定义url规则
-//         * http://shiro.apache.org/web.html#urls-
-//         */
-//        Map<String, String> filterRuleMap = new HashMap<>();
-//        // 所有请求通过我们自己的JWT Filter
-//        filterRuleMap.put("/*", "jwt");
-//        // 访问401和404页面不通过我们的Filter
-//        filterRuleMap.put("/401", "anon");
-//        bean.setFilterChainDefinitionMap(filterRuleMap);
-//
-//        //配置登录的url和登录成功的url
-//        bean.setLoginUrl("/login");
-//        bean.setSuccessUrl("/home");
-//        //配置访问权限
-//        LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
-////        filterChainDefinitionMap.put("", "anon"); //表示可以匿名访问
-////        filterChainDefinitionMap.put("/loginUser", "anon");
-////        filterChainDefinitionMap.put("/logout*","anon");
-////        filterChainDefinitionMap.put("/user/loginUser","anon");
-////        filterChainDefinitionMap.put("/jsp/index.jsp*","authc");
-////        filterChainDefinitionMap.put("/*", "authc");//表示需要认证才可以访问
-////        filterChainDefinitionMap.put("/user/*", "authc");//表示需要认证才可以访问
-//	    filterChainDefinitionMap.put("/user","rest[user]");
-////	    filterChainDefinitionMap.put("/user/*","roles[admin]");
-////        filterChainDefinitionMap.put("/*", "authc");//表示需要认证才可以访问
-////        filterChainDefinitionMap.put("/*.*", "authc");
-//        filterChainDefinitionMap.put("/*", "anon"); //表示可以匿名访问
-//        bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-//        return bean;
     }
 
     //配置核心安全事务管理器
@@ -137,12 +81,10 @@ public class ShiroConfiguration {
         subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
         manager.setSubjectDAO(subjectDAO);
         manager.setRealm(authRealm);
-        // 自定义缓存实现 使用redis
-//        manager.setCacheManager(redisShiroCacheManager());
         return manager;
     }
 
-
+    //ShiroCacheManager(使用Redis)
     @Bean(name = "redisShiroCacheManager")
     public RedisShiroCacheManager redisShiroCacheManager() {
         return new RedisShiroCacheManager();
@@ -181,7 +123,6 @@ public class ShiroConfiguration {
         return advisor;
     }
 
-
     /**
      * 下面的代码是添加注解支持
      */
@@ -189,8 +130,7 @@ public class ShiroConfiguration {
     @DependsOn("lifecycleBeanPostProcessor")
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-        // 强制使用cglib，防止重复代理和可能引起代理出错的问题
-        // https://zhuanlan.zhihu.com/p/29161098
+        // 强制使用cglib，防止重复代理和可能引起代理出错的问题    https://zhuanlan.zhihu.com/p/29161098
         defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
         return defaultAdvisorAutoProxyCreator;
     }
