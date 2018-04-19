@@ -13,7 +13,7 @@
             <!--展示格式 layout-->
             <layout class="ch.qos.logback.classic.PatternLayout">
                 <pattern>
-                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{200} - %msg%n</pattern>
+                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 </pattern>
             </layout>
         </appender>
