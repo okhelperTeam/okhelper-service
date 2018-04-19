@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ok.okhelper.dao.StorageOrderDetailMapper">
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.StorageOrderDetail">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="supplier_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="storage_in_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="warehouse_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="goods_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="number" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="goods_birthday" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="goods_shelf_life" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+</mapper>

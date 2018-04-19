@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ok.okhelper.dao.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.Goods">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="goods_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="goods_title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="goods_subtitle" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="category_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="goods_spec_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="goods_unit" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="goods_retail_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="goods_photo" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="goods_sub_photo" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="goods_bar_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
+</mapper>
