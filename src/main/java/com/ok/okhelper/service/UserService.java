@@ -5,9 +5,12 @@ import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
+import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /*
  *Author:zhangxin_an
@@ -42,4 +45,12 @@ public interface UserService {
     ServerResponse addEmployee(UserDto userDto);
 
     ServerResponse changeRole(UserAndRoleDto userAndRoleDto);
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/19 17:38
+    * @Params []  
+    * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>  
+    * @Description:获取员工
+    */  
+    List<EmployeeVo> getEmployeeList();
 }

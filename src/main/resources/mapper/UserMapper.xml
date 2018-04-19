@@ -26,6 +26,20 @@
         </constructor>
     </resultMap>
 
+    <resultMap id="UserBoMap" type="com.ok.okhelper.pojo.bo.UserBo">
+
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_nick" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_avatar" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="user_sex" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="user_phone" javaType="java.lang.String" jdbcType="CHAR"/>
+            <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+
+
     <select id="findUserIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
         select user.id
         from user
@@ -74,6 +88,12 @@
     <insert id="insertRoleToUser">
         insert into user_role (user_id, role_id, operator) values (#{user_id}, #{role_id}, #{operator})
     </insert>
+    
+    
+    
+    <select id="getEmployeeList" parameterType="long" resultMap="UserBoMap" >
+      SELECT id,user_name,user_nick,user_avatar,user_sex,user_phone,delete_status from user WHERE store_id = #{storeId}
+    </select>
 
 
 </mapper>

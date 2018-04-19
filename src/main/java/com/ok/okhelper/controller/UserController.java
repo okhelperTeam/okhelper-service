@@ -1,12 +1,15 @@
 package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.until.IpUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /*
  *Author:zhangxin_an
@@ -23,7 +27,7 @@ import javax.validation.Valid;
  */
 @RestController
 public class UserController {
-    org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserService userService;
@@ -65,17 +69,26 @@ public class UserController {
      * @Description:添加员工
      */
     @RequiresPermissions("addEmployee")
-    @PostMapping("/user/addEmployee")
+    @PostMapping("/user/employee")
     public ServerResponse addEmployee(UserDto userDto) {
 
         return userService.addEmployee(userDto);
     }
+    
+    @GetMapping("/employee")
+    public ServerResponse getEmployeeList(){
+        List<EmployeeVo> employeeVoList = userService.getEmployeeList();
+        return ServerResponse.createBySuccess(employeeVoList);
+    }
+    
 
     @GetMapping("user/checkUserName")
     public ServerResponse checkUserName(String userName) {
         return userService.checkUserName(userName);
     }
 
+    
+    
     @RequiresPermissions("user/userList:get")
     @GetMapping("user/userList")
     public ServerResponse getUserListByStoreId(HttpServletRequest request) {
