@@ -2,8 +2,8 @@
 <configuration>
 
     <!-- 属性文件 -->
-    <property name="logback.logdir" value="./log"/>
-    <property name="logback.appname" value="okHelper"/>
+    <springProperty scope="context" name="logdir" source="logback.logdir"/>
+    <springProperty scope="context" name="appname" source="logback.appname"/>
 
     <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
     <springProfile name="dev,test">
@@ -52,11 +52,11 @@
                 如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
                 的日志改名为今天的日期。即，<File> 的日志都是当天的。
             -->
-            <File>${logback.logdir}/info.${logback.appname}.log</File>
+            <File>${logdir}/info.${appname}.log</File>
             <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
-                <FileNamePattern>${logback.logdir}/info/info.${logback.appname}.%d{yyyy-MM-dd}.log</FileNamePattern>
+                <FileNamePattern>${logdir}/info/info.${appname}.%d{yyyy-MM-dd}.log</FileNamePattern>
                 <!--只保留最近30天的日志-->
                 <maxHistory>30</maxHistory>
                 <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
@@ -79,11 +79,11 @@
                 如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
                 的日志改名为今天的日期。即，<File> 的日志都是当天的。
             -->
-            <File>${logback.logdir}/error.${logback.appname}.log</File>
+            <File>${logdir}/error.${appname}.log</File>
             <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
-                <FileNamePattern>${logback.logdir}/error/error.${logback.appname}.%d{yyyy-MM-dd}.log</FileNamePattern>
+                <FileNamePattern>${logdir}/error/error.${appname}.%d{yyyy-MM-dd}.log</FileNamePattern>
                 <!--只保留最近30天的日志-->
                 <maxHistory>30</maxHistory>
                 <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
