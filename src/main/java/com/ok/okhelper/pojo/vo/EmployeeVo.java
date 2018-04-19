@@ -5,6 +5,7 @@ import com.ok.okhelper.pojo.po.Role;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,11 @@ import java.util.List;
 */
 @Data
 public class EmployeeVo {
+	
+	/**
+	 * 主键
+	 */
+	private Long id;
 	
 	/**
 	 * 登录账号
