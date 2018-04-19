@@ -16,13 +16,15 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+
 /**
  * Created by zc on 2018/4/10.
  */
 
 @RestController
 @ControllerAdvice
-public class GlobalExceptionHandler implements ErrorController{
+public class GlobalExceptionHandler implements ErrorController {
 
     private static final String ERROR_PATH = "/error";
 
@@ -120,5 +122,15 @@ public class GlobalExceptionHandler implements ErrorController{
     @Override
     public String getErrorPath() {
         return ERROR_PATH;
+    }
+
+    @RequestMapping("/401")
+    public void handle401(ServletRequest request) {
+        Object error = request.getAttribute("error");
+        if (error != null) {
+            throw (RuntimeException) error;
+        } else {
+            throw new AuthenticationException("未登录/验证失败");
+        }
     }
 }

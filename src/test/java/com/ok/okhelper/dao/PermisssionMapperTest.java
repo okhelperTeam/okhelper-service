@@ -48,21 +48,23 @@ public class PermisssionMapperTest {
 
     @Test
     public void insertTest() {
-        Store store = new Store();
-        store.setStoreName("啦啦啦8");
-        store.setStorePhone("12334567");
-        store.setLeaderId((long) 2);
-        storeMapper.insertSelective(store);
-
-//		Store store1=new Store();
-//		store1.setStoreAddress("青岛大学");
-//		List<Store> stores = storeMapper.select(store1);
+//        Store store = new Store();
+//        store.setStoreName("啦啦啦8");
+//        store.setStorePhone("12334567");
+//        store.setLeaderId((long) 2);
+//        storeMapper.insertSelective(store);
 //
-//		stores.forEach(store -> {
-//			System.out.println(store.getStoreName());
-//		});
+//		System.out.println(store.getId());
 
-        System.out.println(store.getId());
+		Store store1=new Store();
+		store1.setStoreAddress("青岛大学");
+		List<Store> stores = storeMapper.select(store1);
+
+		stores.forEach(store -> {
+			System.out.println(store.getStoreName());
+		});
+
+
     }
 	
 }
