@@ -71,7 +71,7 @@ public class UserVo {
 	 * 状态 0废除，1激活
 	 */
 	@Column(name = "delete_status")
-	private String deleteStatus;
+	private Integer deleteStatus;
 	
 	/**
 	 * 操作者

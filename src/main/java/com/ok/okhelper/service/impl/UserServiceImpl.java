@@ -5,6 +5,8 @@ import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.StoreMapper;
 import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.bo.RoleBo;
+import com.ok.okhelper.pojo.bo.UserBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
@@ -12,6 +14,7 @@ import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.po.User;
+import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.PermissionService;
 import com.ok.okhelper.service.UserService;
@@ -319,5 +322,60 @@ public class UserServiceImpl implements UserService {
 
         return ServerResponse.createBySuccessMessage("权限变更成功");
     }
-
+    /*
+   * @Author zhangxin_an
+   * @Date 2018/4/19 17:38
+   * @Params []
+   * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>
+   * @Description:获取员工
+   */
+    @Override
+    public List<EmployeeVo> getEmployeeList() {
+        
+        logger.info("Enter getEmployeeList()");
+        //获取当前登陆者的Id和店铺Id
+        Long storeId = JWTUtil.getStoreId();
+        Long bossId = JWTUtil.getUserId();
+        
+        if( null == storeId || null == bossId){
+            throw  new UnauthenticatedException("登陆异常");
+        }
+        
+        List<UserBo> userBos = userMapper.getEmployeeList(storeId);
+        
+        if(CollectionUtils.isEmpty(userBos)){
+            return null;
+        }
+        
+        List<EmployeeVo> employeeVoList = new ArrayList<>();
+        
+        
+        userBos.forEach(userBo->{
+            //前端数据
+            EmployeeVo employeeVo = new EmployeeVo();
+            
+            List<RoleBo> roleBos = new ArrayList<>(1);
+            
+            List<Role> roles = roleMapper.findRoleByUserId(userBo.getId());
+            if(CollectionUtils.isEmpty(roles)){
+                return;
+            }
+            
+            roles.forEach(r->{
+                RoleBo roleBo = new RoleBo();
+                BeanUtils.copyProperties(r,roleBo);
+                roleBos.add(roleBo);
+            });
+            employeeVo.setRoleList(roleBos);
+            
+            BeanUtils.copyProperties(userBo,employeeVo);
+            employeeVoList.add(employeeVo);
+        });
+    
+        logger.info("Exit getEmployeeList()"+employeeVoList);
+        
+        return employeeVoList;
+    
+    }
+    
 }
