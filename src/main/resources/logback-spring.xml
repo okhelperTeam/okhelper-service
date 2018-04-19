@@ -2,7 +2,7 @@
 <configuration>
 
     <!-- 属性文件 -->
-    <property name="logback.logdir" value="/developer/log"/>
+    <property name="logback.logdir" value="./log"/>
     <property name="logback.appname" value="okHelper"/>
 
     <!-- 测试环境+开发环境. 多个使用逗号隔开. -->

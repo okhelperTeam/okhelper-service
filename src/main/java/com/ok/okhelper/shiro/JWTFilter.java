@@ -64,6 +64,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (!isLoginAttempt(request, response)) {
             response401(request, response);
+            return false;
         } else {
             try {
                 executeLogin(request, response);
