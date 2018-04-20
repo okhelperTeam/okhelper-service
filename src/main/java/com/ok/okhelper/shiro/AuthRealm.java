@@ -4,7 +4,9 @@ package com.ok.okhelper.shiro;
 import com.ok.okhelper.dao.PermissionMapper;
 import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.User;
+import com.ok.okhelper.service.PermissionService;
 import com.ok.okhelper.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,6 +18,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
@@ -31,8 +34,14 @@ public class AuthRealm extends AuthorizingRealm {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * FIXME service/realm 调用 service 缓存会失效 加Lazy 解决  其他只要有 service 调用这个service 无论走不走那里缓存都失效
+     * FIXME  shiro和cache在引用service实例顺序问题，shiro引入应在cache后，
+     * FIXME shiro配置文件中引用realm属性bean中引用的service采用延迟加载策略。
+     */
     @Autowired
-    private PermissionMapper permissionMapper;
+    @Lazy
+    private PermissionService permissionService;
 
     //认证.登录
     @Override
@@ -70,11 +79,10 @@ public class AuthRealm extends AuthorizingRealm {
 
         Long userId = JWTUtil.getUserId(principal.toString());
 
-        List<String> addPermissionCode = permissionMapper.findAddPermissionCode(userId);
+        List<Permission> addPermissions = permissionService.findAddPermission(userId);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-
-        if (CollectionUtils.isNotEmpty(addPermissionCode)) {
-            info.addStringPermissions(addPermissionCode);
+        if (CollectionUtils.isNotEmpty(addPermissions)) {
+            addPermissions.forEach(permission -> info.addStringPermission(permission.getPermissionCode()));
         }
 
         return info;

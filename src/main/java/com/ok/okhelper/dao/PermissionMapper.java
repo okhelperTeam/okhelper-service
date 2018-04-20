@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface PermissionMapper extends MyMapper<Permission> {
 
-	List<String> findAddPermissionCode(Long userId);
+    List<Permission> findAddPermission(Long userId);
 }

@@ -96,8 +96,10 @@ public class ShiroConfiguration {
         AuthRealm authRealm = new AuthRealm();
         authRealm.setCredentialsMatcher(matcher);
         authRealm.setCachingEnabled(true);
+        //只缓存 登陆的token
         authRealm.setAuthenticationCachingEnabled(true);
-        authRealm.setAuthorizationCachingEnabled(true);
+        //不缓存 权限信息 换成在service 层控制缓存
+        authRealm.setAuthorizationCachingEnabled(false);
         // 自定义缓存实现 使用redis
         authRealm.setCacheManager(redisShiroCacheManager());
         authRealm.setAuthenticationCacheName("authenticationCache");

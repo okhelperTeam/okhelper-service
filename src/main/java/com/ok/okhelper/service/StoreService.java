@@ -1,6 +1,6 @@
 package com.ok.okhelper.service;
 
-import com.ok.okhelper.pojo.dto.StoreDto;
+import com.ok.okhelper.pojo.dto.UpdateStoreDto;
 import com.ok.okhelper.pojo.po.Store;
 
 /**
@@ -9,5 +9,7 @@ import com.ok.okhelper.pojo.po.Store;
  * @date: 2018/4/15
  */
 public interface StoreService {
+    Store getStoreInfoById(Long storeId);
 
+    Store updateStore(Long store_id, UpdateStoreDto updateStoreDto);
 }

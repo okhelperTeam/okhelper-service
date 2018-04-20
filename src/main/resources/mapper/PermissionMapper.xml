@@ -19,8 +19,8 @@
     </resultMap>
 
 
-    <select id="findAddPermissionCode" parameterType="java.lang.Long" resultType="java.lang.String">
-        SELECT permission.permission_code
+    <select id="findAddPermission" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT *
         from permission
         WHERE permission.id in
               (SELECT permission_id

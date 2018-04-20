@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,7 @@ public class UserServiceImpl implements UserService {
     private StoreMapper storeMapper;
 
     @Autowired
+    @Lazy
     private PermissionService permissionService;
 
 
@@ -115,12 +117,11 @@ public class UserServiceImpl implements UserService {
         }
 
         //获取用户权限
-        List<String> permissionList = permissionService.findAddPermissionCode(userId);
-
-        if (!CollectionUtils.isEmpty(permissionList)) {
-            userVo.setPermissionCodes(permissionList);
-        }
-
+//        List<Permission> permissionList = permissionnService.findAddPermission(userId);
+//
+//        if (!CollectionUtils.isEmpty(permissionList)) {
+//            userVo.setPermissionList(permissionList);
+//        }
 
         String token = JWTUtil.sign(userId, user.getUserName(), user.getUserPassword(), user.getStoreId());
 
@@ -319,6 +320,9 @@ public class UserServiceImpl implements UserService {
                 userMapper.insertRoleToUser(employeeId, roleId, JWTUtil.getUserId());
             });
         }
+
+        //更新用户权限缓存
+        permissionService.updatePermissionCacheByUserId(employeeId);
 
         return ServerResponse.createBySuccessMessage("权限变更成功");
     }

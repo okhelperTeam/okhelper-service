@@ -1,8 +1,14 @@
 package com.ok.okhelper.controller;
 
+import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.pojo.dto.UpdateStoreDto;
+import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.service.StoreService;
+import com.ok.okhelper.shiro.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,13 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/store")
 public class StoreController {
 
     @Autowired
     private StoreService storeService;
 
-    @Autowired
-    private UserMapper userMapper;
+    /**
+     * @Author zc
+     * @Date 2018/4/20 下午6:58
+     * @Param []
+     * @Return com.ok.okhelper.common.ServerResponse<com.ok.okhelper.pojo.po.Store>
+     * @Description: 获取商店信息
+     */
+    @GetMapping("/store")
+    public ServerResponse<Store> getStoreInfo() {
+        Store storeInfo = storeService.getStoreInfoById(JWTUtil.getStoreId());
+        return ServerResponse.createBySuccess(storeInfo);
+    }
 
+
+    /**
+     * @Author zc
+     * @Date 2018/4/20 下午6:58
+     * @Param []
+     * @Return com.ok.okhelper.common.ServerResponse<com.ok.okhelper.pojo.po.Store>
+     * @Description: 获取商店信息
+     */
+    @PutMapping("/store")
+    public ServerResponse<Store> updateStoreInfo(UpdateStoreDto storeDto) {
+        Store store = storeService.updateStore(JWTUtil.getStoreId(), storeDto);
+        return ServerResponse.createBySuccess(store);
+    }
 }

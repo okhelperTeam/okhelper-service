@@ -1,8 +1,10 @@
 package com.ok.okhelper.dao;
 
 import com.ok.okhelper.OkhelperApplication;
+import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.po.User;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import java.util.List;
 */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OkhelperApplication.class)
+@Slf4j
 public class PermisssionMapperTest {
 	@Autowired
 	PermissionMapper permissionMapper;
@@ -31,10 +34,9 @@ public class PermisssionMapperTest {
 	
 	@Test
 	public void test() {
-		List<String> listServerResponse = permissionMapper.findAddPermissionCode((long) 1);
+        List<Permission> listServerResponse = permissionMapper.findAddPermission((long) 1);
 		listServerResponse.forEach(a->{
-			
-			System.out.println(a+"test");
+            log.debug(a.getPermissionCode());
 		});
 	}
 	

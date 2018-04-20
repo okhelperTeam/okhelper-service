@@ -1,5 +1,6 @@
 package com.ok.okhelper.pojo.vo;
 
+import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.Role;
 import lombok.Data;
 
@@ -85,8 +86,8 @@ public class UserVo {
     private Long storeId;
 	
 	private List<Role> roleList;
-	
-	private List<String> permissionCodes;
+
+//	private List<Permission> permissionList;
 	
 	private String token;
 }

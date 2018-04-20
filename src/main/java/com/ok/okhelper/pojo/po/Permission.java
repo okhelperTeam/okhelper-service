@@ -1,9 +1,10 @@
 package com.ok.okhelper.pojo.po;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-public class Permission {
+public class Permission implements Serializable {
     /**
      * 主键
      */

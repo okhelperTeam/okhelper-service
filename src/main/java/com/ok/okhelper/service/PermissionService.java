@@ -1,15 +1,18 @@
 package com.ok.okhelper.service;
 
-import org.springframework.stereotype.Service;
+import com.ok.okhelper.pojo.po.Permission;
 
 import java.util.List;
 
-/*
-*Author:zhangxin_an
-*Description:
-*Data:Created in 17:07 2018/4/11
-*/
-@Service
+/**
+ * Author: zc
+ * Date: 2018/4/20
+ * Description:
+ */
 public interface PermissionService {
-	List<String> findAddPermissionCode(Long userId);
+    List<Permission> findAddPermission(Long userId);
+
+    void clearPermissionListCacheByUserId(Long userId);
+
+    List<Permission> updatePermissionCacheByUserId(Long userId);
 }

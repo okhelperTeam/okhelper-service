@@ -13,24 +13,24 @@ import java.util.Date;
  * @date: 2018/4/15
  */
 @Data
-public class StoreDto {
-    /**
-     * 主键
-     */
-    @Id
-    private Long id;
+public class UpdateStoreDto {
+
     /**
      * 店铺名称
      */
-    @NotNull(message = "商店名称不能为")
-    @Column(name = "storeName")
+    @Column(name = "store_name")
     private String storeName;
+
+    /**
+     * 联系电话
+     */
+    @Column(name = "store_phone")
+    private String storePhone;
 
     /**
      * 店铺地址
      */
-    @NotNull(message = "商店地址不能为空")
-    @Column(name = "storeAddress")
+    @Column(name = "store_address")
     private String storeAddress;
 
     /**
@@ -43,17 +43,5 @@ public class StoreDto {
      * 描述
      */
     private String description;
-
-    /**
-     * 操作者
-     */
-    private Long operator;
-
-    /**
-     * 负责人
-     */
-    @Column(name = "leader_id")
-    private Long leaderId;
-
 
 }

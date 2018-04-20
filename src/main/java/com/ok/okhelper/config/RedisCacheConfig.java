@@ -6,17 +6,16 @@ package com.ok.okhelper.config;
  * @date: 2018/4/15
  */
 
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
+import com.ok.okhelper.until.PropertiesUtil;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import static java.util.Collections.singletonMap;
 import static org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig;
@@ -28,13 +27,16 @@ public class RedisCacheConfig {
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheConfiguration redisCacheConfiguration
+                = RedisCacheConfiguration.defaultCacheConfig().entryTtl
+                (Duration.ofSeconds(Long.parseLong(Objects.requireNonNull(PropertiesUtil.getProperty("cacheable.redis.ttl")))));
+
         RedisCacheManager cm = RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(defaultCacheConfig())
+                .cacheDefaults(redisCacheConfiguration)
                 .withInitialCacheConfigurations(singletonMap("predefined", defaultCacheConfig().disableCachingNullValues()))
                 .transactionAware()
                 .build();
 
-//        RedisCacheConfiguration.defaultCacheConfig().prefixKeysWith("( ͡° ᴥ ͡°)");
         return cm;
     }
 

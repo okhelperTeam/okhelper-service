@@ -1,7 +1,6 @@
 package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
@@ -31,7 +30,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
 
     /*
      * @Author zhangxin_an
