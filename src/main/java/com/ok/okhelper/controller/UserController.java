@@ -87,7 +87,7 @@ public class UserController {
     }
 
 
-    @GetMapping("user/checkUserName")
+    @GetMapping("user/check_userName")
     @ApiOperation(value = "检查用户名")
     @ApiResponses({
             @ApiResponse(code = 200, message = "用户名不存在"),
@@ -98,7 +98,7 @@ public class UserController {
 
 
     @RequiresPermissions("user/userList:get")
-    @GetMapping("user/userList")
+    @GetMapping("/user")
     public ServerResponse getUserListByStoreId(HttpServletRequest request) {
         String token = request.getHeader("token");
         return userService.getUserListByStoreId(token);
