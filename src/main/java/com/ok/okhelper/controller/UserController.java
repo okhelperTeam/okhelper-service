@@ -87,7 +87,7 @@ public class UserController {
     }
 
 
-    @GetMapping("user/check_userName")
+    @GetMapping("user/check_username")
     @ApiOperation(value = "检查用户名")
     @ApiResponses({
             @ApiResponse(code = 200, message = "用户名不存在"),
