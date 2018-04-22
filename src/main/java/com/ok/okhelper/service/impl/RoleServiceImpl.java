@@ -3,20 +3,15 @@ package com.ok.okhelper.service.impl;
 import com.ok.okhelper.dao.PermissionMapper;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.pojo.dto.RoleDto;
-import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.Role;
+import com.ok.okhelper.pojo.vo.RolePermissionVo;
 import com.ok.okhelper.service.RoleService;
-import com.ok.okhelper.shiro.JWTUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,13 +38,24 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
 //    @Cacheable(value = "role_list", key = "#storeId")
-    public List<Role> getRoleListByStore(Long storeId) {
-        Example example = new Example(Role.class);
-        example.createCriteria().andEqualTo("storeId", storeId)
-                .orEqualTo("storeId", 0)
-                .andNotBetween("id", 1, 2);
-        List<Role> roles = roleMapper.selectByExample(example);
-        return roles;
+    public List<RolePermissionVo> getRoleListByStore(Long storeId) {
+//        Example example = new Example(Role.class);
+//        example.createCriteria().andEqualTo("storeId", storeId)
+//                .orEqualTo("storeId", 0)
+//                .andNotBetween("id", 1, 2);
+        List<RolePermissionVo> rolePermission = roleMapper.findRolePermissionByRoleId(storeId);
+
+
+//        List<RolePermissionVo> rolePermissionVos = new ArrayList<>();
+//        roles.forEach(
+//                role -> {
+//                    RolePermissionVo rolePermissionVo=new RolePermissionVo();
+//                    BeanUtils.copyProperties(role,rolePermissionVo);
+//
+//                    rolePermissionVos.add()
+//                }
+//        );
+        return rolePermission;
     }
 
     @Override

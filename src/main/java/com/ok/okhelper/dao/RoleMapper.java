@@ -1,6 +1,7 @@
 package com.ok.okhelper.dao;
 
 import com.ok.okhelper.pojo.po.Role;
+import com.ok.okhelper.pojo.vo.RolePermissionVo;
 import com.ok.okhelper.until.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,8 @@ public interface RoleMapper extends MyMapper<Role> {
 	List<Role> findRoleByUserId(Long userId);
 
     int insertUserRole(@Param("user_id") Long user_id, @Param("role_id") Long role_id);
+
+    List<RolePermissionVo> findRolePermissionByRoleId(Long storeId);
+
+    int insertRolePermission(@Param("rid") Long roleId, @Param("pid") Long permissionId);
 }

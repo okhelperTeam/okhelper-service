@@ -3,18 +3,17 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.dto.RoleDto;
-import com.ok.okhelper.pojo.po.Role;
+import com.ok.okhelper.pojo.vo.RolePermissionVo;
 import com.ok.okhelper.service.RoleService;
 import com.ok.okhelper.shiro.JWTUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,6 +23,7 @@ import java.util.List;
  * @description:角色控制器
  * @date: 2018/4/14
  */
+@Api(tags = "角色模块")
 @RestController
 public class RoleController {
 
@@ -39,7 +39,8 @@ public class RoleController {
      */
     @PostMapping("/role")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @RequiresPermissions("user:post")
+    @RequiresPermissions("role:view")
+    @ApiOperation(value = "添加角色", code = 201)
     public ServerResponse<String> postRole(@Valid RoleDto roleDto) {
         Subject subject = SecurityUtils.getSubject();
         Long userId = JWTUtil.getUserId();
@@ -52,7 +53,7 @@ public class RoleController {
         }
 
         // 清空缓存
-        roleService.clearRoleListCache(storeId);
+//        roleService.clearRoleListCache(storeId);
         return ServerResponse.createBySuccessCodeMessages(HttpStatus.CREATED.value(), "角色创建成功");
     }
 
@@ -64,8 +65,9 @@ public class RoleController {
      * @Description:获取当前商店角色列表
      */
     @GetMapping("/role")
+    @ApiOperation(value = "获取角色列表", notes = "获取当前店铺所有角色")
     public ServerResponse getRoleList() {
-        List<Role> roleList = roleService.getRoleListByStore(JWTUtil.getStoreId());
+        List<RolePermissionVo> roleList = roleService.getRoleListByStore(JWTUtil.getStoreId());
         return ServerResponse.createBySuccess(roleList);
     }
 

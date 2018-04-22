@@ -17,6 +17,20 @@
         </constructor>
     </resultMap>
 
+    <resultMap id="rolePermissionMap" type="com.ok.okhelper.pojo.vo.RolePermissionVo">
+        <id column="r_id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="description" property="description"/>
+        <result column="store_id" property="storeId"/>
+        <collection property="permissions" ofType="com.ok.okhelper.pojo.vo.PermissionVo">
+            <id column="p_id" property="id"/>
+            <result column="menu_code" property="menuCode"/>
+            <result column="menu_name" property="menuName"/>
+            <result column="permission_code" property="permissionCode"/>
+            <result column="permission_name" property="permissionName"/>
+        </collection>
+    </resultMap>
+
     <select id="findRoleByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
 
         select *
@@ -27,8 +41,34 @@
 
     </select>
 
+    <select id="findRolePermissionByRoleId" parameterType="java.lang.Long" resultMap="rolePermissionMap">
+        SELECT
+            r.id r_id,
+            r.role_name,
+            r.description,
+            r.operator,
+            r.store_id,
+            r.delete_status,
+            p.id p_id,
+            p.menu_name,
+            p.menu_code,
+            p.permission_code,
+            p.permission_name
+        FROM role r
+            LEFT JOIN role_permission rp ON r.id = rp.role_id
+            LEFT JOIN permission p ON rp.permission_id = p.id
+        WHERE (r.store_id = #{storeId} OR r.store_id = 0)
+              AND
+              (r.id NOT BETWEEN 1 AND 2 AND r.delete_status = 1)
+    </select>
+
     <insert id="insertUserRole" parameterType="map">
         insert into user_role (user_id, role_id) values (#{user_id}, #{role_id})
+    </insert>
+    <insert id="insertRolePermission" parameterType="map">
+        INSERT INTO `role_permission`
+        (role_id, permission_id, operator) VALUES
+            (#{rid}, #{pid}, 1);
     </insert>
 
 

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by zc on 2018/4/11.
  */
 @Configuration
+@SuppressWarnings("unchecked")
 public class DruidConfiguration {
 
     /**

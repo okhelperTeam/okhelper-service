@@ -18,6 +18,11 @@
         </constructor>
     </resultMap>
 
+    <resultMap id="PermissionMenuMap" type="com.ok.okhelper.pojo.vo.PermissionMenuVo">
+        <result column="menu_code" property="menuCode"></result>
+        <result column="menu_name" property="menuName"></result>
+    </resultMap>
+
 
     <select id="findAddPermission" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT *
@@ -29,6 +34,22 @@
                      (SELECT role_id
                       FROM user_role
                       WHERE user_id = #{userId}))
+        order by permission.menu_code
+    </select>
 
+    <select id="findPermissionMenu" parameterType="java.lang.Long" resultMap="PermissionMenuMap">
+        SELECT distinct
+            menu_code,
+            menu_name
+        from permission
+        WHERE permission.id in
+              (SELECT permission_id
+               FROM role_permission
+               WHERE role_id in
+                     (SELECT role_id
+                      FROM user_role
+                      WHERE user_id = #{userId}))
+              AND menu_code != 'ALL'
+        order by permission.menu_code
     </select>
 </mapper>

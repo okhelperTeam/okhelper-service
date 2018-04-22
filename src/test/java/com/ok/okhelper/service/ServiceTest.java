@@ -1,17 +1,23 @@
 package com.ok.okhelper.service;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ok.okhelper.OkhelperApplication;
 import com.ok.okhelper.pojo.dto.UpdateStoreDto;
 import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.Store;
+import com.ok.okhelper.pojo.vo.RolePermissionVo;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,8 +42,17 @@ public class ServiceTest {
 
     @Test
     public void getRoleList() {
-        List<Role> roles = roleService.getRoleListByStore((long) 3);
-        roles.forEach(role -> log.debug(role.getRoleName()));
+        List<RolePermissionVo> roles = roleService.getRoleListByStore((long) 0);
+//        roles.forEach(role -> log.debug(role.getRoleName()));
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String s = objectMapper.writeValueAsString(roles);//直接输出到控制台
+            log.debug(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

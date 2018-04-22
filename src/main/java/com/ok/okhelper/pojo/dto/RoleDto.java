@@ -1,5 +1,6 @@
 package com.ok.okhelper.pojo.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -14,35 +15,36 @@ import java.util.Date;
  */
 @Data
 public class RoleDto {
-    /**
-     * 主键
-     */
-    @Id
-    private Long id;
+
 
     /**
      * 角色名称
      */
+    @ApiModelProperty(value = "角色名称", required = true)
     @NotNull(message = "角色名称不能为空")
     private String roleName;
 
     /**
      * 状态 0废除，1激活
      */
+    @ApiModelProperty(value = "状态", notes = "0废除，1激活")
     private String deleteStatus;
 
     /**
      * 描述
      */
+    @ApiModelProperty(value = "描述")
     private String description;
 
     /**
      * 店铺id
      */
+    @ApiModelProperty("店铺ID")
     private Long storeId;
 
     /**
      * 操作者
      */
+    @ApiModelProperty(value = "操作者")
     private Long operator;
 }

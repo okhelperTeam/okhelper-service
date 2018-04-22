@@ -53,6 +53,10 @@ public class ShiroConfiguration {
         filterRuleMap.put("/401", "anon");
         filterRuleMap.put("/404", "anon");
         filterRuleMap.put("/druid/**", "anon");
+        filterRuleMap.put("/webjar/**", "anon");
+        filterRuleMap.put("/v2/api-docs", "anon");
+        filterRuleMap.put("/doc.html", "anon");
+
         filterRuleMap.put("/user/login", "anon");
         filterRuleMap.put("/user/register", "anon");
         filterRuleMap.put("/user/checkUserName", "anon");

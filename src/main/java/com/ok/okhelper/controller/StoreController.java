@@ -6,6 +6,8 @@ import com.ok.okhelper.pojo.dto.UpdateStoreDto;
 import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.service.StoreService;
 import com.ok.okhelper.shiro.JWTUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @description:商店控制器
  * @date: 2018/4/15
  */
-
+@Api(tags = "店铺模块")
 @RestController
 public class StoreController {
 
@@ -32,6 +34,7 @@ public class StoreController {
      * @Description: 获取商店信息
      */
     @GetMapping("/store")
+    @ApiOperation(value = "获取商店信息")
     public ServerResponse<Store> getStoreInfo() {
         Store storeInfo = storeService.getStoreInfoById(JWTUtil.getStoreId());
         return ServerResponse.createBySuccess(storeInfo);
@@ -46,6 +49,7 @@ public class StoreController {
      * @Description: 获取商店信息
      */
     @PutMapping("/store")
+    @ApiOperation(value = "修改商店信息")
     public ServerResponse<Store> updateStoreInfo(UpdateStoreDto storeDto) {
         Store store = storeService.updateStore(JWTUtil.getStoreId(), storeDto);
         return ServerResponse.createBySuccess(store);

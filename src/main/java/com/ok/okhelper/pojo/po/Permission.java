@@ -1,5 +1,7 @@
 package com.ok.okhelper.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
