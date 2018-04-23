@@ -61,7 +61,7 @@ public class UserController {
     @PostMapping("/user/register")
     @ApiOperation(value = "店长注册", notes = "")
     @ApiResponses({@ApiResponse(code = 400, message = "注册信息有误")})
-    public ServerResponse register(UserAndStoreDto userAndStoreDto) {
+    public ServerResponse register(@Valid UserAndStoreDto userAndStoreDto) {
         userService.userRegister(userAndStoreDto);
 
         return ServerResponse.createBySuccess("注册成功");
@@ -78,7 +78,7 @@ public class UserController {
     @PostMapping("/user/employee")
     @ApiOperation(value = "添加员工", notes = "添加员工并注册")
     @ApiResponses({@ApiResponse(code = 400, message = "所添加员工信息有误")})
-    public ServerResponse addEmployee(UserDto userDto) {
+    public ServerResponse addEmployee(@Valid UserDto userDto) {
 
         return userService.addEmployee(userDto);
     }
