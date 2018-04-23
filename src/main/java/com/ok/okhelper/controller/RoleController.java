@@ -66,7 +66,7 @@ public class RoleController {
      */
     @GetMapping("/role")
     @ApiOperation(value = "获取角色列表", notes = "获取当前店铺所有角色")
-    public ServerResponse getRoleList() {
+    public ServerResponse<List<RolePermissionVo>> getRoleList(@PathVariable Long roleId) {
         List<RolePermissionVo> roleList = roleService.getRoleListByStore(JWTUtil.getStoreId());
         return ServerResponse.createBySuccess(roleList);
     }

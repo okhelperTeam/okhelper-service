@@ -43,10 +43,10 @@ public class UserController {
      */
     @PostMapping("/user/login")
     @ApiOperation(value = "用户登陆", notes = "根据我的userId获取我的权限列表")
-    public ServerResponse loginUser(@ApiParam(value = "用户名", required = true) String username,
-                                    @ApiParam(value = "密码", required = true) String password, HttpServletRequest request) {
+    public ServerResponse loginUser(@ApiParam(value = "用户名", required = true) String userName,
+                                    @ApiParam(value = "密码", required = true) String userPassword, HttpServletRequest request) {
         String ip = IpUtil.getIpAddr(request);
-        return userService.loginUser(username, password, ip);
+        return userService.loginUser(userName, userPassword, ip);
     }
 
     /*
@@ -89,9 +89,7 @@ public class UserController {
 
     @GetMapping("user/check_username")
     @ApiOperation(value = "检查用户名")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "用户名不存在"),
-            @ApiResponse(code = 400, message = "用户名存在")})
+    @ApiResponses({@ApiResponse(code = 400, message = "用户名存在")})
     public ServerResponse checkUserName(String userName) {
         return userService.checkUserName(userName);
     }

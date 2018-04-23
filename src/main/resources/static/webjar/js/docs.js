@@ -83,7 +83,7 @@ $(function () {
 
                                 errors[405] = {"description": "请求方法不对"};
                                 errors[409] = {"description": "资源已存在，创建失败"};
-                                errors[500] = {"description": "服务器错误请请即使联系管理员"};
+                                errors[500] = {"description": "服务器错误请请及时联系后台管理员"};
                             }
                         })
 
@@ -137,7 +137,7 @@ function getData(operationId) {
     //query 参数
     var parameterJson = {};
     if ("form" == parameterType) {
-        $("[p_operationId='" + operationId + "'][in='query']").each(function (index, domEle) {
+        $("[p_operationId='" + operationId + "']").each(function (index, domEle) {
             var k = $(domEle).attr("name");
             var v = $(domEle).val();
             if (v) {
@@ -153,6 +153,7 @@ function getData(operationId) {
             return false;
         }
     }
+
 
     //发送请求
     $.ajax({
