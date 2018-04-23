@@ -5,6 +5,7 @@ import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
+import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.until.IpUtil;
 import io.swagger.annotations.*;
@@ -43,8 +44,8 @@ public class UserController {
      */
     @PostMapping("/user/login")
     @ApiOperation(value = "用户登陆", notes = "根据我的userId获取我的权限列表")
-    public ServerResponse loginUser(@ApiParam(value = "用户名", required = true) String userName,
-                                    @ApiParam(value = "密码", required = true) String userPassword, HttpServletRequest request) {
+    public ServerResponse<UserVo> loginUser(@ApiParam(value = "用户名", required = true) String userName,
+                                            @ApiParam(value = "密码", required = true) String userPassword, HttpServletRequest request) {
         String ip = IpUtil.getIpAddr(request);
         return userService.loginUser(userName, userPassword, ip);
     }
@@ -59,6 +60,7 @@ public class UserController {
     @Transactional
     @PostMapping("/user/register")
     @ApiOperation(value = "店长注册", notes = "")
+    @ApiResponses({@ApiResponse(code = 400, message = "注册信息有误")})
     public ServerResponse register(UserAndStoreDto userAndStoreDto) {
         userService.userRegister(userAndStoreDto);
 
@@ -75,13 +77,15 @@ public class UserController {
     @RequiresPermissions("addEmployee")
     @PostMapping("/user/employee")
     @ApiOperation(value = "添加员工", notes = "添加员工并注册")
+    @ApiResponses({@ApiResponse(code = 400, message = "所添加员工信息有误")})
     public ServerResponse addEmployee(UserDto userDto) {
 
         return userService.addEmployee(userDto);
     }
 
     @GetMapping("/employee")
-    public ServerResponse getEmployeeList() {
+    @ApiOperation(value = "获取员工", notes = "店长获取该店所有员工")
+    public ServerResponse<List<EmployeeVo>> getEmployeeList() {
         List<EmployeeVo> employeeVoList = userService.getEmployeeList();
         return ServerResponse.createBySuccess(employeeVoList);
     }
@@ -95,6 +99,8 @@ public class UserController {
     }
 
 
+    //暂时不用
+    @ApiIgnore
     @RequiresPermissions("user/userList:get")
     @GetMapping("/user")
     public ServerResponse getUserListByStoreId(HttpServletRequest request) {
