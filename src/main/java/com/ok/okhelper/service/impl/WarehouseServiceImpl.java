@@ -9,6 +9,7 @@ import com.ok.okhelper.pojo.vo.WarehouseVo;
 import com.ok.okhelper.service.WareHouseService;
 import com.ok.okhelper.shiro.JWTUtil;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -112,6 +113,9 @@ public class WarehouseServiceImpl implements WareHouseService {
 	public ServerResponse deleteWarehouseById(Long whId) {
 		
 		logger.info("Enter deleteWarehouseById(Long whId) Params"+ whId);
+		if(whId == null){
+			throw new IllegalException("请求参数异常");
+		}
 		ServerResponse serverResponse;
 		try {
 			int i = warehouseMapper.deleteByPrimaryKey(whId);
@@ -134,6 +138,32 @@ public class WarehouseServiceImpl implements WareHouseService {
 	*/  
 	@Override
 	public ServerResponse addWarehouse(WarehouseDTO warehouseDTO) {
-		return null;
+		logger.info("Enter addWarehouse(WarehouseDTO warehouseDTO) Params"+ warehouseDTO);
+		
+		if( !ObjectUtils.anyNotNull(warehouseDTO)){
+			logger.debug("warehouseDTO 为空");
+			throw  new IllegalException("参数为空");
+		}
+		
+		if(StringUtils.isBlank(warehouseDTO.getWarehouseName()) ){
+			logger.debug("仓库名不能为空");
+			throw  new IllegalException("仓库名为空");
+		}
+		
+		Warehouse warehouse = new Warehouse();
+		BeanUtils.copyProperties(warehouseDTO,warehouse);
+		
+		ServerResponse serverResponse;
+		try{
+			warehouse.setStoreId(JWTUtil.getStoreId());
+			int i = warehouseMapper.insertSelective(warehouse);
+			serverResponse = ServerResponse.createBySuccess("添加成功",i);
+		}catch (Exception e){
+			serverResponse = ServerResponse.createDefaultErrorMessage("数据库添加失败，请检查信息");
+		}
+		
+		
+		logger.info("Exit addWarehouse(WarehouseDTO warehouseDTO) Params"+ serverResponse);
+		return serverResponse;
 	}
 }

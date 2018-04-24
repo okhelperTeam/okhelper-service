@@ -16,7 +16,7 @@ public class WarehouseDTO {
 	/**
 	 * 主键
 	 */
-	@ApiModelProperty(value = "仓库Id", required = true)
+	@ApiModelProperty(value = "仓库Id")
 	private Long id;
 	
 	/**
@@ -34,7 +34,7 @@ public class WarehouseDTO {
 	/**
 	 * 仓管员
 	 */
-	@ApiModelProperty(value = "仓管员")
+	@ApiModelProperty(value = "仓管员",required = true)
 	private Long storeKeeper;
 	
 	

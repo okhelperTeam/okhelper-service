@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.xml.ws.Service;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class WarehouseController {
 		return wareHouseService.updateWarehouse(warehouseDTO);
 		
 	}
-	@ApiOperation(value = "删除",notes = "删除指定仓库")
+	@ApiOperation(value = "删除仓库",notes = "删除指定仓库")
 	@DeleteMapping("/warehouse/{id}")
 	public ServerResponse updateWarehouse(@PathVariable Long id){
 		logger.info("Enter updateWarehouse(Long id) Params" + id);
@@ -69,6 +70,12 @@ public class WarehouseController {
 		
 	}
 	
-	
+	@ApiOperation(value = "添加仓库",notes = "添加仓库")
+	@PostMapping("/warehouse")
+	public ServerResponse addWarehouse(@Valid WarehouseDTO warehouseDTO){
+		logger.info("Enter updateWarehouse(Long id) Params" + warehouseDTO);
+		return wareHouseService.addWarehouse(warehouseDTO);
+		
+	}
 	
 }
