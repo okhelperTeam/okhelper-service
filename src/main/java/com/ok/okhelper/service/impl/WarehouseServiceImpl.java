@@ -89,6 +89,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		
 		Warehouse warehouse = new Warehouse();
 		BeanUtils.copyProperties(warehouseDTO,warehouse);
+		warehouse.setOperator(JWTUtil.getUserId());
 		ServerResponse serverResponse = null;
 		try {
 			int i = warehouseMapper.updateByPrimaryKeySelective(warehouse);
@@ -145,14 +146,10 @@ public class WarehouseServiceImpl implements WareHouseService {
 			throw  new IllegalException("参数为空");
 		}
 		
-		if(StringUtils.isBlank(warehouseDTO.getWarehouseName()) ){
-			logger.debug("仓库名不能为空");
-			throw  new IllegalException("仓库名为空");
-		}
 		
 		Warehouse warehouse = new Warehouse();
 		BeanUtils.copyProperties(warehouseDTO,warehouse);
-		
+		warehouse.setOperator(JWTUtil.getUserId());
 		ServerResponse serverResponse;
 		try{
 			warehouse.setStoreId(JWTUtil.getStoreId());
