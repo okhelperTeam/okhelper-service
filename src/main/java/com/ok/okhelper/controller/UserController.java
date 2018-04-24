@@ -43,9 +43,9 @@ public class UserController {
      * @Description:用户登录
      */
     @PostMapping("/user/login")
-    @ApiOperation(value = "用户登陆", notes = "根据我的userId获取我的权限列表")
-    public ServerResponse<UserVo> loginUser(@ApiParam(value = "用户名", required = true) String userName,
-                                            @ApiParam(value = "密码", required = true) String userPassword, HttpServletRequest request) {
+    @ApiOperation(value = "用户登陆")
+    public ServerResponse loginUser(@ApiParam(value = "用户名", required = true) String userName,
+                                    @ApiParam(value = "密码", required = true) String userPassword, HttpServletRequest request) {
         String ip = IpUtil.getIpAddr(request);
         return userService.loginUser(userName, userPassword, ip);
     }
