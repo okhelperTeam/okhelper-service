@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.Service;
 import java.util.List;
 
@@ -55,14 +56,14 @@ public class WarehouseController {
 	
 	@ApiOperation(value = "修改仓库信息",notes = "修改具体仓库信息")
 	@PutMapping("/warehouse")
-	public ServerResponse updateWarehouse(WarehouseDTO warehouseDTO,Long id){
+	public ServerResponse updateWarehouse(WarehouseDTO warehouseDTO){
 		logger.info("Enter getWarehouse() Params" + warehouseDTO);
 		return wareHouseService.updateWarehouse(warehouseDTO);
 		
 	}
 	@ApiOperation(value = "删除",notes = "删除指定仓库")
 	@DeleteMapping("/warehouse/{id}")
-	public ServerResponse updateWarehouse(Long id){
+	public ServerResponse updateWarehouse(@PathVariable Long id){
 		logger.info("Enter updateWarehouse(Long id) Params" + id);
 		return wareHouseService.deleteWarehouseById(id);
 		

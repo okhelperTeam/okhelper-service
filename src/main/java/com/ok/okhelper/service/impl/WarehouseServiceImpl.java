@@ -81,7 +81,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 	public ServerResponse updateWarehouse(WarehouseDTO warehouseDTO) {
 		
 		logger.info("Enter updateWarehouse(WarehouseDTO warehouseDTO) Params"+ warehouseDTO);
-		if( ObjectUtils.anyNotNull(warehouseDTO)){
+		if( !ObjectUtils.anyNotNull(warehouseDTO)){
 			logger.debug("warehouseDTO 为空");
 			throw  new IllegalException("参数为空");
 		}
