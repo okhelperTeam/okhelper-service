@@ -17,4 +17,27 @@
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
+
+    <resultMap id="WarehouseVoMap" type="com.ok.okhelper.pojo.vo.WarehouseVo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="warehouse_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="store_keeper" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+
+
+
+    <select id="getWarehouseByStoreId" parameterType="long" resultMap="WarehouseVoMap"  >
+      SELECT id,warehouse_name,description,store_keeper,operator,create_time,delete_status
+      FROM  warehouse WHERE store_id = #{storeId}
+    </select>
+
 </mapper>
