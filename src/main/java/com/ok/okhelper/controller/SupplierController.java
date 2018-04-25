@@ -1,5 +1,6 @@
 package com.ok.okhelper.controller;
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.SupplierDto;
 import com.ok.okhelper.pojo.po.Supplier;
@@ -34,10 +35,10 @@ public class SupplierController {
 	@RequiresPermissions("supplier:view")
 	@ApiOperation(value = "查询所有供应商",notes = "查询当前店铺所有供应商")
 	@GetMapping("/supplier")
-	public ServerResponse<List<Supplier>> getSupplierList(){
+	public ServerResponse<PageModel<Supplier>> getSupplierList(@Valid PageModel pageModel){
 		logger.info("Enter getSupplierList()");
 		
-		List<Supplier> supplierList = supplierService.getSupplierList();
+		PageModel<Supplier> supplierList = supplierService.getSupplierList(pageModel);
 		
 		logger.info("Exit getSupplierList() return :"+supplierList);
 		return ServerResponse.createBySuccess(supplierList);

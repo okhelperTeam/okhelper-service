@@ -11,7 +11,7 @@ import java.util.List;
 
 /*
 *Author:zhangxin_an
-*Description:
+*Description:登陆后返回用户一切信息
 *Data:Created in 22:32 2018/4/13
 */
 @Data

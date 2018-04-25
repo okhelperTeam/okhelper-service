@@ -1,9 +1,13 @@
 package com.ok.okhelper.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.WarehouseMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.dto.WarehouseDTO;
+import com.ok.okhelper.pojo.po.Supplier;
 import com.ok.okhelper.pojo.po.Warehouse;
 import com.ok.okhelper.pojo.vo.WarehouseVo;
 import com.ok.okhelper.service.WareHouseService;
@@ -37,17 +41,19 @@ public class WarehouseServiceImpl implements WareHouseService {
 	* @Description:查询当前店铺所有仓库
 	*/  
 	@Override
-	public List<WarehouseVo> getWarehouseList() {
+	public PageModel<WarehouseVo> getWarehouseList(PageModel pageModel) {
 		logger.info("Enter getWarehouseList()");
+		//启动分页
+		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 		Long storeId = JWTUtil.getStoreId();
 		if(storeId == null){
 			throw new IllegalException("参数异常");
 		}
 		List<WarehouseVo> warehouseVoList = warehouseMapper.getWarehouseByStoreId(storeId);
+		PageInfo<WarehouseVo> pageInfo = new PageInfo<>(warehouseVoList);
 		
-		
-		logger.info("Exit getWarehouseList() return :"+warehouseVoList);
-		return warehouseVoList;
+		logger.info("Exit getWarehouseList() return :"+pageInfo);
+		return PageModel.convertToPageModel(pageInfo);
 	}
 	
 	@Override

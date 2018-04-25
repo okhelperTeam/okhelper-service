@@ -1,16 +1,12 @@
 package com.ok.okhelper.service;
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
-import com.ok.okhelper.pojo.vo.UserVo;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /*
  *Author:zhangxin_an
@@ -42,8 +38,16 @@ public interface UserService {
     
     ServerResponse getUserListByStoreId(String token);
     
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/4/25 8:47
+    * @Params [userDto]  
+    * @Return com.ok.okhelper.common.ServerResponse  
+    * @Description:
+    */  
     ServerResponse addEmployee(UserDto userDto);
 
+    
     ServerResponse changeRole(UserAndRoleDto userAndRoleDto);
     /*
     * @Author zhangxin_an 
@@ -51,6 +55,7 @@ public interface UserService {
     * @Params []  
     * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>  
     * @Description:获取员工
-    */  
-    List<EmployeeVo> getEmployeeList();
+    */
+    PageModel<EmployeeVo> getEmployeeList(PageModel pageModel);
+    
 }

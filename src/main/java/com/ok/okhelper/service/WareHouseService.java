@@ -1,5 +1,6 @@
 package com.ok.okhelper.service;
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.WarehouseDTO;
 import com.ok.okhelper.pojo.po.Warehouse;
@@ -13,8 +14,8 @@ import java.util.List;
 *Data:Created in 9:55 2018/4/24
 */
 public interface WareHouseService {
-
-	List<WarehouseVo> getWarehouseList();
+	
+	PageModel<WarehouseVo> getWarehouseList(PageModel pageModel);
 	
 	WarehouseVo getWarehouseById(Long whId);
 	
