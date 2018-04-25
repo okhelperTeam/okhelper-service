@@ -47,4 +47,5 @@ public class SaleServiceImpl implements SaleService {
 
         return PageModel.convertToPageModel(pageInfo);
     }
+
 }

@@ -198,7 +198,7 @@ function jiexi(jsonData, jsonall) {
                 if (jsonData.properties[a].items.$ref != null) {
                     var responseModelName2 = getResponseModelName(jsonData.properties[a].items.$ref);
                     var jiexi2 = jiexi(jsonall.definitions[responseModelName2], jsonall);
-                    myjson[a] = [jiexi2, jiexi2, {"........": "........"}]
+                    myjson[a] = [jiexi2, {"........": "........"}]
                 } else {
                     myjson[a] = ["", "", "......."]
                 }

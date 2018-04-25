@@ -46,7 +46,7 @@ public class UserController {
      */
     @PostMapping("/user/login")
     @ApiOperation(value = "用户登陆")
-    public ServerResponse loginUser(@ApiParam(value = "用户名", required = true) String userName,
+    public ServerResponse<UserVo> loginUser(@ApiParam(value = "用户名", required = true) String userName,
                                     @ApiParam(value = "密码", required = true) String userPassword, HttpServletRequest request) {
         String ip = IpUtil.getIpAddr(request);
         return userService.loginUser(userName, userPassword, ip);
@@ -96,7 +96,7 @@ public class UserController {
     @GetMapping("user/check_username")
     @ApiOperation(value = "检查用户名")
     @ApiResponses({@ApiResponse(code = 400, message = "用户名存在")})
-    public ServerResponse checkUserName(String userName) {
+    public ServerResponse checkUserName(@ApiParam(value = "用户名",required = true) String userName) {
         return userService.checkUserName(userName);
     }
 
