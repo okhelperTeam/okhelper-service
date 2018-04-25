@@ -11,5 +11,5 @@ import java.util.List;
 *Data:Created in 15:57 2018/4/24
 */
 public interface CategoryService {
-	List<CategoryVo> getCategoryList();
+	List<CategoryVo> getCategoryList(long supId);
 }

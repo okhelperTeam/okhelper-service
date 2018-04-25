@@ -36,14 +36,14 @@ public class CategoryServiceIMpl implements CategoryService {
 	* @Description:查询分类
 	*/  
 	@Override
-	public List<CategoryVo> getCategoryList() {
+	public List<CategoryVo> getCategoryList(long superId) {
 		
 		logger.info("Enter getCategoryList() params：");
 		
 		Long storeId = JWTUtil.getStoreId();
 		
 		
-		List<CategoryVo> categoryVoList = getCategoryItems(0,storeId);
+		List<CategoryVo> categoryVoList = categoryMapper.getCategoryListBySuperId(superId,storeId);
 		
 		logger.info("Exit getCategoryList() return："+categoryVoList);
 		return categoryVoList;
