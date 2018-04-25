@@ -116,6 +116,7 @@ function getResponseModelName(val) {
     if (!val) {
         return null;
     }
+    console.log(val)
     return val.substring(val.lastIndexOf("/") + 1, val.length);
 }
 

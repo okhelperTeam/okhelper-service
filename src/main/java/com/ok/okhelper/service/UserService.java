@@ -44,7 +44,7 @@ public interface UserService {
     
     ServerResponse addEmployee(UserDto userDto);
 
-    ServerResponse changeRole(UserAndRoleDto userAndRoleDto);
+    ServerResponse changeRole(Long employeeId, List<Long> roles);
     /*
     * @Author zhangxin_an 
     * @Date 2018/4/19 17:38

@@ -295,13 +295,10 @@ public class UserServiceImpl implements UserService {
      * @Description: 变更用户角色
      */
     @Transactional
-    public ServerResponse changeRole(UserAndRoleDto userAndRoleDto) {
+    public ServerResponse changeRole(Long employeeId, List<Long> roles) {
 
         //当前操作者的storeId
         Long storeId = JWTUtil.getStoreId();
-
-        Long employeeId = userAndRoleDto.getEmployeeId();
-        List<Long> roles = userAndRoleDto.getRoles();
 
         User employee = userMapper.selectByPrimaryKey(employeeId);
 

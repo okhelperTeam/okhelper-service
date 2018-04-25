@@ -20,6 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -93,7 +94,7 @@ public class UserController {
 
     @GetMapping("user/check_username")
     @ApiOperation(value = "检查用户名")
-    @ApiResponses({@ApiResponse(code = 400, message = "用户名存在")})
+    @ApiResponses({@ApiResponse(code = 409, message = "用户名存在")})
     public ServerResponse checkUserName(@ApiParam(value = "用户名",required = true) String userName) {
         return userService.checkUserName(userName);
     }
@@ -115,10 +116,12 @@ public class UserController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description: 变更角色
      */
-    @PutMapping("/user/role")
+    @PutMapping("/user/role/{employeeId}")
     @ApiOperation(value = "变更角色")
-    public ServerResponse changeRoleFromUser(@Valid UserAndRoleDto userAndRoleDto) {
-        return userService.changeRole(userAndRoleDto);
+    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long employeeId,
+                                             UserAndRoleDto userAndRoleDto) {
+        System.out.println(userAndRoleDto.getRoles().toString());
+        return userService.changeRole(employeeId, userAndRoleDto.getRoles());
     }
 
     @ApiIgnore//使用该注解忽略这个API
