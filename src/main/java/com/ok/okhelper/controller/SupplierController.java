@@ -8,6 +8,7 @@ import com.ok.okhelper.service.SupplierService;
 import com.ok.okhelper.service.WareHouseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class SupplierController {
 	@Autowired
 	SupplierService supplierService;
 	
+	@RequiresPermissions("supplier:view")
 	@ApiOperation(value = "查询所有供应商",notes = "查询当前店铺所有供应商")
 	@GetMapping("/supplier")
 	public ServerResponse<List<Supplier>> getSupplierList(){
@@ -37,42 +39,48 @@ public class SupplierController {
 		
 		List<Supplier> supplierList = supplierService.getSupplierList();
 		
+		logger.info("Exit getSupplierList() return :"+supplierList);
 		return ServerResponse.createBySuccess(supplierList);
 		
 	}
 	
 	
+	@RequiresPermissions("supplier:view")
 	@ApiOperation(value = "查询供应商",notes = "查询具体供应商")
 	@GetMapping("/supplier/{id}")
 	public ServerResponse<Supplier> getSupplier(@PathVariable Long id){
-		logger.info("Enter getSupplier() Params" + id);
+		logger.info("Enter getSupplier() Params:" + id);
 		
 		Supplier supplier= supplierService.getSupplierById(id);
-		logger.info("Exit getSupplier() Params" + supplier);
+		logger.info("Exit getSupplier() return :" + supplier);
 		
 		return ServerResponse.createBySuccess(supplier);
 		
 	}
 	
+	@RequiresPermissions("supplier:edit")
 	@ApiOperation(value = "修改供应商信息",notes = "修改具体供应商信息")
 	@PutMapping("/supplier")
 	public ServerResponse updateSupplier(@Valid  SupplierDto supplierDto){
-		logger.info("Enter getSupplier() Params" + supplierDto);
+		logger.info("Enter getSupplier() Params:" + supplierDto);
 		return supplierService.updateSupplier(supplierDto);
 		
 	}
+	
+	@RequiresPermissions("supplier:edit")
 	@ApiOperation(value = "删除供应商",notes = "删除指定供应商")
 	@DeleteMapping("/supplier/{id}")
 	public ServerResponse updateSupplier(@PathVariable Long id){
-		logger.info("Enter updateSupplier(Long id) Params" + id);
+		logger.info("Enter updateSupplier(Long id) Params:" + id);
 		return supplierService.deleteSupplierById(id);
 		
 	}
 	
+	@RequiresPermissions("supplier:edit")
 	@ApiOperation(value = "添加供应商",notes = "添加供应商")
 	@PostMapping("/supplier")
 	public ServerResponse addSupplier(@Valid SupplierDto supplierDto){
-		logger.info("Enter updateSupplier(Long id) Params" + supplierDto);
+		logger.info("Enter updateSupplier(Long id) Params:" + supplierDto);
 		return supplierService.addSupplier(supplierDto);
 		
 	}

@@ -32,7 +32,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 	/*
 	* @Author zhangxin_an 
 	* @Date 2018/4/24 10:09
-	* @Params []  
+	* @Params: []  
 	* @Return java.util.List<com.ok.okhelper.pojo.vo.WarehouseVo>  
 	* @Description:查询当前店铺所有仓库
 	*/  
@@ -46,14 +46,14 @@ public class WarehouseServiceImpl implements WareHouseService {
 		List<WarehouseVo> warehouseVoList = warehouseMapper.getWarehouseByStoreId(storeId);
 		
 		
-		logger.info("Exit getWarehouseList() Params"+warehouseVoList);
+		logger.info("Exit getWarehouseList() return :"+warehouseVoList);
 		return warehouseVoList;
 	}
 	
 	@Override
 	public WarehouseVo getWarehouseById(Long whId) {
 		
-		logger.info("Enter getWarehouseById() Params"+ whId);
+		logger.info("Enter getWarehouseById() Params:"+ whId);
 		if(whId == null){
 			throw new IllegalException("参数异常");
 		}
@@ -66,7 +66,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		WarehouseVo warehouseVo = new WarehouseVo();
 		BeanUtils.copyProperties(warehouse,warehouseVo);
 		
-		logger.info("Exit getWarehouseById() Params"+ warehouseVo);
+		logger.info("Exit getWarehouseById() return:"+ warehouseVo);
 		return warehouseVo;
 	}
 	
@@ -74,14 +74,14 @@ public class WarehouseServiceImpl implements WareHouseService {
 	/*
 	* @Author zhangxin_an 
 	* @Date 2018/4/24 10:37
-	* @Params [warehouseDTO]  
+	* @Params: [warehouseDTO]  
 	* @Return com.ok.okhelper.common.ServerResponse  
 	* @Description:更新仓库信息
 	*/  
 	@Override
 	public ServerResponse updateWarehouse(WarehouseDTO warehouseDTO) {
 		
-		logger.info("Enter updateWarehouse(WarehouseDTO warehouseDTO) Params"+ warehouseDTO);
+		logger.info("Enter updateWarehouse(WarehouseDTO warehouseDTO) Params:"+ warehouseDTO);
 		if( !ObjectUtils.anyNotNull(warehouseDTO)){
 			logger.debug("warehouseDTO 为空");
 			throw  new IllegalException("参数为空");
@@ -100,20 +100,20 @@ public class WarehouseServiceImpl implements WareHouseService {
 		}
 		
 		
-		logger.info("Exit updateWarehouse(WarehouseDTO warehouseDTO) Params"+serverResponse);
+		logger.info("Exit updateWarehouse(WarehouseDTO warehouseDTO) return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
 	* @Author zhangxin_an 
 	* @Date 2018/4/24 10:49  
-	* @Params [whId]  
+	* @Params: [whId]  
 	* @Return com.ok.okhelper.common.ServerResponse  
 	* @Description:删除仓库
 	*/  
 	@Override
 	public ServerResponse deleteWarehouseById(Long whId) {
 		
-		logger.info("Enter deleteWarehouseById(Long whId) Params"+ whId);
+		logger.info("Enter deleteWarehouseById(Long whId) Params:"+ whId);
 		if(whId == null){
 			throw new IllegalException("请求参数异常");
 		}
@@ -127,19 +127,19 @@ public class WarehouseServiceImpl implements WareHouseService {
 			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
 		}
 		
-		logger.info("Exit deleteWarehouseById(Long whId)  Params"+serverResponse);
+		logger.info("Exit deleteWarehouseById(Long whId)  return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
 	* @Author zhangxin_an 
 	* @Date 2018/4/24 10:49
-	* @Params [warehouseDTO]  
+	* @Params: [warehouseDTO]  
 	* @Return com.ok.okhelper.common.ServerResponse  
 	* @Description:添加仓库
 	*/  
 	@Override
 	public ServerResponse addWarehouse(WarehouseDTO warehouseDTO) {
-		logger.info("Enter addWarehouse(WarehouseDTO warehouseDTO) Params"+ warehouseDTO);
+		logger.info("Enter addWarehouse(WarehouseDTO warehouseDTO) Params:"+ warehouseDTO);
 		
 		if( !ObjectUtils.anyNotNull(warehouseDTO)){
 			logger.debug("warehouseDTO 为空");
@@ -160,7 +160,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		}
 		
 		
-		logger.info("Exit addWarehouse(WarehouseDTO warehouseDTO) Params"+ serverResponse);
+		logger.info("Exit addWarehouse(WarehouseDTO warehouseDTO) return:"+ serverResponse);
 		return serverResponse;
 	}
 }

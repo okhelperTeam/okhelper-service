@@ -31,7 +31,7 @@ public class SupplierServiceImpl implements SupplierService {
 	/*
 	* @Author zhangxin_an
 	* @Date 2018/4/24 14:09
-	* @Params []
+	* @Params: []
 	* @Return java.util.List<com.ok.okhelper.pojo.vo.SupplierVo>
 	* @Description:查询当前店铺所有供应商
 	*/
@@ -45,14 +45,14 @@ public class SupplierServiceImpl implements SupplierService {
 		List<Supplier> supplierList = supplierMapper.getSupplierByStoreId(storeId);
 		
 		
-		logger.info("Exit getSupplierList() Params"+supplierList);
+		logger.info("Exit getSupplierList() Params:"+supplierList);
 		return supplierList;
 	}
 	
 	@Override
 	public Supplier getSupplierById(Long supplierId) {
 		
-		logger.info("Enter getSupplierById() Params"+ supplierId);
+		logger.info("Enter getSupplierById() Params:"+ supplierId);
 		if(supplierId == null){
 			throw new IllegalException("参数异常");
 		}
@@ -63,7 +63,7 @@ public class SupplierServiceImpl implements SupplierService {
 			
 		}
 		
-		logger.info("Exit getSupplierById() Params"+ supplier);
+		logger.info("Exit getSupplierById() return:"+ supplier);
 		return supplier;
 	}
 	
@@ -71,14 +71,14 @@ public class SupplierServiceImpl implements SupplierService {
 	/*
 	* @Author zhangxin_an
 	* @Date 2018/4/24 14:37
-	* @Params [supplierDto]
+	* @Params: [supplierDto]
 	* @Return com.ok.okhelper.common.ServerResponse
 	* @Description:更新供应商信息
 	*/
 	@Override
 	public ServerResponse updateSupplier(SupplierDto supplierDto) {
 		
-		logger.info("Enter updateSupplier(SupplierDto supplierDto) Params"+ supplierDto);
+		logger.info("Enter updateSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
 		if( !ObjectUtils.anyNotNull(supplierDto)){
 			logger.debug("supplierDto 为空");
 			throw  new IllegalException("参数为空");
@@ -104,20 +104,20 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		
 		
-		logger.info("Exit updateSupplier(SupplierDto supplierDto) Params"+serverResponse);
+		logger.info("Exit updateSupplier(SupplierDto supplierDto) return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
 	* @Author zhangxin_an
 	* @Date 2018/4/24 14:49
-	* @Params [supplierId]
+	* @Params: [supplierId]
 	* @Return com.ok.okhelper.common.ServerResponse
 	* @Description:删除供应商
 	*/
 	@Override
 	public ServerResponse deleteSupplierById(Long supplierId) {
 		
-		logger.info("Enter deleteSupplierById(Long supplierId) Params"+ supplierId);
+		logger.info("Enter deleteSupplierById(Long supplierId) Params:"+ supplierId);
 		if(supplierId == null){
 			throw new IllegalException("请求参数异常");
 		}
@@ -138,19 +138,19 @@ public class SupplierServiceImpl implements SupplierService {
 			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
 		}
 		
-		logger.info("Exit deleteSupplierById(Long supplierId)  Params"+serverResponse);
+		logger.info("Exit deleteSupplierById(Long supplierId)  return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
 	* @Author zhangxin_an
 	* @Date 2018/4/24 14:49
-	* @Params [supplierDto]
+	* @Params: [supplierDto]
 	* @Return com.ok.okhelper.common.ServerResponse
 	* @Description:添加供应商
 	*/
 	@Override
 	public ServerResponse addSupplier(SupplierDto supplierDto) {
-		logger.info("Enter addSupplier(SupplierDto supplierDto) Params"+ supplierDto);
+		logger.info("Enter addSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
 		
 		if( !ObjectUtils.anyNotNull(supplierDto)){
 			logger.debug("supplierDto 为空");
@@ -181,7 +181,7 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		
 		
-		logger.info("Exit addSupplier(SupplierDto supplierDto) Params"+ serverResponse);
+		logger.info("Exit addSupplier(SupplierDto supplierDto) return:"+ serverResponse);
 		return serverResponse;
 	}
 }
