@@ -7,6 +7,7 @@ import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.StoreMapper;
 import com.ok.okhelper.dao.UserMapper;
+import com.ok.okhelper.exception.ConflictException;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.bo.RoleBo;
 import com.ok.okhelper.pojo.bo.UserBo;
@@ -201,7 +202,7 @@ public class UserServiceImpl implements UserService {
         if (CollectionUtils.isEmpty(userMapper.checkUserName(userName))) {
             return ServerResponse.createBySuccess();
         }
-        throw new IllegalException("用户名重复");
+        throw new ConflictException("用户名重复");
     }
 
     /*

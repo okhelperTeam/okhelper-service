@@ -4,8 +4,6 @@ package com.ok.okhelper.exception;
 import com.ok.okhelper.common.ServerResponse;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +18,7 @@ import javax.servlet.ServletRequest;
 
 /**
  * Created by zc on 2018/4/10.
+ * 全局异常处理
  */
 
 @RestController
