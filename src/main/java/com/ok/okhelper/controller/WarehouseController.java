@@ -6,6 +6,7 @@ package com.ok.okhelper.controller;
 *Data:Created in 9:53 2018/4/24
 */
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.WarehouseDTO;
 import com.ok.okhelper.pojo.vo.WarehouseVo;
@@ -35,10 +36,10 @@ public class WarehouseController {
 	@RequiresPermissions("warehouse:view")
 	@ApiOperation(value = "查询所有仓库",notes = "查询当前店铺所有仓库")
 	@GetMapping("/warehouse")
-	public ServerResponse<List<WarehouseVo>> getWarehouseList(){
+	public ServerResponse<PageModel<WarehouseVo>> getWarehouseList(@Valid PageModel pageModel){
 		logger.info("Enter getWarehouseList()");
 		
-		List<WarehouseVo> warehouseVoList = wareHouseService.getWarehouseList();
+		PageModel<WarehouseVo> warehouseVoList = wareHouseService.getWarehouseList(pageModel);
 		
 		return ServerResponse.createBySuccess(warehouseVoList);
 		

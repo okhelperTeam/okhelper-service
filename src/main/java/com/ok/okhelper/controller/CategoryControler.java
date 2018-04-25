@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,10 +30,10 @@ public class CategoryControler {
 	CategoryService categoryService;
 	
 	@ApiOperation(value = "分类查询",notes = "分类查询，父类包含子类")
-	@GetMapping("/categorys")
-	public ServerResponse<List<CategoryVo>> getAllCategory(){
+	@GetMapping("/categorys/{id}")
+	public ServerResponse<List<CategoryVo>> getAllCategory(@PathVariable long id){
 		logger.info("Enter getAllCategory() params：");
-		List<CategoryVo> categoryVoList = categoryService.getCategoryList();
+		List<CategoryVo> categoryVoList = categoryService.getCategoryList(id);
 		
 		logger.info("Exit getAllCategory() return："+categoryVoList);
 		return ServerResponse.createBySuccess(categoryVoList);

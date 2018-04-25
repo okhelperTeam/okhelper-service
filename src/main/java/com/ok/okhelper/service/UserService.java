@@ -1,5 +1,6 @@
 package com.ok.okhelper.service;
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
@@ -41,7 +42,13 @@ public interface UserService {
     ServerResponse checkUserName(String userName);
     
     ServerResponse getUserListByStoreId(String token);
-    
+    /*
+     * @Author zhangxin_an
+     * @Date 2018/4/25 8:47
+     * @Params [userDto]
+     * @Return com.ok.okhelper.common.ServerResponse
+     * @Description:
+     */
     ServerResponse addEmployee(UserDto userDto);
 
     ServerResponse changeRole(Long employeeId, List<Long> roles);
@@ -51,6 +58,7 @@ public interface UserService {
     * @Params []  
     * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>  
     * @Description:获取员工
-    */  
-    List<EmployeeVo> getEmployeeList();
+    */
+    PageModel<EmployeeVo> getEmployeeList(PageModel pageModel);
+
 }

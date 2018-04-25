@@ -26,7 +26,7 @@ public class CategoryServiceTest {
 	
 	@Test
 	public void testCategory(){
-		List<CategoryVo> categoryVos =  categoryService.getCategoryList();
+		List<CategoryVo> categoryVos =  categoryService.getCategoryList(0);
 		categoryVos.forEach(categoryVo -> {
 			System.out.println(categoryVo.getCategoryName());
 		});

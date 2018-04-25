@@ -1,6 +1,8 @@
 package com.ok.okhelper.controller;
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.MyInfoDto;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
@@ -84,10 +86,10 @@ public class UserController {
         return userService.addEmployee(userDto);
     }
 
-    @GetMapping("/employee")
+    @GetMapping("user/employee")
     @ApiOperation(value = "获取员工", notes = "店长获取该店所有员工")
-    public ServerResponse<List<EmployeeVo>> getEmployeeList() {
-        List<EmployeeVo> employeeVoList = userService.getEmployeeList();
+    public ServerResponse<PageModel<EmployeeVo>> getEmployeeList(@Valid PageModel pageModel) {
+        PageModel<EmployeeVo> employeeVoList = userService.getEmployeeList(pageModel);
         return ServerResponse.createBySuccess(employeeVoList);
     }
 
@@ -100,6 +102,10 @@ public class UserController {
     }
 
 
+    
+    
+    
+    
     //暂时不用
     @ApiIgnore
     @RequiresPermissions("user/userList:get")

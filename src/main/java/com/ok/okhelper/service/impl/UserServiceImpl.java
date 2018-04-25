@@ -1,5 +1,8 @@
 package com.ok.okhelper.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.RoleMapper;
 import com.ok.okhelper.dao.StoreMapper;
@@ -67,6 +70,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUserByUserName(username);
     }
 
+    /**
+    * @Author zhangxin_an
+    * @Date 2018/4/25 8:54
+    * @Params [userName, password, ip]
+    * @Return com.ok.okhelper.common.ServerResponse
+    * @Description:员工登陆
+    */
     @Override
     public ServerResponse loginUser(String userName, String password, String ip) {
 
@@ -93,7 +103,7 @@ public class UserServiceImpl implements UserService {
             throw new AuthenticationException("密码不正确");
         }
 
-        Long userId = user.getId();
+//        Long userId = user.getId();
 
         user.setLastLoginIp(ip);
         userMapper.updateByPrimaryKeySelective(user);
@@ -331,9 +341,14 @@ public class UserServiceImpl implements UserService {
    * @Description:获取员工
    */
     @Override
-    public List<EmployeeVo> getEmployeeList() {
+    public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel) {
         
         logger.info("Enter getEmployeeList()");
+        //启动分页
+        PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+        
+        
+        
         //获取当前登陆者的Id和店铺Id
         Long storeId = JWTUtil.getStoreId();
         Long bossId = JWTUtil.getUserId();
@@ -356,27 +371,30 @@ public class UserServiceImpl implements UserService {
             EmployeeVo employeeVo = new EmployeeVo();
             
             List<RoleBo> roleBos = new ArrayList<>(1);
-            
+    
+            BeanUtils.copyProperties(userBo,employeeVo);
             List<Role> roles = roleMapper.findRoleByUserId(userBo.getId());
-            if(CollectionUtils.isEmpty(roles)){
-                return;
+            if( !CollectionUtils.isEmpty(roles)){
+                roles.forEach(r->{
+                    RoleBo roleBo = new RoleBo();
+                    BeanUtils.copyProperties(r,roleBo);
+                    roleBos.add(roleBo);
+                });
+                employeeVo.setRoleList(roleBos);
             }
             
-            roles.forEach(r->{
-                RoleBo roleBo = new RoleBo();
-                BeanUtils.copyProperties(r,roleBo);
-                roleBos.add(roleBo);
-            });
-            employeeVo.setRoleList(roleBos);
             
-            BeanUtils.copyProperties(userBo,employeeVo);
+            
             employeeVoList.add(employeeVo);
         });
     
-        logger.info("Exit getEmployeeList()"+employeeVoList);
-        
-        return employeeVoList;
+    
+    
+        PageInfo<EmployeeVo> pageInfo = new PageInfo<>(employeeVoList);
+    
+        logger.info("Exit getEmployeeList()"+pageInfo);
+    
+        return PageModel.convertToPageModel(pageInfo);
     
     }
-    
 }
