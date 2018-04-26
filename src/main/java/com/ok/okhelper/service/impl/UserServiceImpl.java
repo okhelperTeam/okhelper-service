@@ -167,6 +167,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         BeanUtils.copyProperties(userAndStoreDto, user);
+        user.setUserPhone(user.getUserName());
 
         Store store = new Store();
         BeanUtils.copyProperties(userAndStoreDto, store);
@@ -176,6 +177,7 @@ public class UserServiceImpl implements UserService {
             userMapper.insertSelective(user);
             Long userId = user.getId();
             store.setLeaderId(userId);
+            store.setOperator(userId);
             storeMapper.insertSelective(store);
             user.setStoreId(store.getId());
             userMapper.updateByPrimaryKeySelective(user);
@@ -277,9 +279,9 @@ public class UserServiceImpl implements UserService {
 
 
         User user = new User();
+        BeanUtils.copyProperties(userDto, user);
         user.setStoreId(storeId);
         user.setOperator(userId);
-        BeanUtils.copyProperties(userDto, user);
 
 
         try {

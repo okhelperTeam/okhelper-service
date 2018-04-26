@@ -61,6 +61,12 @@ public class UserDto {
     
     @ApiModelProperty(value = "头像")
     private String userAvatar;
+
+    /**
+     * 手机号
+     */
+    @ApiModelProperty(value = "手机号")
+    private String userPhone;
     
     /**
      * 邮箱

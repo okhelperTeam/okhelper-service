@@ -17,7 +17,7 @@ public class UserAndStoreDto {
 	/**
 	 * 登录账号
 	 */
-	@ApiModelProperty(value = "用户名",required = true)
+	@ApiModelProperty(value = "用户名(自动复制一份到店长手机号)", required = true)
 	@NotNull(message = "用户名不能为空")
 	private String userName;
 	
@@ -110,11 +110,6 @@ public class UserAndStoreDto {
 	 */
 	@ApiModelProperty(value = "店铺描述")
 	private String description;
-	
-	/**
-	 * 操作者
-	 */
-	private Long operator;
 	
 	/**
 	 * 负责人
