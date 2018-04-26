@@ -52,7 +52,7 @@ public class PageModel<T> {
     private List<T> results = new ArrayList<>();
 
 
-    public static PageModel convertToPageModel(PageInfo pageResult) {
+    public static <T> PageModel<T> convertToPageModel(PageInfo pageResult) {
         PageModel pageModel = new PageModel();
         if (pageResult.getSize() == 0 && pageResult.getPageNum() > 1) {
             throw new IllegalException("没有更多了");

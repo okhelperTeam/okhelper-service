@@ -3,6 +3,7 @@ package com.ok.okhelper.controller;
 import com.google.common.collect.Maps;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.vo.UploadVo;
 import com.ok.okhelper.service.UploadService;
 import com.ok.okhelper.until.PropertiesUtil;
 import io.swagger.annotations.Api;
@@ -35,7 +36,7 @@ public class UploadController {
     @PostMapping(value = "/upload/img")
     @ApiOperation(value = "上传图片(包括商品图片、分类图片等等，用户头像请转到头像上传接口)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
-    public ServerResponse uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public ServerResponse<UploadVo> uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
 
             //定义临时文件夹
@@ -46,11 +47,9 @@ public class UploadController {
             String url =
                     PropertiesUtil.getProperty("cos.server.http.prefix") + PropertiesUtil.getProperty("cos.path.img") + targetFileName;
 
-            Map fileMap = Maps.newHashMap();
-            fileMap.put("uri", targetFileName);
-            fileMap.put("url", url);
+            UploadVo uploadVo = new UploadVo(targetFileName, url);
 
-            return ServerResponse.createBySuccess(fileMap);
+            return ServerResponse.createBySuccess(uploadVo);
         } else {
             throw new IllegalException("文件是空的");
         }
@@ -60,7 +59,7 @@ public class UploadController {
     @PostMapping(value = "/upload/avator")
     @ApiOperation(value = "头像上传", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
-    public ServerResponse uploadAvator(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public ServerResponse<UploadVo> uploadAvator(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
 
             //定义临时文件夹
@@ -71,11 +70,9 @@ public class UploadController {
             String url =
                     PropertiesUtil.getProperty("cos.server.http.prefix") + PropertiesUtil.getProperty("cos.path.avator") + targetFileName;
 
-            Map fileMap = Maps.newHashMap();
-            fileMap.put("uri", targetFileName);
-            fileMap.put("url", url);
+            UploadVo uploadVo = new UploadVo(targetFileName, url);
 
-            return ServerResponse.createBySuccess(fileMap);
+            return ServerResponse.createBySuccess(uploadVo);
         } else {
             throw new IllegalException("请求不是文件");
         }
@@ -86,7 +83,7 @@ public class UploadController {
     @PostMapping(value = "/upload/money_code")
     @ApiOperation(value = "收款码上传(支付宝/微信)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
-    public ServerResponse uploadMoneyCode(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public ServerResponse<UploadVo> uploadMoneyCode(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
 
             //定义临时文件夹
@@ -97,11 +94,9 @@ public class UploadController {
             String url =
                     PropertiesUtil.getProperty("cos.server.http.prefix") + PropertiesUtil.getProperty("cos.path.money-code") + targetFileName;
 
-            Map fileMap = Maps.newHashMap();
-            fileMap.put("uri", targetFileName);
-            fileMap.put("url", url);
+            UploadVo uploadVo = new UploadVo(targetFileName, url);
 
-            return ServerResponse.createBySuccess(fileMap);
+            return ServerResponse.createBySuccess(uploadVo);
         } else {
             throw new IllegalException("请求不是文件");
         }
