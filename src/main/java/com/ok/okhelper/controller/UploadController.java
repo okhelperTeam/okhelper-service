@@ -84,7 +84,7 @@ public class UploadController {
 
 
     @PostMapping(value = "/upload/money_code")
-    @ApiOperation(value = "收款码上传", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
+    @ApiOperation(value = "收款码上传(支付宝/微信)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse uploadMoneyCode(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty()) {
