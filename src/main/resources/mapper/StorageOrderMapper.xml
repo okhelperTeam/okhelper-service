@@ -9,7 +9,7 @@
             <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
             <arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="supplier_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="stockiner" javaType="java.lang.Long" jdbcType="BIGINT"/>
             <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>

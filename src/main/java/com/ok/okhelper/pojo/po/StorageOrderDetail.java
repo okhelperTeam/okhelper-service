@@ -14,50 +14,52 @@ public class StorageOrderDetail {
     private Long id;
 
     /**
-     * 供应商Id
+     * 供应商Id 
      */
     @Column(name = "supplier_id")
     private Long supplierId;
 
     /**
-     * 入库Id
+     * 入库Id 
      */
     @Column(name = "storage_in_id")
     private Long storageInId;
 
     /**
-     * 仓库Id
+     * 仓库Id 
      */
     @Column(name = "warehouse_id")
     private Long warehouseId;
 
     /**
-     * 商品Id
+     * 商品Id 
      */
-    @Column(name = "goods_id")
-    private Long goodsId;
+    @Column(name = "product_id")
+    private Long productId;
 
     /**
-     * 商品数量(最小单位)
+     * 商品数量(最小单位) 
      */
-    private Integer number;
+    @Column(name = "storage_count")
+    private Integer storageCount;
 
     /**
-     * 商品单价 (最小单位)
+     * 进价 (最小单位)
      */
-    private BigDecimal price;
+    @Column(name = "storage_price")
+    private BigDecimal storagePrice;
 
     /**
      * 生产日期
      */
-    @Column(name = "goods_birthday")
-    private Date goodsBirthday;
+    @Column(name = "product_date")
+    private Date productDate;
 
     /**
      * 保质期
      */
-    @Column(name = "goods_shelf_life")
-    private Integer goodsShelfLife;
+    @Column(name = "shelf_life")
+    private Integer shelfLife;
 
     /**
      * 备注
@@ -76,16 +78,16 @@ public class StorageOrderDetail {
     @Column(name = "update_time")
     private Date updateTime;
 
-    public StorageOrderDetail(Long id, Long supplierId, Long storageInId, Long warehouseId, Long goodsId, Integer number, BigDecimal price, Date goodsBirthday, Integer goodsShelfLife, String remarks, Date createTime, Date updateTime) {
+    public StorageOrderDetail(Long id, Long supplierId, Long storageInId, Long warehouseId, Long productId, Integer storageCount, BigDecimal storagePrice, Date productDate, Integer shelfLife, String remarks, Date createTime, Date updateTime) {
         this.id = id;
         this.supplierId = supplierId;
         this.storageInId = storageInId;
         this.warehouseId = warehouseId;
-        this.goodsId = goodsId;
-        this.number = number;
-        this.price = price;
-        this.goodsBirthday = goodsBirthday;
-        this.goodsShelfLife = goodsShelfLife;
+        this.productId = productId;
+        this.storageCount = storageCount;
+        this.storagePrice = storagePrice;
+        this.productDate = productDate;
+        this.shelfLife = shelfLife;
         this.remarks = remarks;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -114,147 +116,147 @@ public class StorageOrderDetail {
     }
 
     /**
-     * 获取供应商Id
+     * 获取供应商Id 
      *
-     * @return supplier_id - 供应商Id
+     * @return supplier_id - 供应商Id 
      */
     public Long getSupplierId() {
         return supplierId;
     }
 
     /**
-     * 设置供应商Id
+     * 设置供应商Id 
      *
-     * @param supplierId 供应商Id
+     * @param supplierId 供应商Id 
      */
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
     }
 
     /**
-     * 获取入库Id
+     * 获取入库Id 
      *
-     * @return storage_in_id - 入库Id
+     * @return storage_in_id - 入库Id 
      */
     public Long getStorageInId() {
         return storageInId;
     }
 
     /**
-     * 设置入库Id
+     * 设置入库Id 
      *
-     * @param storageInId 入库Id
+     * @param storageInId 入库Id 
      */
     public void setStorageInId(Long storageInId) {
         this.storageInId = storageInId;
     }
 
     /**
-     * 获取仓库Id
+     * 获取仓库Id 
      *
-     * @return warehouse_id - 仓库Id
+     * @return warehouse_id - 仓库Id 
      */
     public Long getWarehouseId() {
         return warehouseId;
     }
 
     /**
-     * 设置仓库Id
+     * 设置仓库Id 
      *
-     * @param warehouseId 仓库Id
+     * @param warehouseId 仓库Id 
      */
     public void setWarehouseId(Long warehouseId) {
         this.warehouseId = warehouseId;
     }
 
     /**
-     * 获取商品Id
+     * 获取商品Id 
      *
-     * @return goods_id - 商品Id
+     * @return product_id - 商品Id 
      */
-    public Long getGoodsId() {
-        return goodsId;
+    public Long getProductId() {
+        return productId;
     }
 
     /**
-     * 设置商品Id
+     * 设置商品Id 
      *
-     * @param goodsId 商品Id
+     * @param productId 商品Id 
      */
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     /**
-     * 获取商品数量(最小单位)
+     * 获取商品数量(最小单位) 
      *
-     * @return number - 商品数量(最小单位)
+     * @return storage_count - 商品数量(最小单位) 
      */
-    public Integer getNumber() {
-        return number;
+    public Integer getStorageCount() {
+        return storageCount;
     }
 
     /**
-     * 设置商品数量(最小单位)
+     * 设置商品数量(最小单位) 
      *
-     * @param number 商品数量(最小单位)
+     * @param storageCount 商品数量(最小单位) 
      */
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setStorageCount(Integer storageCount) {
+        this.storageCount = storageCount;
     }
 
     /**
-     * 获取商品单价 (最小单位)
+     * 获取进价 (最小单位)
      *
-     * @return price - 商品单价 (最小单位)
+     * @return storage_price - 进价 (最小单位)
      */
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getStoragePrice() {
+        return storagePrice;
     }
 
     /**
-     * 设置商品单价 (最小单位)
+     * 设置进价 (最小单位)
      *
-     * @param price 商品单价 (最小单位)
+     * @param storagePrice 进价 (最小单位)
      */
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setStoragePrice(BigDecimal storagePrice) {
+        this.storagePrice = storagePrice;
     }
 
     /**
      * 获取生产日期
      *
-     * @return goods_birthday - 生产日期
+     * @return product_date - 生产日期
      */
-    public Date getGoodsBirthday() {
-        return goodsBirthday;
+    public Date getProductDate() {
+        return productDate;
     }
 
     /**
      * 设置生产日期
      *
-     * @param goodsBirthday 生产日期
+     * @param productDate 生产日期
      */
-    public void setGoodsBirthday(Date goodsBirthday) {
-        this.goodsBirthday = goodsBirthday;
+    public void setProductDate(Date productDate) {
+        this.productDate = productDate;
     }
 
     /**
      * 获取保质期
      *
-     * @return goods_shelf_life - 保质期
+     * @return shelf_life - 保质期
      */
-    public Integer getGoodsShelfLife() {
-        return goodsShelfLife;
+    public Integer getShelfLife() {
+        return shelfLife;
     }
 
     /**
      * 设置保质期
      *
-     * @param goodsShelfLife 保质期
+     * @param shelfLife 保质期
      */
-    public void setGoodsShelfLife(Integer goodsShelfLife) {
-        this.goodsShelfLife = goodsShelfLife;
+    public void setShelfLife(Integer shelfLife) {
+        this.shelfLife = shelfLife;
     }
 
     /**

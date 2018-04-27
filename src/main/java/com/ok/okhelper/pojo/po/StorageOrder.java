@@ -19,15 +19,15 @@ public class StorageOrder {
     private String orderNumber;
 
     /**
-     * 供应商Id
+     * 供应商Id 
      */
     @Column(name = "supplier_id")
     private Long supplierId;
 
     /**
-     * 创建者(入库人Id )
+     * 入库员
      */
-    private Long operator;
+    private Long stockiner;
 
     /**
      * 备注
@@ -47,16 +47,16 @@ public class StorageOrder {
     private Date updateTime;
 
     /**
-     * 所属商店Id
+     * 所属商店Id 
      */
     @Column(name = "store_id")
     private Long storeId;
 
-    public StorageOrder(Long id, String orderNumber, Long supplierId, Long operator, String remarks, Date createTime, Date updateTime, Long storeId) {
+    public StorageOrder(Long id, String orderNumber, Long supplierId, Long stockiner, String remarks, Date createTime, Date updateTime, Long storeId) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.supplierId = supplierId;
-        this.operator = operator;
+        this.stockiner = stockiner;
         this.remarks = remarks;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -104,39 +104,39 @@ public class StorageOrder {
     }
 
     /**
-     * 获取供应商Id
+     * 获取供应商Id 
      *
-     * @return supplier_id - 供应商Id
+     * @return supplier_id - 供应商Id 
      */
     public Long getSupplierId() {
         return supplierId;
     }
 
     /**
-     * 设置供应商Id
+     * 设置供应商Id 
      *
-     * @param supplierId 供应商Id
+     * @param supplierId 供应商Id 
      */
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
     }
 
     /**
-     * 获取创建者(入库人Id )
+     * 获取入库员
      *
-     * @return operator - 创建者(入库人Id )
+     * @return stockiner - 入库员
      */
-    public Long getOperator() {
-        return operator;
+    public Long getStockiner() {
+        return stockiner;
     }
 
     /**
-     * 设置创建者(入库人Id )
+     * 设置入库员
      *
-     * @param operator 创建者(入库人Id )
+     * @param stockiner 入库员
      */
-    public void setOperator(Long operator) {
-        this.operator = operator;
+    public void setStockiner(Long stockiner) {
+        this.stockiner = stockiner;
     }
 
     /**
@@ -194,18 +194,18 @@ public class StorageOrder {
     }
 
     /**
-     * 获取所属商店Id
+     * 获取所属商店Id 
      *
-     * @return store_id - 所属商店Id
+     * @return store_id - 所属商店Id 
      */
     public Long getStoreId() {
         return storeId;
     }
 
     /**
-     * 设置所属商店Id
+     * 设置所属商店Id 
      *
-     * @param storeId 所属商店Id
+     * @param storeId 所属商店Id 
      */
     public void setStoreId(Long storeId) {
         this.storeId = storeId;

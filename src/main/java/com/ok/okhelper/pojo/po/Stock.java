@@ -12,34 +12,34 @@ public class Stock {
     private Long id;
 
     /**
-     * 仓库Id
+     * 仓库Id 
      */
     @Column(name = "warehouse_id")
     private Long warehouseId;
 
     /**
-     * 商品Id
+     * 商品Id 
      */
-    @Column(name = "goods_id")
-    private Long goodsId;
+    @Column(name = "product_id")
+    private Long productId;
 
     /**
      * 生产日期
      */
-    @Column(name = "goods_birthday")
-    private Date goodsBirthday;
+    @Column(name = "product_date")
+    private Date productDate;
 
     /**
      * 保质期
      */
-    @Column(name = "goods_shelf_life")
-    private Integer goodsShelfLife;
+    @Column(name = "shelf_life")
+    private Integer shelfLife;
 
     /**
-     * 库存数量
+     * 库存数量 
      */
-    @Column(name = "stock_number")
-    private Long stockNumber;
+    @Column(name = "stock_count")
+    private Long stockCount;
 
     /**
      * 备注
@@ -64,18 +64,18 @@ public class Stock {
     private Date updateTime;
 
     /**
-     * 所属商店Id
+     * 所属商店Id 
      */
     @Column(name = "store_id")
     private Long storeId;
 
-    public Stock(Long id, Long warehouseId, Long goodsId, Date goodsBirthday, Integer goodsShelfLife, Long stockNumber, String remarks, Long operator, Date createTime, Date updateTime, Long storeId) {
+    public Stock(Long id, Long warehouseId, Long productId, Date productDate, Integer shelfLife, Long stockCount, String remarks, Long operator, Date createTime, Date updateTime, Long storeId) {
         this.id = id;
         this.warehouseId = warehouseId;
-        this.goodsId = goodsId;
-        this.goodsBirthday = goodsBirthday;
-        this.goodsShelfLife = goodsShelfLife;
-        this.stockNumber = stockNumber;
+        this.productId = productId;
+        this.productDate = productDate;
+        this.shelfLife = shelfLife;
+        this.stockCount = stockCount;
         this.remarks = remarks;
         this.operator = operator;
         this.createTime = createTime;
@@ -106,93 +106,93 @@ public class Stock {
     }
 
     /**
-     * 获取仓库Id
+     * 获取仓库Id 
      *
-     * @return warehouse_id - 仓库Id
+     * @return warehouse_id - 仓库Id 
      */
     public Long getWarehouseId() {
         return warehouseId;
     }
 
     /**
-     * 设置仓库Id
+     * 设置仓库Id 
      *
-     * @param warehouseId 仓库Id
+     * @param warehouseId 仓库Id 
      */
     public void setWarehouseId(Long warehouseId) {
         this.warehouseId = warehouseId;
     }
 
     /**
-     * 获取商品Id
+     * 获取商品Id 
      *
-     * @return goods_id - 商品Id
+     * @return product_id - 商品Id 
      */
-    public Long getGoodsId() {
-        return goodsId;
+    public Long getProductId() {
+        return productId;
     }
 
     /**
-     * 设置商品Id
+     * 设置商品Id 
      *
-     * @param goodsId 商品Id
+     * @param productId 商品Id 
      */
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     /**
      * 获取生产日期
      *
-     * @return goods_birthday - 生产日期
+     * @return product_date - 生产日期
      */
-    public Date getGoodsBirthday() {
-        return goodsBirthday;
+    public Date getProductDate() {
+        return productDate;
     }
 
     /**
      * 设置生产日期
      *
-     * @param goodsBirthday 生产日期
+     * @param productDate 生产日期
      */
-    public void setGoodsBirthday(Date goodsBirthday) {
-        this.goodsBirthday = goodsBirthday;
+    public void setProductDate(Date productDate) {
+        this.productDate = productDate;
     }
 
     /**
      * 获取保质期
      *
-     * @return goods_shelf_life - 保质期
+     * @return shelf_life - 保质期
      */
-    public Integer getGoodsShelfLife() {
-        return goodsShelfLife;
+    public Integer getShelfLife() {
+        return shelfLife;
     }
 
     /**
      * 设置保质期
      *
-     * @param goodsShelfLife 保质期
+     * @param shelfLife 保质期
      */
-    public void setGoodsShelfLife(Integer goodsShelfLife) {
-        this.goodsShelfLife = goodsShelfLife;
+    public void setShelfLife(Integer shelfLife) {
+        this.shelfLife = shelfLife;
     }
 
     /**
-     * 获取库存数量
+     * 获取库存数量 
      *
-     * @return stock_number - 库存数量
+     * @return stock_count - 库存数量 
      */
-    public Long getStockNumber() {
-        return stockNumber;
+    public Long getStockCount() {
+        return stockCount;
     }
 
     /**
-     * 设置库存数量
+     * 设置库存数量 
      *
-     * @param stockNumber 库存数量
+     * @param stockCount 库存数量 
      */
-    public void setStockNumber(Long stockNumber) {
-        this.stockNumber = stockNumber;
+    public void setStockCount(Long stockCount) {
+        this.stockCount = stockCount;
     }
 
     /**
@@ -268,18 +268,18 @@ public class Stock {
     }
 
     /**
-     * 获取所属商店Id
+     * 获取所属商店Id 
      *
-     * @return store_id - 所属商店Id
+     * @return store_id - 所属商店Id 
      */
     public Long getStoreId() {
         return storeId;
     }
 
     /**
-     * 设置所属商店Id
+     * 设置所属商店Id 
      *
-     * @param storeId 所属商店Id
+     * @param storeId 所属商店Id 
      */
     public void setStoreId(Long storeId) {
         this.storeId = storeId;

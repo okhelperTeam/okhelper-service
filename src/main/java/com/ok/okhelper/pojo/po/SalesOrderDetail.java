@@ -14,44 +14,46 @@ public class SalesOrderDetail {
     private Long id;
 
     /**
-     * 供应商Id
-     */
-    @Column(name = "supplier_id")
-    private Long supplierId;
-
-    /**
-     * 销售Id
+     * 销售Id 
      */
     @Column(name = "sales_order_id")
     private Long salesOrderId;
 
     /**
-     * 仓库Id
+     * 商品Id 
      */
-    @Column(name = "warehouse_id")
-    private Long warehouseId;
+    @Column(name = "product_id")
+    private Long productId;
 
     /**
-     * 商品Id
+     * 商品名
      */
-    @Column(name = "goods_id")
-    private Long goodsId;
+    @Column(name = "product_name")
+    private String productName;
+
+    /**
+     * 商品标题
+     */
+    @Column(name = "product_title")
+    private String productTitle;
+
+    /**
+     * 商品主图
+     */
+    @Column(name = "main_img")
+    private String mainImg;
 
     /**
      * 商品数量(最小单位)
      */
-    private Integer number;
+    @Column(name = "sales_count")
+    private Integer salesCount;
 
     /**
-     * 商品单价 (最小单位)
+     * 商品单价 (销售时单价&最小单位)
      */
-    private BigDecimal price;
-
-    /**
-     * 生产日期
-     */
-    @Column(name = "goods_birthday")
-    private Date goodsBirthday;
+    @Column(name = "sales_price")
+    private BigDecimal salesPrice;
 
     /**
      * 备注
@@ -70,15 +72,15 @@ public class SalesOrderDetail {
     @Column(name = "update_time")
     private Date updateTime;
 
-    public SalesOrderDetail(Long id, Long supplierId, Long salesOrderId, Long warehouseId, Long goodsId, Integer number, BigDecimal price, Date goodsBirthday, String remarks, Date createTime, Date updateTime) {
+    public SalesOrderDetail(Long id, Long salesOrderId, Long productId, String productName, String productTitle, String mainImg, Integer salesCount, BigDecimal salesPrice, String remarks, Date createTime, Date updateTime) {
         this.id = id;
-        this.supplierId = supplierId;
         this.salesOrderId = salesOrderId;
-        this.warehouseId = warehouseId;
-        this.goodsId = goodsId;
-        this.number = number;
-        this.price = price;
-        this.goodsBirthday = goodsBirthday;
+        this.productId = productId;
+        this.productName = productName;
+        this.productTitle = productTitle;
+        this.mainImg = mainImg;
+        this.salesCount = salesCount;
+        this.salesPrice = salesPrice;
         this.remarks = remarks;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -107,129 +109,129 @@ public class SalesOrderDetail {
     }
 
     /**
-     * 获取供应商Id
+     * 获取销售Id 
      *
-     * @return supplier_id - 供应商Id
-     */
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    /**
-     * 设置供应商Id
-     *
-     * @param supplierId 供应商Id
-     */
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    /**
-     * 获取销售Id
-     *
-     * @return sales_order_id - 销售Id
+     * @return sales_order_id - 销售Id 
      */
     public Long getSalesOrderId() {
         return salesOrderId;
     }
 
     /**
-     * 设置销售Id
+     * 设置销售Id 
      *
-     * @param salesOrderId 销售Id
+     * @param salesOrderId 销售Id 
      */
     public void setSalesOrderId(Long salesOrderId) {
         this.salesOrderId = salesOrderId;
     }
 
     /**
-     * 获取仓库Id
+     * 获取商品Id 
      *
-     * @return warehouse_id - 仓库Id
+     * @return product_id - 商品Id 
      */
-    public Long getWarehouseId() {
-        return warehouseId;
+    public Long getProductId() {
+        return productId;
     }
 
     /**
-     * 设置仓库Id
+     * 设置商品Id 
      *
-     * @param warehouseId 仓库Id
+     * @param productId 商品Id 
      */
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     /**
-     * 获取商品Id
+     * 获取商品名
      *
-     * @return goods_id - 商品Id
+     * @return product_name - 商品名
      */
-    public Long getGoodsId() {
-        return goodsId;
+    public String getProductName() {
+        return productName;
     }
 
     /**
-     * 设置商品Id
+     * 设置商品名
      *
-     * @param goodsId 商品Id
+     * @param productName 商品名
      */
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setProductName(String productName) {
+        this.productName = productName == null ? null : productName.trim();
+    }
+
+    /**
+     * 获取商品标题
+     *
+     * @return product_title - 商品标题
+     */
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    /**
+     * 设置商品标题
+     *
+     * @param productTitle 商品标题
+     */
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle == null ? null : productTitle.trim();
+    }
+
+    /**
+     * 获取商品主图
+     *
+     * @return main_img - 商品主图
+     */
+    public String getMainImg() {
+        return mainImg;
+    }
+
+    /**
+     * 设置商品主图
+     *
+     * @param mainImg 商品主图
+     */
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg == null ? null : mainImg.trim();
     }
 
     /**
      * 获取商品数量(最小单位)
      *
-     * @return number - 商品数量(最小单位)
+     * @return sales_count - 商品数量(最小单位)
      */
-    public Integer getNumber() {
-        return number;
+    public Integer getSalesCount() {
+        return salesCount;
     }
 
     /**
      * 设置商品数量(最小单位)
      *
-     * @param number 商品数量(最小单位)
+     * @param salesCount 商品数量(最小单位)
      */
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setSalesCount(Integer salesCount) {
+        this.salesCount = salesCount;
     }
 
     /**
-     * 获取商品单价 (最小单位)
+     * 获取商品单价 (销售时单价&最小单位)
      *
-     * @return price - 商品单价 (最小单位)
+     * @return sales_price - 商品单价 (销售时单价&最小单位)
      */
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getSalesPrice() {
+        return salesPrice;
     }
 
     /**
-     * 设置商品单价 (最小单位)
+     * 设置商品单价 (销售时单价&最小单位)
      *
-     * @param price 商品单价 (最小单位)
+     * @param salesPrice 商品单价 (销售时单价&最小单位)
      */
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    /**
-     * 获取生产日期
-     *
-     * @return goods_birthday - 生产日期
-     */
-    public Date getGoodsBirthday() {
-        return goodsBirthday;
-    }
-
-    /**
-     * 设置生产日期
-     *
-     * @param goodsBirthday 生产日期
-     */
-    public void setGoodsBirthday(Date goodsBirthday) {
-        this.goodsBirthday = goodsBirthday;
+    public void setSalesPrice(BigDecimal salesPrice) {
+        this.salesPrice = salesPrice;
     }
 
     /**

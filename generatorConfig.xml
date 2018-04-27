@@ -64,33 +64,36 @@
         <!--<table tableName="customer">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <!--<table tableName="goods">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
-        <!--<table tableName="storage_order">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
-        <!--<table tableName="storage_order_detail">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
-        <!--<table tableName="sales_order">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
-        <!--<table tableName="sales_order_detail">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
-        <!--<table tableName="stock">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
+        <table tableName="product">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="storage_order">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="storage_order_detail">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="sales_order">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="sales_order_detail">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="stock">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="delivery_order">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="delivery_order_detail">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
         <!--<table tableName="supplier">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
         <!--<table tableName="warehouse">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <table tableName="supplier">
-        <generatedKey column="id" sqlStatement="Mysql"/>
-        </table>
 
 
     </context>

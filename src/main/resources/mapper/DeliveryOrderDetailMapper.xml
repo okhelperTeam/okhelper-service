@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ok.okhelper.dao.DeliveryOrderDetailMapper">
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.DeliveryOrderDetail">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="delivery_order_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="warehouse_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="delivery_count" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="product_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        </constructor>
+    </resultMap>
+</mapper>
