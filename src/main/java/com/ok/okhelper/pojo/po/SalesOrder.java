@@ -66,7 +66,7 @@ public class SalesOrder {
     private Integer payType;
 
     /**
-     * 订单状态（1-未付款，2-已付款，3-未付全款，4-交易成功，5-订单关闭）
+     * 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
      */
     @Column(name = "order_status")
     private Integer orderStatus;
@@ -103,8 +103,8 @@ public class SalesOrder {
     /**
      * 交易完成时间
      */
-    @Column(name = "end_time")
-    private Date endTime;
+    @Column(name = "success_time")
+    private Date successTime;
 
     /**
      * 交易关闭时间
@@ -124,7 +124,7 @@ public class SalesOrder {
     @Column(name = "store_id")
     private Long storeId;
 
-    public SalesOrder(Long id, String orderNumber, Long customerId, Long seller, Long stockouter, BigDecimal sumPrice, BigDecimal realPay, BigDecimal discountPrice, BigDecimal toBePaid, Integer payType, Integer orderStatus, Integer logisticsStatus, String remarks, Date createTime, Date payTime, Date sendTime, Date endTime, Date closeTime, Date updateTime, Long storeId) {
+    public SalesOrder(Long id, String orderNumber, Long customerId, Long seller, Long stockouter, BigDecimal sumPrice, BigDecimal realPay, BigDecimal discountPrice, BigDecimal toBePaid, Integer payType, Integer orderStatus, Integer logisticsStatus, String remarks, Date createTime, Date payTime, Date sendTime, Date successTime, Date closeTime, Date updateTime, Long storeId) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.customerId = customerId;
@@ -141,7 +141,7 @@ public class SalesOrder {
         this.createTime = createTime;
         this.payTime = payTime;
         this.sendTime = sendTime;
-        this.endTime = endTime;
+        this.successTime = successTime;
         this.closeTime = closeTime;
         this.updateTime = updateTime;
         this.storeId = storeId;
@@ -332,18 +332,18 @@ public class SalesOrder {
     }
 
     /**
-     * 获取订单状态（1-未付款，2-已付款，3-未付全款，4-交易成功，5-订单关闭）
+     * 获取订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
      *
-     * @return order_status - 订单状态（1-未付款，2-已付款，3-未付全款，4-交易成功，5-订单关闭）
+     * @return order_status - 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
      */
     public Integer getOrderStatus() {
         return orderStatus;
     }
 
     /**
-     * 设置订单状态（1-未付款，2-已付款，3-未付全款，4-交易成功，5-订单关闭）
+     * 设置订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
      *
-     * @param orderStatus 订单状态（1-未付款，2-已付款，3-未付全款，4-交易成功，5-订单关闭）
+     * @param orderStatus 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
      */
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
@@ -440,21 +440,21 @@ public class SalesOrder {
     }
 
     /**
-     * 获取交易完成时间
+     * 获取交易成功时间
      *
-     * @return end_time - 交易完成时间
+     * @return success_time - 交易成功时间
      */
-    public Date getEndTime() {
-        return endTime;
+    public Date getSuccessTime() {
+        return successTime;
     }
 
     /**
-     * 设置交易完成时间
+     * 设置交易成功时间
      *
-     * @param endTime 交易完成时间
+     * @param successTime 交易成功时间
      */
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setSuccessTime(Date successTime) {
+        this.successTime = successTime;
     }
 
     /**

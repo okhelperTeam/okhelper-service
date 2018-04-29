@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 @RestController
 @Api(tags = "文件上传模块")
+@Slf4j
 public class UploadController {
 
     @Autowired
@@ -37,8 +39,7 @@ public class UploadController {
     @ApiOperation(value = "上传图片(包括商品图片、分类图片等等，用户头像请转到头像上传接口)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        if (!file.isEmpty()) {
-
+        if (!file.isEmpty()&&file.getContentType().startsWith("image")) {
             //定义临时文件夹
             String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
 
@@ -51,7 +52,7 @@ public class UploadController {
 
             return ServerResponse.createBySuccess(uploadVo);
         } else {
-            throw new IllegalException("文件是空的");
+            throw new IllegalException("请求文件文件格式不对");
         }
 
     }
@@ -60,7 +61,7 @@ public class UploadController {
     @ApiOperation(value = "头像上传", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadAvator(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        if (!file.isEmpty()) {
+        if (!file.isEmpty()&&file.getContentType().startsWith("image")) {
 
             //定义临时文件夹
             String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
@@ -74,7 +75,7 @@ public class UploadController {
 
             return ServerResponse.createBySuccess(uploadVo);
         } else {
-            throw new IllegalException("请求不是文件");
+            throw new IllegalException("请求文件文件格式不对");
         }
 
     }
@@ -84,7 +85,7 @@ public class UploadController {
     @ApiOperation(value = "收款码上传(支付宝/微信)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadMoneyCode(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        if (!file.isEmpty()) {
+        if (!file.isEmpty()&&file.getContentType().startsWith("image")) {
 
             //定义临时文件夹
             String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
@@ -98,7 +99,7 @@ public class UploadController {
 
             return ServerResponse.createBySuccess(uploadVo);
         } else {
-            throw new IllegalException("请求不是文件");
+            throw new IllegalException("请求文件文件格式不对");
         }
 
     }

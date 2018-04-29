@@ -11,10 +11,25 @@ import lombok.Data;
 public enum ConstEnum {
 	STATUSENUM_AVAILABLE("可用",1),
 	STATUSENUM_UNAVAILABLE("不可用",0),
-	ROLE_STOREMANAGER("店长",2);
-	
-	
-	
+
+	ROLE_STOREMANAGER("店长",2),
+
+	SALESTATUS_NOPAYMENT("未付款",1),
+	SALESTATUS_DEBT("未付全款",2),
+	SALESTATUS_PAID("已付全款",3),
+	SALESTATUS_SUCCESS("交易成功",4),
+	SALESTATUS_CLOSE("交易关闭",5),
+
+	LOGISTICSSTATUS_NOSEND("未发货",1),
+	LOGISTICSSTATUS_SEND("未发货",2),
+	LOGISTICSSTATUS_RECEIVED("已经送达",3),
+
+	PAYTYPE_CASH("现金交易",1),
+	PAYTYPE_ALIPAY("支付宝",2),
+	PAYTYPE_WEICHAT("微信",3),
+	PAYTYPE_POS("刷卡交易",4);
+
+
 	// 成员变量
 	private String description;
 	private Integer code;

@@ -26,4 +26,8 @@
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
+    <update id="cutSalesStock" parameterType="map">
+        update product set sales_stock=sales_stock-#{salesCount} where sales_stock > 0 AND id=#{productId}
+    </update>
+
 </mapper>

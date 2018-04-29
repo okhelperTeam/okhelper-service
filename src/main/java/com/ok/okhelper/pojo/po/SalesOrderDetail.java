@@ -1,7 +1,6 @@
 package com.ok.okhelper.pojo.po;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "sales_order_detail")
@@ -60,19 +59,7 @@ public class SalesOrderDetail {
      */
     private String remarks;
 
-    /**
-     * 创建日期
-     */
-    @Column(name = "create_time")
-    private Date createTime;
-
-    /**
-     * 更新日期
-     */
-    @Column(name = "update_time")
-    private Date updateTime;
-
-    public SalesOrderDetail(Long id, Long salesOrderId, Long productId, String productName, String productTitle, String mainImg, Integer salesCount, BigDecimal salesPrice, String remarks, Date createTime, Date updateTime) {
+    public SalesOrderDetail(Long id, Long salesOrderId, Long productId, String productName, String productTitle, String mainImg, Integer salesCount, BigDecimal salesPrice, String remarks) {
         this.id = id;
         this.salesOrderId = salesOrderId;
         this.productId = productId;
@@ -82,8 +69,6 @@ public class SalesOrderDetail {
         this.salesCount = salesCount;
         this.salesPrice = salesPrice;
         this.remarks = remarks;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
     }
 
     public SalesOrderDetail() {
@@ -250,41 +235,5 @@ public class SalesOrderDetail {
      */
     public void setRemarks(String remarks) {
         this.remarks = remarks == null ? null : remarks.trim();
-    }
-
-    /**
-     * 获取创建日期
-     *
-     * @return create_time - 创建日期
-     */
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 设置创建日期
-     *
-     * @param createTime 创建日期
-     */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 获取更新日期
-     *
-     * @return update_time - 更新日期
-     */
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * 设置更新日期
-     *
-     * @param updateTime 更新日期
-     */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 }

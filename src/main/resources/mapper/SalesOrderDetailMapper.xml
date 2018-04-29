@@ -6,17 +6,15 @@
       WARNING - @mbg.generated
     -->
     <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-      <arg column="sales_order_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-      <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-      <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="product_title" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="main_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="sales_count" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-      <arg column="sales_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-      <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="sales_order_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="product_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="main_img" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sales_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sales_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>
 </mapper>

@@ -73,7 +73,7 @@
         <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!--如果只是想要 Error 级别的日志，那么需要过滤一下，默认是 info 级别的，ThresholdFilter-->
             <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-                <level>Error</level>
+                <level>ERROR</level>
             </filter>
             <!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则
                 如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
