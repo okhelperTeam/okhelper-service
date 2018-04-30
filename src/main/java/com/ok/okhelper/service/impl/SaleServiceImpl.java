@@ -3,11 +3,13 @@ package com.ok.okhelper.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
+import com.ok.okhelper.controller.ReportController;
 import com.ok.okhelper.dao.ProductMapper;
 import com.ok.okhelper.dao.SalesOrderDetailMapper;
 import com.ok.okhelper.dao.SalesOrderMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
@@ -15,13 +17,19 @@ import com.ok.okhelper.pojo.dto.SaleTotalVo;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SalesOrder;
 import com.ok.okhelper.pojo.po.SalesOrderDetail;
+import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -44,6 +52,14 @@ public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    // FIXME 换成使用商品缓存查询
+    @Lazy
+    @Autowired
+//    private ProductService productService;
 
     /**
      * 库存不足
@@ -83,7 +99,7 @@ public class SaleServiceImpl implements SaleService {
      * @Date 2018/4/29 上午11:00
      * @Param [storeId, startDate, endDate]
      * @Return com.ok.okhelper.pojo.dto.SaleTotalVo
-     * @Description:获取指定时间范围的销售聚合(去除关闭订单)
+     * @Description:获取指定时间范围的销售聚合 (去除 已关闭订单)
      */
     @Override
     @Transactional
@@ -98,14 +114,15 @@ public class SaleServiceImpl implements SaleService {
 
         SaleTotalVo saleTotalVo = new SaleTotalVo();
         saleTotalVo.setSaleCount(salesOrders.size());
-        BigDecimal total = new BigDecimal(0.0);
 
-        if (salesOrders.size() > 0) {
-            salesOrders.forEach(salesOrder -> {
-                total.add(salesOrder.getSumPrice());
-            });
-        }
-        saleTotalVo.setTotalSales(total);
+        //java 8流式操作集合 计算总和
+        BigDecimal totalMoney = salesOrders
+                .stream()
+                .filter(salesOrder -> salesOrder.getSumPrice() != null)
+                .map(SalesOrder::getSumPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        saleTotalVo.setTotalSales(totalMoney);
 
         return saleTotalVo;
     }
@@ -114,12 +131,12 @@ public class SaleServiceImpl implements SaleService {
      * @Author zc
      * @Date 2018/4/29 上午11:00
      * @Param [storeId, seller, placeOrderDto]
-     * @Return java.lang.String
+     * @Return java.lang.String  返回订单号
      * @Description:下单并付款
      */
     @Override
-    @Transactional
-    public String placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
         Boolean isStock = checkAndCutStock(placeOrderItemDtos);
@@ -145,23 +162,15 @@ public class SaleServiceImpl implements SaleService {
 
         salesOrderMapper.insertSelective(salesOrder);
 
-        Long saleOrderId = salesOrder.getId();
-
         if (CollectionUtils.isNotEmpty(placeOrderItemDtos)) {
-            placeOrderItemDtos.forEach(placeOrderItemDto -> {
-               SalesOrderDetail salesOrderDetail=new SalesOrderDetail();
-               BeanUtils.copyProperties(placeOrderDto,salesOrderDetail);
-                salesOrderDetail.setSalesOrderId(saleOrderId);
-                Product product = productMapper.selectByPrimaryKey(salesOrderDetail.getProductId());
-                salesOrderDetail.setMainImg(product.getMainImg());
-                salesOrderDetail.setProductName(product.getProductName());
-                salesOrderDetail.setProductTitle(product.getProductTitle());
-                salesOrderDetailMapper.insertSelective(salesOrderDetail);
-            });
+            assembleSalesOrderDetail(placeOrderItemDtos, salesOrder.getId());
+            recordHotSale(placeOrderItemDtos);
         }
 
-        //TODO
-        return null;
+        PlaceOrderVo placeOrderVo = new PlaceOrderVo();
+        BeanUtils.copyProperties(salesOrder, placeOrderVo);
+
+        return placeOrderVo;
     }
 
 
@@ -172,7 +181,7 @@ public class SaleServiceImpl implements SaleService {
      * @Return void
      * @Description:检测并减库存
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Boolean checkAndCutStock(List<PlaceOrderItemDto> placeOrderItemDtos) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             int i = productMapper.cutSalesStock(placeOrderItemDto.getSalesCount(), placeOrderItemDto.getProductId());
@@ -181,6 +190,47 @@ public class SaleServiceImpl implements SaleService {
             }
         });
         return true;
+    }
+
+    /**
+     * @Author zc
+     * @Date 2018/4/30 下午1:56
+     * @Param [placeOrderItemDtos]
+     * @Return void
+     * @Description:组装订单子项并持久化到数据库
+     */
+    @Async
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void assembleSalesOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
+        placeOrderItemDtos.forEach(placeOrderItemDto -> {
+            SalesOrderDetail salesOrderDetail = new SalesOrderDetail();
+            Product product = productMapper.selectByPrimaryKey(salesOrderDetail.getProductId());
+            // FIXME 换成使用商品缓存查询
+//            Product product=productService.getProduct(salesOrderDetail.getProductId());
+            salesOrderDetail.setMainImg(product.getMainImg());
+            salesOrderDetail.setProductName(product.getProductName());
+            salesOrderDetail.setProductTitle(product.getProductTitle());
+            salesOrderDetail.setSalesOrderId(saleOrderId);
+
+            salesOrderDetailMapper.insertSelective(salesOrderDetail);
+        });
+    }
+
+    /**
+     * @Author zc
+     * @Date 2018/4/30 下午1:53
+     * @Param [placeOrderItemDtos]
+     * @Return void
+     * @Description:记录热销缓存
+     */
+    @Async
+    public void recordHotSale(List<PlaceOrderItemDto> placeOrderItemDtos) {
+        String zkey = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
+        placeOrderItemDtos.forEach(placeOrderItemDto -> {
+            Long productId = placeOrderItemDto.getProductId();
+            Integer salesCount = placeOrderItemDto.getSalesCount();
+            redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf(productId), salesCount);
+        });
     }
 
 }

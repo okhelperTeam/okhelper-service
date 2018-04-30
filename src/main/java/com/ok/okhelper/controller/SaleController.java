@@ -8,6 +8,7 @@ import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
 import com.ok.okhelper.pojo.dto.SaleTotalVo;
 import com.ok.okhelper.pojo.po.SalesOrder;
+import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.DateUntil;
@@ -49,7 +50,7 @@ public class SaleController {
         return ServerResponse.createBySuccess(saleOrderRecords);
     }
 
-    @GetMapping("/sale/today")
+    @GetMapping("/sale/today_total")
     @ApiOperation(value = "获取当天销售汇总", notes = "查询当天成交笔数和销售总金额")
     public ServerResponse<SaleTotalVo> getTodaySales() {
         Long storeId = JWTUtil.getStoreId();
@@ -61,10 +62,8 @@ public class SaleController {
     @PostMapping("/sale/place_order")
     @ApiOperation(value = "下订单", notes = "下单并付款")
     public ServerResponse placeOrder(@Valid PlaceOrderDto placeOrderDto) {
-
-        saleService.placeOrder(JWTUtil.getStoreId(),JWTUtil.getUserId(),placeOrderDto);
-
-        return null;
+        PlaceOrderVo placeOrderVo = saleService.placeOrder(JWTUtil.getStoreId(), JWTUtil.getUserId(), placeOrderDto);
+        return ServerResponse.createBySuccess(placeOrderVo);
     }
 
 }

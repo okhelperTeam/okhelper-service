@@ -26,8 +26,15 @@
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
+    <insert id="addSalesStock" parameterType="map">
+        update product
+        set sales_stock = sales_stock + #{salesCount}
+        where sales_stock > 0 AND id = #{productId}
+    </insert>
     <update id="cutSalesStock" parameterType="map">
-        update product set sales_stock=sales_stock-#{salesCount} where sales_stock > 0 AND id=#{productId}
+        update product
+        set sales_stock = sales_stock - #{salesCount}
+        where sales_stock - #{salesCount} >= 0 AND id = #{productId}
     </update>
 
 </mapper>

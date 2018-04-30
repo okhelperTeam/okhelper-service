@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductMapper extends MyMapper<Product> {
     int cutSalesStock(@Param("salesCount") Integer salesCount,@Param("productId") Long productId);
+
+    int addSalesStock(@Param("salesCount") Integer salesCount, @Param("productId") Long productId);
 }
