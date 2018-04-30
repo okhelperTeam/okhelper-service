@@ -16,11 +16,11 @@ public interface ProductService {
 	PageModel<ProductsVo> getProductsList(ProductCondition condition, PageModel pageModel);
 	
 	Product getProduct(Long pId);
-	
-	void deleteProduct(Long pId);
+
+	Product deleteProduct(Long pId);
 	
 	void addProduct(ProductDto productDto);
-	
-	void updateProduct(ProductDto productDto);
+
+	Product updateProduct(ProductDto productDto);
 	
 }

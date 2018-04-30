@@ -18,6 +18,7 @@ import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SalesOrder;
 import com.ok.okhelper.pojo.po.SalesOrderDetail;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
+import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
@@ -56,10 +57,9 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    // FIXME 换成使用商品缓存查询
     @Lazy
     @Autowired
-//    private ProductService productService;
+    private ProductService productService;
 
     /**
      * 库存不足
@@ -204,9 +204,7 @@ public class SaleServiceImpl implements SaleService {
     public void assembleSalesOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             SalesOrderDetail salesOrderDetail = new SalesOrderDetail();
-            Product product = productMapper.selectByPrimaryKey(salesOrderDetail.getProductId());
-            // FIXME 换成使用商品缓存查询
-//            Product product=productService.getProduct(salesOrderDetail.getProductId());
+            Product product = productService.getProduct(salesOrderDetail.getProductId());
             salesOrderDetail.setMainImg(product.getMainImg());
             salesOrderDetail.setProductName(product.getProductName());
             salesOrderDetail.setProductTitle(product.getProductTitle());

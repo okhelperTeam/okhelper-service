@@ -46,13 +46,13 @@ public class ControllerTest {
         redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
         redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
         redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 10), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 11), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 10), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 11), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 
 
         redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
@@ -61,13 +61,13 @@ public class ControllerTest {
         redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
         redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
         redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 10), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 11), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 10), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 11), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 
         redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
         redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
