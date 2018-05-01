@@ -36,5 +36,9 @@
         SELECT id,super_id,category_name,remarks,operator,delete_status,store_id
         FROM category WHERE super_id = #{superId} AND store_id = #{storeId}
     </select>
+
+    <select id="getCategoryIdListBySuperId" resultType="long">
+        SELECT id FROM category WHERE super_id = #{superId} AND store_id = #{storeId}
+    </select>
     
 </mapper>

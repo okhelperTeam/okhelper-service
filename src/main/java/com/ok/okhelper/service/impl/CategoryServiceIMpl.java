@@ -4,14 +4,16 @@ import com.ok.okhelper.dao.CategoryMapper;
 import com.ok.okhelper.pojo.po.Category;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.service.CategoryService;
-import com.ok.okhelper.service.SupplierService;
 import com.ok.okhelper.shiro.JWTUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -34,18 +36,20 @@ public class CategoryServiceIMpl implements CategoryService {
 	* @Params []  
 	* @Return java.util.List<com.ok.okhelper.pojo.po.Category>
 	* @Description:查询分类
-	*/  
+	*/
 	@Override
 	public List<CategoryVo> getCategoryList(long superId) {
 		
 		logger.info("Enter getCategoryList() params：");
 		
 		Long storeId = JWTUtil.getStoreId();
+		if(storeId == null){
+			throw new AuthenticationException("登陆异常");
+		}
 		
+		List<CategoryVo> categoryVoList = categoryMapper.getCategoryListBySuperId(superId, storeId);
 		
-		List<CategoryVo> categoryVoList = categoryMapper.getCategoryListBySuperId(superId,storeId);
-		
-		logger.info("Exit getCategoryList() return："+categoryVoList);
+		logger.info("Exit getCategoryList() return：" + categoryVoList);
 		return categoryVoList;
 	}
 	
@@ -54,20 +58,44 @@ public class CategoryServiceIMpl implements CategoryService {
 	* @Date 2018/4/24 16:56
 	* @Params [superId, storeId]  
 	* @Return java.util.List<com.ok.okhelper.pojo.vo.CategoryVo>  
-	* @Description:递归调用获取子分类
-	*/  
-	 private  List<CategoryVo> getCategoryItems(long superId,Long storeId){
-		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(superId,storeId);
-		if (CollectionUtils.isEmpty(categorieList)){
-			return null;
-		}else {
-			categorieList.forEach(category -> {
-				List<CategoryVo> categorieSonList = getCategoryItems(category.getId(),storeId);
-				category.setCategoryVoList(categorieSonList);
-			});
-			return categorieList;
-			
+	* @Description:获取当前类的所有子类
+	*/
+	public List<CategoryVo> getCategoryItems(long superId, Long storeId) {
+		
+		logger.info("Enter getCategoryItems() params："+superId);
+		
+		//存储所有包含
+		List<CategoryVo> categorieListTotal = new ArrayList<>();
+		
+		//添加自身
+		Category category = categoryMapper.selectByPrimaryKey(superId);
+		CategoryVo categoryVo1 = new CategoryVo();
+		BeanUtils.copyProperties(category,categoryVo1);
+		categorieListTotal.add(categoryVo1);
+		
+		
+		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(superId, storeId);
+		
+		categorieListTotal.addAll(categorieList);
+		while (!CollectionUtils.isEmpty(categorieList)) {
+			if (!CollectionUtils.isEmpty(categorieList)) {
+				
+				for (CategoryVo categoryVo : categorieList) {
+					
+					categorieList = categoryMapper.getCategoryListBySuperId(categoryVo.getId(), storeId);
+					if (CollectionUtils.isEmpty(categorieList)) {
+						continue;
+					}
+					
+					categorieListTotal.addAll(categorieList);
+					
+				}
+			}
 		}
+		
+		logger.info("Enter getCategoryItems() params："+categorieListTotal);
+		return categorieListTotal;
+		
 	}
 }
 

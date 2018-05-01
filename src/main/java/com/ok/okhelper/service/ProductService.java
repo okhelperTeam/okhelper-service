@@ -15,6 +15,9 @@ public interface ProductService {
 	
 	PageModel<ProductsVo> getProductsList(ProductCondition condition, PageModel pageModel);
 	
+	
+	PageModel<ProductsVo> getProductsListByCategory(Long[] categoryId,String orderBy, PageModel pageModel);
+	
 	Product getProduct(Long pId);
 	
 	void deleteProduct(Long pId);
