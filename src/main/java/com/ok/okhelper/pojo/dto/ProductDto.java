@@ -68,7 +68,7 @@ public class ProductDto {
 	 * 副图(数组)
 	 */
 	@ApiModelProperty(value = "商品副图（数组）")
-	private String subImgs;
+	private String[] subImgs;
 	
 	/**
 	 * 货号

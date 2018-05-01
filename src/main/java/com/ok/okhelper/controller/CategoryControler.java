@@ -9,7 +9,6 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.service.CategoryService;
-import com.ok.okhelper.service.SupplierService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -32,10 +31,10 @@ public class CategoryControler {
 	@ApiOperation(value = "分类查询",notes = "分类查询，父类包含子类")
 	@GetMapping("/categorys/{id}")
 	public ServerResponse<List<CategoryVo>> getAllCategory(@PathVariable long id){
-		logger.info("Enter getAllCategory() params：");
+		logger.info("Enter method getAllCategory() params：");
 		List<CategoryVo> categoryVoList = categoryService.getCategoryList(id);
 		
-		logger.info("Exit getAllCategory() return："+categoryVoList);
+		logger.info("Exit method getAllCategory() return："+categoryVoList);
 		return ServerResponse.createBySuccess(categoryVoList);
 	}
 	

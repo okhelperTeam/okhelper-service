@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
-		logger.info("Exit getProductsList() return:" + pageInfo);
+		logger.info("Exit method getProductsList() return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
 	}
 	
@@ -116,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
-		logger.info("Exit getProductsListByCategory() return:" + pageInfo);
+		logger.info("Exit method getProductsListByCategory() return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
 	}
 	
@@ -137,7 +137,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		Product product = productMapper.selectByPrimaryKey(pId);
 		
-		logger.info("Exit getProduct(long pId) return:" + product);
+		logger.info("Exit method getProduct(long pId) return:" + product);
 		return product;
 	}
 	
@@ -158,7 +158,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		productMapper.updateStatus(pId);
 		
-		logger.info("Exit deleteProduct(long pId) return:");
+		logger.info("Exit method deleteProduct(long pId) return:");
 	}
 	
 	/*
@@ -172,12 +172,12 @@ public class ProductServiceImpl implements ProductService {
 	public void addProduct(ProductDto productDto) {
 		logger.info(" Enter  params:" + productDto);
 		
-		Product product = new Product();
-		BeanUtils.copyProperties(productDto, product);
+		
+		Product product = covertProduct(productDto);
 		
 		productMapper.insertSelective(product);
 		
-		logger.info("Exit addProduct(ProductDto productDto) return:");
+		logger.info("Exit method addProduct(ProductDto productDto) return:");
 		
 	}
 	
@@ -195,13 +195,33 @@ public class ProductServiceImpl implements ProductService {
 		if (productDto.getId() == null) {
 			throw new IllegalException("参数为空");
 		}
-		Product product = new Product();
-		BeanUtils.copyProperties(productDto, product);
+		
+		Product product = covertProduct(productDto);
+		
+		
 		
 		productMapper.updateByPrimaryKeySelective(product);
 		
 		
-		logger.info("Exit updateProduct(ProductDto productDto)  return:");
+		logger.info("Exit method updateProduct(ProductDto productDto)  return:");
 		
 	}
+	
+	private Product covertProduct(ProductDto productDto){
+		
+		Product product = new Product();
+		BeanUtils.copyProperties(productDto, product);
+		
+		String []subImg = productDto.getSubImgs();
+		StringBuilder img = new StringBuilder();
+		if( subImg != null){
+			for(String sub : subImg){
+				img.append(","+sub);
+			}
+		}
+		product.setSubImgs(img.toString());
+		
+		return product;
+	}
+	
 }

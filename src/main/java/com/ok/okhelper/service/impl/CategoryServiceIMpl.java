@@ -40,7 +40,7 @@ public class CategoryServiceIMpl implements CategoryService {
 	@Override
 	public List<CategoryVo> getCategoryList(long superId) {
 		
-		logger.info("Enter getCategoryList() params：");
+		logger.info("Enter method getCategoryList() params：");
 		
 		Long storeId = JWTUtil.getStoreId();
 		if(storeId == null){
@@ -49,7 +49,7 @@ public class CategoryServiceIMpl implements CategoryService {
 		
 		List<CategoryVo> categoryVoList = categoryMapper.getCategoryListBySuperId(superId, storeId);
 		
-		logger.info("Exit getCategoryList() return：" + categoryVoList);
+		logger.info("Exit method getCategoryList() return：" + categoryVoList);
 		return categoryVoList;
 	}
 	
@@ -62,7 +62,7 @@ public class CategoryServiceIMpl implements CategoryService {
 	*/
 	public List<CategoryVo> getCategoryItems(long superId, Long storeId) {
 		
-		logger.info("Enter getCategoryItems() params："+superId);
+		logger.info("Enter method getCategoryItems() params："+superId);
 		
 		//存储所有包含
 		List<CategoryVo> categorieListTotal = new ArrayList<>();
@@ -93,7 +93,7 @@ public class CategoryServiceIMpl implements CategoryService {
 			}
 		}
 		
-		logger.info("Enter getCategoryItems() params："+categorieListTotal);
+		logger.info("Enter method getCategoryItems() params："+categorieListTotal);
 		return categorieListTotal;
 		
 	}
