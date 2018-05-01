@@ -19,11 +19,11 @@ public interface ProductService {
 	PageModel<ProductsVo> getProductsListByCategory(Long[] categoryId,String orderBy, PageModel pageModel);
 	
 	Product getProduct(Long pId);
-	
-	void deleteProduct(Long pId);
+
+	Product deleteProduct(Long pId);
 	
 	void addProduct(ProductDto productDto);
-	
-	void updateProduct(ProductDto productDto);
+
+	Product updateProduct(ProductDto productDto);
 	
 }

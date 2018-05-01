@@ -27,7 +27,6 @@
         </constructor>
     </resultMap>
 
-
     <resultMap id="ProductVoMap" type="com.ok.okhelper.pojo.vo.ProductsVo">
         <!--
           查询所有商品
@@ -44,14 +43,23 @@
         </constructor>
     </resultMap>
 
+    <update id="addSalesStock" parameterType="map">
+        update product
+        set sales_stock = sales_stock + #{salesCount}
+        where sales_stock > 0 AND id = #{productId}
+    </update>
+
     <update id="cutSalesStock" parameterType="map">
-        update product set sales_stock=sales_stock-#{salesCount} where sales_stock > 0 AND id=#{productId}
+        update product
+        set sales_stock = sales_stock - #{salesCount}
+        where sales_stock - #{salesCount} >= 0 AND id = #{productId}
     </update>
 
     <select id="getProductsList" resultMap="ProductVoMap" >
         SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
         FROM product
         <where>
+<<<<<<< .mine
 
             AND delete_status = 1 AND store_id = ${storeId}
             <if test=" condition != null and condition != ''">
@@ -60,6 +68,16 @@
                 OR article_number LIKE '%${condition}%'
                 OR bar_code LIKE '%${condition}%'
                 )
+=======
+            <if test=" _parameter != null and _parameter != ''">
+                OR product_name LIKE '%${_parameter}%'
+                OR product_title LIKE '%${_parameter}%'
+                OR article_number LIKE '%${_parameter}%'
+                OR bar_code LIKE '%${_parameter}%'
+                OR bar_code LIKE '%${_parameter}%'
+                OR category_id in (SELECT id FROM category WHERE category_name LIKE '%${_parameter}%')
+
+>>>>>>> .theirs
             </if>
 
         </where>
@@ -68,7 +86,9 @@
 
 
     <update id="updateStatus" parameterType="long">
-      UPDATE product SET delete_status = 0 WHERE id = #{id}
+        UPDATE product
+        SET delete_status = 0
+        WHERE id = #{id}
     </update>
 
     <select id="getProductsListByCategoryId" resultMap="ProductVoMap" >

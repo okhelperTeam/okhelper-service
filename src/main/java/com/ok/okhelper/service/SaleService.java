@@ -5,8 +5,8 @@ import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
 import com.ok.okhelper.pojo.dto.SaleTotalVo;
 import com.ok.okhelper.pojo.po.SalesOrder;
+import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 /**
@@ -19,5 +19,5 @@ public interface SaleService {
 
     SaleTotalVo getSaleTotalVo(Long storeId,Date startDate,Date endDate);
 
-    String placeOrder(Long storeId,Long seller,PlaceOrderDto placeOrderDto);
+    PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto);
 }

@@ -24,7 +24,9 @@ public class DruidConfiguration {
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
         /** 初始化参数配置，initParams**/
         //白名单
-//        bean.addInitParameter("allow", "127.0.0.1");
+        bean.addInitParameter("allow", "127.0.0.1");
+        bean.addInitParameter("allow", "112.224.67.64");
+        bean.addInitParameter("allow", "182.40.77.116");
         //IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
 //        bean.addInitParameter("deny", "192.168.1.73");
         //登录查看信息的账号密码.

@@ -1,5 +1,6 @@
 package com.ok.okhelper.until;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,4 +36,19 @@ public class DateUntil {
         }
         return cal.getTime();
     }
+
+//    public static Date lastMonth(){
+//        Calendar c = Calendar.getInstance();
+//        c.add(Calendar.MONTH, -1);
+////        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM");
+////        String time = format.format(c.getTime());
+//
+//        //得到一个月最后一天日期(31/30/29/28)
+//        int MaxDay=c.getActualMaximum(Calendar.DAY_OF_MONTH);
+//        //按你的要求设置时间
+//        c.set( c.get(Calendar.YEAR), c.get(Calendar.MONTH), MaxDay, 23, 59, 59);
+//        //按格式输出
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+//        String gtime = sdf.format(c.getTime()); //上月最后一天
+//    }
 }

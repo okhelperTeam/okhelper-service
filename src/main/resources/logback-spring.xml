@@ -4,6 +4,9 @@
     <!-- 属性文件 -->
     <springProperty scope="context" name="logdir" source="logback.logdir"/>
     <springProperty scope="context" name="appname" source="logback.appname"/>
+    <springProperty scope="context" name="username" source="spring.datasource.username"/>
+    <springProperty scope="context" name="password" source="spring.datasource.password"/>
+    <springProperty scope="context" name="jdbc.url" source="spring.datasource.url"/>
 
     <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
     <springProfile name="dev,test">
@@ -70,37 +73,56 @@
         </appender>
 
 
-        <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <!--如果只是想要 Error 级别的日志，那么需要过滤一下，默认是 info 级别的，ThresholdFilter-->
+        <!--<appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--&lt;!&ndash;如果只是想要 Error 级别的日志，那么需要过滤一下，默认是 info 级别的，ThresholdFilter&ndash;&gt;-->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+        <!--<level>ERROR</level>-->
+        <!--</filter>-->
+        <!--&lt;!&ndash;日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则-->
+        <!--如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天-->
+        <!--的日志改名为今天的日期。即，<File> 的日志都是当天的。-->
+        <!--&ndash;&gt;-->
+        <!--<File>${logdir}/error.${appname}.log</File>-->
+        <!--&lt;!&ndash;滚动策略，按照时间滚动 TimeBasedRollingPolicy&ndash;&gt;-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--&lt;!&ndash;文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间&ndash;&gt;-->
+        <!--<FileNamePattern>${logdir}/error/error.${appname}.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+        <!--&lt;!&ndash;只保留最近30天的日志&ndash;&gt;-->
+        <!--<maxHistory>30</maxHistory>-->
+        <!--&lt;!&ndash;用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志&ndash;&gt;-->
+        <!--<totalSizeCap>1GB</totalSizeCap>-->
+        <!--</rollingPolicy>-->
+        <!--&lt;!&ndash;日志输出编码格式化&ndash;&gt;-->
+        <!--<encoder>-->
+        <!--<charset>UTF-8</charset>-->
+        <!--<pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>-->
+        <!--</encoder>-->
+        <!--</appender>-->
+
+        <!--输出到mysql数据库的appender配置     -->
+        <appender name="MYSQL" class="ch.qos.logback.classic.db.DBAppender">
             <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <!--过滤 Error-->
                 <level>ERROR</level>
             </filter>
-            <!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则
-                如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
-                的日志改名为今天的日期。即，<File> 的日志都是当天的。
-            -->
-            <File>${logdir}/error.${appname}.log</File>
-            <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个磁盘空间-->
-                <FileNamePattern>${logdir}/error/error.${appname}.%d{yyyy-MM-dd}.log</FileNamePattern>
-                <!--只保留最近30天的日志-->
-                <maxHistory>30</maxHistory>
-                <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
-                <totalSizeCap>1GB</totalSizeCap>
-            </rollingPolicy>
-            <!--日志输出编码格式化-->
-            <encoder>
-                <charset>UTF-8</charset>
-                <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
-            </encoder>
+            <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+                <driverClass>com.mysql.jdbc.Driver</driverClass>
+                <url>${jdbc.url}</url>
+                <user>${username}</user>
+                <password>${password}</password>
+            </connectionSource>
         </appender>
 
         <!-- root 默认日志配置 ， 注意这里的级别哈！小心生产环境用DEBUG，压爆你的磁盘！-->
         <root level="INFO">
             <appender-ref ref="fileInfoLog"/>
-            <appender-ref ref="fileErrorLog"/>
+            <!--<appender-ref ref="fileErrorLog"/>-->
+            <appender-ref ref="MYSQL"/>
         </root>
+
+        <!--<logger name="org.springframework">-->
+        <!--<level value="WARN"/>-->
+        <!--</logger>-->
 
     </springProfile>
 

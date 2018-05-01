@@ -188,6 +188,7 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:修改商品
 	*/
 	@Override
+    @CachePut(value = "product", key = "#pId")
 	public void updateProduct(ProductDto productDto) {
 		logger.info(" Enter updateProduct(ProductDto productDto) params:" + productDto);
 		if (productDto.getId() == null) {

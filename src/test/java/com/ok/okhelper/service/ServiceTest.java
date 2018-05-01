@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ok.okhelper.OkhelperApplication;
 import com.ok.okhelper.pojo.dto.UpdateStoreDto;
 import com.ok.okhelper.pojo.po.Permission;
+import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.vo.RolePermissionVo;
@@ -39,6 +40,9 @@ public class ServiceTest {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private ProductService productService;
+
 
     @Test
     public void getRoleList() {
@@ -69,6 +73,12 @@ public class ServiceTest {
         updateStoreDto.setDescription("哩哩啦啦");
         Store store = storeService.updateStore((long) 24, updateStoreDto);
         log.debug(store.getStoreName());
+    }
+
+    @Test
+    public void testProduct() {
+        Product product = productService.getProduct((long) 10);
+        log.debug(product.toString());
     }
 
 }
