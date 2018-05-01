@@ -20,10 +20,10 @@ public interface ProductService {
 	
 	Product getProduct(Long pId);
 
-	Product deleteProduct(Long pId);
+	void deleteProduct(Long pId);
 	
 	void addProduct(ProductDto productDto);
 
-	Product updateProduct(ProductDto productDto);
+	void updateProduct(ProductDto productDto);
 	
 }
