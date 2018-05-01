@@ -22,8 +22,8 @@ public interface ProductService {
 
 	void deleteProduct(Long pId);
 	
-	void addProduct(ProductDto productDto);
+	Product addProduct(ProductDto productDto);
 
-	void updateProduct(ProductDto productDto);
+	Product updateProduct(ProductDto productDto);
 	
 }

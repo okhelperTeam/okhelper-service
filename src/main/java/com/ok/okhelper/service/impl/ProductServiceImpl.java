@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.ProductMapper;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.dto.ProductCondition;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
@@ -13,13 +14,14 @@ import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.service.CategoryService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.until.NumberGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -67,7 +69,9 @@ public class ProductServiceImpl implements ProductService {
 		}
 		productsVos = productMapper.getProductsList(condition.getCondition(), storeId);
 		
-		
+		if (CollectionUtils.isEmpty(productsVos)){
+			throw new NotFoundException("查询不存在");
+		}
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
 		logger.info("Exit method getProductsList() return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
@@ -115,6 +119,12 @@ public class ProductServiceImpl implements ProductService {
 		productsVos = productMapper.getProductsListByCategoryId(categoryListTotal);
 		
 		
+		
+		if (CollectionUtils.isEmpty(productsVos)){
+			throw new NotFoundException("查询不存在");
+		}
+		
+		
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
 		logger.info("Exit method getProductsListByCategory() return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
@@ -136,6 +146,10 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		Product product = productMapper.selectByPrimaryKey(pId);
+		
+		if (product == null || product.getDeleteStatus() == 0){
+			throw new NotFoundException("查询不存在");
+		}
 		
 		logger.info("Exit method getProduct(long pId) return:" + product);
 		return product;
@@ -169,15 +183,29 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:添加商品
 	*/
 	@Override
-	public void addProduct(ProductDto productDto) {
+	public Product addProduct(ProductDto productDto) {
 		logger.info(" Enter  params:" + productDto);
 		
 		
 		Product product = covertProduct(productDto);
 		
+		//没有条码，生成
+		if(StringUtils.isBlank(product.getBarCode())){
+			product.setBarCode(NumberGenerator.generatorBarCode());
+		}
+		
+		if(StringUtils.isBlank(product.getUnit())){
+			product.setUnit("个");
+		}
+		
+		product.setStoreId(JWTUtil.getStoreId());
+		
 		productMapper.insertSelective(product);
 		
-		logger.info("Exit method addProduct(ProductDto productDto) return:");
+		product = productMapper.selectByPrimaryKey(product.getId());
+		
+		logger.info("Exit method addProduct(ProductDto productDto) return:"+product);
+		return product;
 		
 	}
 	
@@ -189,8 +217,7 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:修改商品
 	*/
 	@Override
-    @CachePut(value = "product", key = "#pId")
-	public void updateProduct(ProductDto productDto) {
+	public Product updateProduct(ProductDto productDto) {
 		logger.info(" Enter updateProduct(ProductDto productDto) params:" + productDto);
 		if (productDto.getId() == null) {
 			throw new IllegalException("参数为空");
@@ -202,8 +229,12 @@ public class ProductServiceImpl implements ProductService {
 		
 		productMapper.updateByPrimaryKeySelective(product);
 		
+		product = productMapper.selectByPrimaryKey(product.getId());
 		
-		logger.info("Exit method updateProduct(ProductDto productDto)  return:");
+		
+		logger.info("Exit method updateProduct(ProductDto productDto)  return:"+product);
+		
+		return product;
 		
 	}
 	

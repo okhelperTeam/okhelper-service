@@ -4,6 +4,7 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.ProductCondition;
 import com.ok.okhelper.pojo.dto.ProductDto;
+import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.service.ProductService;
 import io.swagger.annotations.Api;
@@ -97,12 +98,11 @@ public class ProductController {
 	
 	@ApiOperation(value = "商品添加")
 	@PutMapping("product")
-	public ServerResponse addProduct( @Valid ProductDto productDto){
+	public ServerResponse<Product> addProduct( @Valid ProductDto productDto){
 		logger.info("Enter method addProduct params:productDto:"+productDto);
 		ServerResponse serverResponse;
 		try {
-			productService.addProduct(productDto);
-			serverResponse = ServerResponse.createBySuccessMessage("添加成功");
+			serverResponse = ServerResponse.createBySuccess("添加成功",productService.addProduct(productDto));
 		}catch (Exception e){
 			e.printStackTrace();
 			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
@@ -115,12 +115,11 @@ public class ProductController {
 	
 	@ApiOperation(value = "商品修改")
 	@PostMapping("product")
-	public ServerResponse updateProduct( @Valid ProductDto productDto){
+	public ServerResponse updateProduct(ProductDto productDto){
 		logger.info("Enter method addProduct params:productDto:"+productDto);
 		ServerResponse serverResponse;
 		try {
-			productService.updateProduct(productDto);
-			serverResponse = ServerResponse.createBySuccessMessage("修改成功");
+			serverResponse = ServerResponse.createBySuccess("修改成功",productService.updateProduct(productDto));
 		}catch (Exception e){
 			e.printStackTrace();
 			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
@@ -128,6 +127,26 @@ public class ProductController {
 		
 		
 		logger.info("Exit method addProduct params:"+ serverResponse);
+		return serverResponse;
+	}
+	
+	
+	
+	@ApiOperation(value = "查询单个商品")
+	@GetMapping("product/{id}")
+	public ServerResponse getProduct( @PathVariable Long id){
+		logger.info("Enter method getProduct params:id:"+id);
+		ServerResponse serverResponse;
+		try {
+			Product products = productService.getProduct(id);
+			serverResponse = ServerResponse.createBySuccess(products);
+		}catch (Exception e){
+			e.printStackTrace();
+			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
+		}
+		
+		
+		logger.info("Exit method getProduct params:"+ serverResponse);
 		return serverResponse;
 	}
 	
