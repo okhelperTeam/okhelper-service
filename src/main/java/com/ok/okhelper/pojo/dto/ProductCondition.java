@@ -1,5 +1,6 @@
 package com.ok.okhelper.pojo.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /*
@@ -10,7 +11,9 @@ import lombok.Data;
 @Data
 public class ProductCondition {
 	
+	@ApiModelProperty(value = "搜索关键字")
 	private String condition;
+	@ApiModelProperty(value = "排序规则（数据库字段）")
 	private String orderBy;
 
 //	/**

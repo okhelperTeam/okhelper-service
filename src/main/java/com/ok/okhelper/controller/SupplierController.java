@@ -4,9 +4,7 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.SupplierDto;
 import com.ok.okhelper.pojo.po.Supplier;
-import com.ok.okhelper.pojo.vo.SupplierVo;
 import com.ok.okhelper.service.SupplierService;
-import com.ok.okhelper.service.WareHouseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /*
 *Author:zhangxin_an
@@ -36,11 +33,11 @@ public class SupplierController {
 	@ApiOperation(value = "查询所有供应商",notes = "查询当前店铺所有供应商")
 	@GetMapping("/supplier")
 	public ServerResponse<PageModel<Supplier>> getSupplierList(@Valid PageModel pageModel){
-		logger.info("Enter getSupplierList()");
+		logger.info("Enter method getSupplierList()");
 		
 		PageModel<Supplier> supplierList = supplierService.getSupplierList(pageModel);
 		
-		logger.info("Exit getSupplierList() return :"+supplierList);
+		logger.info("Exit method getSupplierList() return :"+supplierList);
 		return ServerResponse.createBySuccess(supplierList);
 		
 	}
@@ -50,10 +47,10 @@ public class SupplierController {
 	@ApiOperation(value = "查询供应商",notes = "查询具体供应商")
 	@GetMapping("/supplier/{id}")
 	public ServerResponse<Supplier> getSupplier(@PathVariable Long id){
-		logger.info("Enter getSupplier() Params:" + id);
+		logger.info("Enter method getSupplier() Params:" + id);
 		
 		Supplier supplier= supplierService.getSupplierById(id);
-		logger.info("Exit getSupplier() return :" + supplier);
+		logger.info("Exit method getSupplier() return :" + supplier);
 		
 		return ServerResponse.createBySuccess(supplier);
 		
@@ -63,7 +60,7 @@ public class SupplierController {
 	@ApiOperation(value = "修改供应商信息",notes = "修改具体供应商信息")
 	@PutMapping("/supplier")
 	public ServerResponse updateSupplier(@Valid  SupplierDto supplierDto){
-		logger.info("Enter getSupplier() Params:" + supplierDto);
+		logger.info("Enter method getSupplier() Params:" + supplierDto);
 		return supplierService.updateSupplier(supplierDto);
 		
 	}
@@ -72,7 +69,7 @@ public class SupplierController {
 	@ApiOperation(value = "删除供应商",notes = "删除指定供应商")
 	@DeleteMapping("/supplier/{id}")
 	public ServerResponse updateSupplier(@PathVariable Long id){
-		logger.info("Enter updateSupplier(Long id) Params:" + id);
+		logger.info("Enter method updateSupplier(Long id) Params:" + id);
 		return supplierService.deleteSupplierById(id);
 		
 	}
@@ -81,7 +78,7 @@ public class SupplierController {
 	@ApiOperation(value = "添加供应商",notes = "添加供应商")
 	@PostMapping("/supplier")
 	public ServerResponse addSupplier(@Valid SupplierDto supplierDto){
-		logger.info("Enter updateSupplier(Long id) Params:" + supplierDto);
+		logger.info("Enter method updateSupplier(Long id) Params:" + supplierDto);
 		return supplierService.addSupplier(supplierDto);
 		
 	}

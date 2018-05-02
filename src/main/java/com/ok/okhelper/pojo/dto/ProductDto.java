@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class ProductDto {
 	
 	@ApiModelProperty(value = "商品id")
-	private String id;
+	private Long id;
 	
 	/**
 	 * 商品名
@@ -37,7 +37,7 @@ public class ProductDto {
 	/**
 	 * 类别Id
 	 */
-	@ApiModelProperty(value = "类别Id")
+	@ApiModelProperty(value = "类别Id",required = true)
 	private Long categoryId;
 	
 	/**
@@ -68,7 +68,7 @@ public class ProductDto {
 	 * 副图(数组)
 	 */
 	@ApiModelProperty(value = "商品副图（数组）")
-	private String subImgs;
+	private String[] subImgs;
 	
 	/**
 	 * 货号

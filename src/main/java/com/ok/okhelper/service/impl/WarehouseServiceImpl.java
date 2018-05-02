@@ -42,7 +42,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 	*/  
 	@Override
 	public PageModel<WarehouseVo> getWarehouseList(PageModel pageModel) {
-		logger.info("Enter getWarehouseList()");
+		logger.info("Enter method getWarehouseList()");
 		//启动分页
 		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 		Long storeId = JWTUtil.getStoreId();
@@ -52,14 +52,14 @@ public class WarehouseServiceImpl implements WareHouseService {
 		List<WarehouseVo> warehouseVoList = warehouseMapper.getWarehouseByStoreId(storeId);
 		PageInfo<WarehouseVo> pageInfo = new PageInfo<>(warehouseVoList);
 		
-		logger.info("Exit getWarehouseList() return :"+pageInfo);
+		logger.info("Exit method getWarehouseList() return :"+pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
 	}
 	
 	@Override
 	public WarehouseVo getWarehouseById(Long whId) {
 		
-		logger.info("Enter getWarehouseById() Params:"+ whId);
+		logger.info("Enter method getWarehouseById() Params:"+ whId);
 		if(whId == null){
 			throw new IllegalException("参数异常");
 		}
@@ -72,7 +72,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		WarehouseVo warehouseVo = new WarehouseVo();
 		BeanUtils.copyProperties(warehouse,warehouseVo);
 		
-		logger.info("Exit getWarehouseById() return:"+ warehouseVo);
+		logger.info("Exit method getWarehouseById() return:"+ warehouseVo);
 		return warehouseVo;
 	}
 	
@@ -87,7 +87,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 	@Override
 	public ServerResponse updateWarehouse(WarehouseDTO warehouseDTO) {
 		
-		logger.info("Enter updateWarehouse(WarehouseDTO warehouseDTO) Params:"+ warehouseDTO);
+		logger.info("Enter method updateWarehouse(WarehouseDTO warehouseDTO) Params:"+ warehouseDTO);
 		if( !ObjectUtils.anyNotNull(warehouseDTO)){
 			logger.debug("warehouseDTO 为空");
 			throw  new IllegalException("参数为空");
@@ -106,7 +106,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		}
 		
 		
-		logger.info("Exit updateWarehouse(WarehouseDTO warehouseDTO) return:"+serverResponse);
+		logger.info("Exit method updateWarehouse(WarehouseDTO warehouseDTO) return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
@@ -119,7 +119,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 	@Override
 	public ServerResponse deleteWarehouseById(Long whId) {
 		
-		logger.info("Enter deleteWarehouseById(Long whId) Params:"+ whId);
+		logger.info("Enter method deleteWarehouseById(Long whId) Params:"+ whId);
 		if(whId == null){
 			throw new IllegalException("请求参数异常");
 		}
@@ -133,7 +133,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
 		}
 		
-		logger.info("Exit deleteWarehouseById(Long whId)  return:"+serverResponse);
+		logger.info("Exit method deleteWarehouseById(Long whId)  return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
@@ -145,7 +145,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 	*/  
 	@Override
 	public ServerResponse addWarehouse(WarehouseDTO warehouseDTO) {
-		logger.info("Enter addWarehouse(WarehouseDTO warehouseDTO) Params:"+ warehouseDTO);
+		logger.info("Enter method addWarehouse(WarehouseDTO warehouseDTO) Params:"+ warehouseDTO);
 		
 		if( !ObjectUtils.anyNotNull(warehouseDTO)){
 			logger.debug("warehouseDTO 为空");
@@ -166,7 +166,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		}
 		
 		
-		logger.info("Exit addWarehouse(WarehouseDTO warehouseDTO) return:"+ serverResponse);
+		logger.info("Exit method addWarehouse(WarehouseDTO warehouseDTO) return:"+ serverResponse);
 		return serverResponse;
 	}
 }

@@ -12,7 +12,6 @@ import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.bo.RoleBo;
 import com.ok.okhelper.pojo.bo.UserBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
-import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.Role;
@@ -150,7 +149,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void userRegister(UserAndStoreDto userAndStoreDto) {
-//        logger.info("Enter userRegister" + userAndStoreDto);
+//        logger.info("Enter method userRegister" + userAndStoreDto);
         if (StringUtils.isBlank(userAndStoreDto.getUserName())
                 || StringUtils.isBlank(userAndStoreDto.getUserPassword())
                 || StringUtils.isBlank(userAndStoreDto.getStoreName())
@@ -189,7 +188,7 @@ public class UserServiceImpl implements UserService {
         }
 
 
-//        logger.info("EXit userRegister" );
+//        logger.info("Exit method userRegister" );
 
 
     }
@@ -260,7 +259,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse addEmployee(UserDto userDto) {
 
-        logger.info("Enter addEmployee" + userDto);
+        logger.info("Enter method addEmployee" + userDto);
 
         Long userId = JWTUtil.getUserId();
         Long storeId = JWTUtil.getStoreId();
@@ -294,7 +293,7 @@ public class UserServiceImpl implements UserService {
 
         ServerResponse serverResponse = ServerResponse.createBySuccess("添加成功");
 
-        logger.info("EXit addEmployee" + serverResponse);
+        logger.info("Exit method addEmployee" + serverResponse);
 
         return serverResponse;
     }
@@ -346,7 +345,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel) {
         
-        logger.info("Enter getEmployeeList()");
+        logger.info("Enter method getEmployeeList()");
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
         
@@ -395,7 +394,7 @@ public class UserServiceImpl implements UserService {
     
         PageInfo<EmployeeVo> pageInfo = new PageInfo<>(employeeVoList);
     
-        logger.info("Exit getEmployeeList()"+pageInfo);
+        logger.info("Exit method getEmployeeList()"+pageInfo);
     
         return PageModel.convertToPageModel(pageInfo);
     

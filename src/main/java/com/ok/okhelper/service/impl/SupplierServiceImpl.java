@@ -41,7 +41,7 @@ public class SupplierServiceImpl implements SupplierService {
 	*/
 	@Override
 	public PageModel<Supplier> getSupplierList(PageModel pageModel) {
-		logger.info("Enter getSupplierList()");
+		logger.info("Enter method getSupplierList()");
 		//启动分页
 		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 		
@@ -52,14 +52,14 @@ public class SupplierServiceImpl implements SupplierService {
 		List<Supplier> supplierList = supplierMapper.getSupplierByStoreId(storeId);
 		
 		PageInfo<Supplier> pageInfo = new PageInfo<>(supplierList);
-		logger.info("Exit getSupplierList() Params:"+pageInfo);
+		logger.info("Exit method getSupplierList() Params:"+pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
 	}
 	
 	@Override
 	public Supplier getSupplierById(Long supplierId) {
 		
-		logger.info("Enter getSupplierById() Params:"+ supplierId);
+		logger.info("Enter method getSupplierById() Params:"+ supplierId);
 		if(supplierId == null){
 			throw new IllegalException("参数异常");
 		}
@@ -70,7 +70,7 @@ public class SupplierServiceImpl implements SupplierService {
 			
 		}
 		
-		logger.info("Exit getSupplierById() return:"+ supplier);
+		logger.info("Exit method getSupplierById() return:"+ supplier);
 		return supplier;
 	}
 	
@@ -85,7 +85,7 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public ServerResponse updateSupplier(SupplierDto supplierDto) {
 		
-		logger.info("Enter updateSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
+		logger.info("Enter method updateSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
 		if( !ObjectUtils.anyNotNull(supplierDto)){
 			logger.debug("supplierDto 为空");
 			throw  new IllegalException("参数为空");
@@ -111,7 +111,7 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		
 		
-		logger.info("Exit updateSupplier(SupplierDto supplierDto) return:"+serverResponse);
+		logger.info("Exit method updateSupplier(SupplierDto supplierDto) return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
@@ -124,7 +124,7 @@ public class SupplierServiceImpl implements SupplierService {
 	@Override
 	public ServerResponse deleteSupplierById(Long supplierId) {
 		
-		logger.info("Enter deleteSupplierById(Long supplierId) Params:"+ supplierId);
+		logger.info("Enter method deleteSupplierById(Long supplierId) Params:"+ supplierId);
 		if(supplierId == null){
 			throw new IllegalException("请求参数异常");
 		}
@@ -145,7 +145,7 @@ public class SupplierServiceImpl implements SupplierService {
 			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
 		}
 		
-		logger.info("Exit deleteSupplierById(Long supplierId)  return:"+serverResponse);
+		logger.info("Exit method deleteSupplierById(Long supplierId)  return:"+serverResponse);
 		return serverResponse;
 	}
 	/*
@@ -157,7 +157,7 @@ public class SupplierServiceImpl implements SupplierService {
 	*/
 	@Override
 	public ServerResponse addSupplier(SupplierDto supplierDto) {
-		logger.info("Enter addSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
+		logger.info("Enter method addSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
 		
 		if( !ObjectUtils.anyNotNull(supplierDto)){
 			logger.debug("supplierDto 为空");
@@ -188,7 +188,7 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 		
 		
-		logger.info("Exit addSupplier(SupplierDto supplierDto) return:"+ serverResponse);
+		logger.info("Exit method addSupplier(SupplierDto supplierDto) return:"+ serverResponse);
 		return serverResponse;
 	}
 }
