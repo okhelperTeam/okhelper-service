@@ -4,11 +4,13 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
 import com.ok.okhelper.pojo.dto.SaleTotalVo;
 import com.ok.okhelper.pojo.po.SalesOrder;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
+import com.ok.okhelper.service.DeliveryService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.DateUntil;
@@ -39,6 +41,9 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
 
+    @Autowired
+    private DeliveryService deliveryService;
+
     @GetMapping("/sale/sale_table")
     @ApiOperation(value = "获取销售历史订单", notes = "查询指定日期的销售订单列表")
     public ServerResponse<PageModel<SalesOrder>> getSaleOrderRecords(@Valid SaleOrderDto saleOrderDto, @Valid PageModel pageModel) {
@@ -63,7 +68,22 @@ public class SaleController {
     @ApiOperation(value = "下订单", notes = "下单并付款")
     public ServerResponse placeOrder(@Valid PlaceOrderDto placeOrderDto) {
         PlaceOrderVo placeOrderVo = saleService.placeOrder(JWTUtil.getStoreId(), JWTUtil.getUserId(), placeOrderDto);
+        if (placeOrderDto != null) {
+            saleService.recordHotSale(placeOrderDto.getPlaceOrderItemDtos());
+        }
         return ServerResponse.createBySuccess(placeOrderVo);
+    }
+
+
+    @PostMapping("/sale/deliver_goods")
+    @ApiOperation(value = "发货/出库")
+    public ServerResponse deliverGoods(DeliveryDto deliveryDto) {
+
+        Long deliveryId = deliveryService.deliverGoods(deliveryDto);
+        if (deliveryId != null) {
+            deliveryService.sendEmail(deliveryDto.getSalesOrderId());
+        }
+        return ServerResponse.createBySuccessMessage("发货成功");
     }
 
 }

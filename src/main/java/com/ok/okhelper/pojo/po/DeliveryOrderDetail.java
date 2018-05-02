@@ -1,7 +1,10 @@
 package com.ok.okhelper.pojo.po;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Table(name = "delivery_order_detail")
 public class DeliveryOrderDetail {

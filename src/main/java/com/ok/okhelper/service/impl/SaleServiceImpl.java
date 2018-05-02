@@ -3,11 +3,7 @@ package com.ok.okhelper.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
-import com.ok.okhelper.controller.ReportController;
-import com.ok.okhelper.dao.ProductMapper;
-import com.ok.okhelper.dao.SalesOrderDetailMapper;
-import com.ok.okhelper.dao.SalesOrderMapper;
-import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.dao.*;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
@@ -22,7 +18,6 @@ import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.DateUntil;
 import com.ok.okhelper.until.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,8 +28,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -66,7 +59,6 @@ public class SaleServiceImpl implements SaleService {
     @Lazy
     @Autowired
     private ProductService productService;
-
 
     @Autowired
     private OtherService otherService;
@@ -148,14 +140,7 @@ public class SaleServiceImpl implements SaleService {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
         //TODO 试一试 去掉try catch
-        try {
-            Boolean aBoolean = otherService.checkAndCutStock(placeOrderItemDtos);
-            if (!aBoolean) {
-                throw new IllegalException("下单失败");
-            }
-        } catch (Exception e) {
-            throw e;
-        }
+        otherService.checkAndCutStock(placeOrderItemDtos);
 
         placeOrderDto.setSeller(seller);
         placeOrderDto.setStoreId(storeId);
@@ -177,7 +162,6 @@ public class SaleServiceImpl implements SaleService {
 
         if (CollectionUtils.isNotEmpty(placeOrderItemDtos)) {
             assembleSalesOrderDetail(placeOrderItemDtos, salesOrder.getId());
-            recordHotSale(placeOrderItemDtos);
         }
 
         PlaceOrderVo placeOrderVo = new PlaceOrderVo();
@@ -187,7 +171,6 @@ public class SaleServiceImpl implements SaleService {
     }
 
 
-
     /**
      * @Author zc
      * @Date 2018/4/30 下午1:56
@@ -195,7 +178,6 @@ public class SaleServiceImpl implements SaleService {
      * @Return void
      * @Description:组装订单子项并持久化到数据库
      */
-    @Async
     public void assembleSalesOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             SalesOrderDetail salesOrderDetail = new SalesOrderDetail();
@@ -231,5 +213,6 @@ public class SaleServiceImpl implements SaleService {
 
         });
     }
+
 
 }

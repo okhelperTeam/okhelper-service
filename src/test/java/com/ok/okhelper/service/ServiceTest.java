@@ -4,11 +4,9 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ok.okhelper.OkhelperApplication;
+import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
 import com.ok.okhelper.pojo.dto.UpdateStoreDto;
-import com.ok.okhelper.pojo.po.Permission;
-import com.ok.okhelper.pojo.po.Product;
-import com.ok.okhelper.pojo.po.Role;
-import com.ok.okhelper.pojo.po.Store;
+import com.ok.okhelper.pojo.po.*;
 import com.ok.okhelper.pojo.vo.RolePermissionVo;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -19,6 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,9 +43,15 @@ public class ServiceTest {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private DeliveryService deliveryService;
+
 
     @Autowired
     private SaleService saleService;
+
+    @Autowired
+    private OtherService otherService;
 
 
     @Test
@@ -85,5 +91,16 @@ public class ServiceTest {
         log.debug(product.toString());
     }
 
+
+    @Test
+    public void testForUpdate() {
+        PlaceOrderItemDto placeOrderItemDto = new PlaceOrderItemDto();
+        placeOrderItemDto.setProductId(Long.valueOf(686));
+        placeOrderItemDto.setSalesCount(10);
+        placeOrderItemDto.setSalesPrice(BigDecimal.valueOf(100));
+        List list = new ArrayList();
+        list.add(placeOrderItemDto);
+        otherService.checkAndCutStock(list);
+    }
 
 }

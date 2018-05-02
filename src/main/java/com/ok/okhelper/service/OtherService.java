@@ -1,6 +1,8 @@
 package com.ok.okhelper.service;
 
+import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
+import com.ok.okhelper.pojo.po.DeliveryOrderDetail;
 
 import java.util.List;
 
@@ -10,5 +12,8 @@ import java.util.List;
  * Description:一些特殊服务
  */
 public interface OtherService {
-    Boolean checkAndCutStock(List<PlaceOrderItemDto> placeOrderItemDtos);
+    void checkAndCutStock(List<PlaceOrderItemDto> placeOrderItemDtos);
+
+    void checkDelivery(DeliveryDto deliveryDto);
+
 }
