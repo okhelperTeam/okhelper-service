@@ -44,6 +44,10 @@ public class ServiceTest {
     private ProductService productService;
 
 
+    @Autowired
+    private SaleService saleService;
+
+
     @Test
     public void getRoleList() {
         List<RolePermissionVo> roles = roleService.getRoleListByStore((long) 0);
@@ -80,5 +84,6 @@ public class ServiceTest {
         Product product = productService.getProduct((long) 10);
         log.debug(product.toString());
     }
+
 
 }

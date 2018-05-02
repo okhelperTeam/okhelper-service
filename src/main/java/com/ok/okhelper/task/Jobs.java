@@ -30,25 +30,26 @@ public class Jobs {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    //FIXME 废弃换成下单时判断
     //每天凌晨跑
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void HotSaleHandler() {
-        log.info("HotSaleHandler定时任务开启");
-        List<Store> stores = storeMapper.selectAll();
-        stores.forEach(store -> {
-            String zkey_yesterday = ConstStr.HOT_SALE + ":" + store.getId() + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -1), "yyyyMMdd");
-            String zkey = ConstStr.HOT_SALE + ":" + store.getId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
+//    @Scheduled(cron = "0 0 0 * * ?")
+//    public void HotSaleHandler() {
+//        log.info("HotSaleHandler定时任务开启");
+//        List<Store> stores = storeMapper.selectAll();
+//        stores.forEach(store -> {
+//            String zkey_yesterday = ConstStr.HOT_SALE + ":" + store.getId() + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -1), "yyyyMMdd");
+//            String zkey = ConstStr.HOT_SALE + ":" + store.getId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
+//
+//            //初始化新的一天
+//            redisTemplate.opsForZSet().add(zkey, String.valueOf((long) 0), 0);
+//            redisTemplate.expire(zkey, 31, TimeUnit.DAYS);
+//            redisTemplate.opsForZSet().remove(zkey, "0");
+//            log.info("初始化今天热销缓存{}", zkey);
 
-            //初始化新的一天
-            redisTemplate.opsForZSet().add(zkey, String.valueOf((long) 0), 0);
-            redisTemplate.expire(zkey, 31, TimeUnit.DAYS);
-            redisTemplate.opsForZSet().remove(zkey, "0");
-            log.info("初始化今天热销缓存{}", zkey);
-
-            //清除前一天商品只留销量前十
+    //清除前一天商品只留销量前十
 //            redisTemplate.opsForZSet().removeRange(zkey_yesterday,0,-11);
 //            log.info("清除昨天热销缓存{}",zkey_yesterday);
-        });
+//        });
 
-    }
+//    }
 }
