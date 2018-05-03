@@ -47,7 +47,7 @@ public class OtherServiceImpl implements OtherService {
     /**
      * @Author zc
      * @Date 2018/4/28 下午11:57
-     * @Param [salesOrderDetails]
+     * @Param [placeOrderItemDtos]
      * @Return void
      * @Description:检测并减库存
      */
