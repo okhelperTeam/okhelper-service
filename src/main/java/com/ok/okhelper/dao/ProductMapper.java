@@ -22,7 +22,7 @@ public interface ProductMapper extends MyMapper<Product> {
     * @Date 2018/4/30 18:09  
     * @Params [cId]  
     * @Return java.util.List<com.ok.okhelper.pojo.vo.ProductsVo>  
-    * @Description:Í¨¹ý·ÖÀà²éÑ¯ÉÌÆ·
+    * @Description:Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½Æ·
     */  
     List<ProductsVo> getProductsListByCategoryId(List<CategoryVo> categoryListTotal);
     

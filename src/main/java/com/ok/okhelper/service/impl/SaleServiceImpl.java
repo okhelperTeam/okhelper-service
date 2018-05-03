@@ -3,11 +3,7 @@ package com.ok.okhelper.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
-import com.ok.okhelper.controller.ReportController;
-import com.ok.okhelper.dao.ProductMapper;
-import com.ok.okhelper.dao.SalesOrderDetailMapper;
-import com.ok.okhelper.dao.SalesOrderMapper;
-import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.dao.*;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
@@ -18,10 +14,12 @@ import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SalesOrder;
 import com.ok.okhelper.pojo.po.SalesOrderDetail;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
+import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,13 +28,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Author: zc
@@ -44,6 +42,7 @@ import java.util.List;
  * Description:
  */
 @Service
+@Slf4j
 public class SaleServiceImpl implements SaleService {
     @Autowired
     private SalesOrderMapper salesOrderMapper;
@@ -61,6 +60,9 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private OtherService otherService;
+
     /**
      * 库存不足
      */
@@ -75,7 +77,6 @@ public class SaleServiceImpl implements SaleService {
      * @Description:获取指定时间内的历史订单(包含已关闭订单)
      */
     @Override
-    @Transactional
     public PageModel<SalesOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit) {
         //启动分页
         PageHelper.startPage(pageNum, limit);
@@ -102,7 +103,6 @@ public class SaleServiceImpl implements SaleService {
      * @Description:获取指定时间范围的销售聚合 (去除 已关闭订单)
      */
     @Override
-    @Transactional
     public SaleTotalVo getSaleTotalVo(Long storeId, Date startDate, Date endDate) {
         Example example = new Example(SalesOrder.class);
         example.createCriteria()
@@ -131,18 +131,16 @@ public class SaleServiceImpl implements SaleService {
      * @Author zc
      * @Date 2018/4/29 上午11:00
      * @Param [storeId, seller, placeOrderDto]
-     * @Return java.lang.String  返回订单号
+     * @Return java.lang.String  返回订单vo
      * @Description:下单并付款
      */
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional
     public PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
-        Boolean isStock = checkAndCutStock(placeOrderItemDtos);
-        if (!isStock) {
-            throw new IllegalException("库存不足,下单失败");
-        }
+        //TODO 试一试 去掉try catch
+        otherService.checkAndCutStock(placeOrderItemDtos);
 
         placeOrderDto.setSeller(seller);
         placeOrderDto.setStoreId(storeId);
@@ -164,7 +162,6 @@ public class SaleServiceImpl implements SaleService {
 
         if (CollectionUtils.isNotEmpty(placeOrderItemDtos)) {
             assembleSalesOrderDetail(placeOrderItemDtos, salesOrder.getId());
-            recordHotSale(placeOrderItemDtos);
         }
 
         PlaceOrderVo placeOrderVo = new PlaceOrderVo();
@@ -176,31 +173,11 @@ public class SaleServiceImpl implements SaleService {
 
     /**
      * @Author zc
-     * @Date 2018/4/28 下午11:57
-     * @Param [salesOrderDetails]
-     * @Return void
-     * @Description:检测并减库存
-     */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Boolean checkAndCutStock(List<PlaceOrderItemDto> placeOrderItemDtos) {
-        placeOrderItemDtos.forEach(placeOrderItemDto -> {
-            int i = productMapper.cutSalesStock(placeOrderItemDto.getSalesCount(), placeOrderItemDto.getProductId());
-            if (i <= 0) {
-                throw new IllegalException("商品id：" + placeOrderItemDto.getProductId() + "库存不足下单失败");
-            }
-        });
-        return true;
-    }
-
-    /**
-     * @Author zc
      * @Date 2018/4/30 下午1:56
      * @Param [placeOrderItemDtos]
      * @Return void
      * @Description:组装订单子项并持久化到数据库
      */
-    @Async
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void assembleSalesOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             SalesOrderDetail salesOrderDetail = new SalesOrderDetail();
@@ -228,7 +205,14 @@ public class SaleServiceImpl implements SaleService {
             Long productId = placeOrderItemDto.getProductId();
             Integer salesCount = placeOrderItemDto.getSalesCount();
             redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf(productId), salesCount);
+
+            //如果不存在zkey说明当前是今天第一单，设置失效时间30天
+            if (!redisTemplate.hasKey(zkey)) {
+                redisTemplate.expire(zkey, 30, TimeUnit.DAYS);
+            }
+
         });
     }
+
 
 }

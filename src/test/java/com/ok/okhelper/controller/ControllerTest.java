@@ -36,16 +36,28 @@ public class ControllerTest {
 
     @Test
     public void testZset() {
-        String zkey = ConstStr.HOT_SALE + ":" + "3" + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), 0), "yyyyMMdd");
-        String zkey2 = ConstStr.HOT_SALE + ":" + "3" + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -1), "yyyyMMdd");
-        String zkey3 = ConstStr.HOT_SALE + ":" + "3" + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -2), "yyyyMMdd");
+        Long storeId = Long.valueOf(3);
 
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 3), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+        String zkey_yesterday = ConstStr.HOT_SALE + ":" + storeId + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -1), "yyyyMMdd");
+
+        String zkey = ConstStr.HOT_SALE + ":" + storeId + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
+
+        //初始化新的一天
+        redisTemplate.opsForZSet().add(zkey, String.valueOf((long) 0), 0);
+        redisTemplate.expire(zkey, 31, TimeUnit.DAYS);
+//        redisTemplate.opsForZSet().remove(zkey, "0");
+
+
+//        String zkey = ConstStr.HOT_SALE + ":" + "3" + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), 0), "yyyyMMdd");
+//        String zkey2 = ConstStr.HOT_SALE + ":" + "3" + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -1), "yyyyMMdd");
+//        String zkey3 = ConstStr.HOT_SALE + ":" + "3" + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -2), "yyyyMMdd");
+//
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 3), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
@@ -55,12 +67,12 @@ public class ControllerTest {
 //        redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 
 
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 3), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 3), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
@@ -69,19 +81,19 @@ public class ControllerTest {
 //        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 //        redisTemplate.opsForZSet().incrementScore(zkey2, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 3), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 10), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 11), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
-        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 1), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 2), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 3), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 4), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 5), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 6), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 7), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 8), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 9), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 10), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 11), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 12), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
+//        redisTemplate.opsForZSet().incrementScore(zkey3, String.valueOf((long) 13), Double.parseDouble(RandomStringUtils.randomNumeric(2)));
 
 //        redisTemplate.opsForZSet().remove(zkey,0,-11);
 
@@ -100,16 +112,7 @@ public class ControllerTest {
 
 
     {
-//        Long storeId= Long.valueOf(7);
-//
-//        String zkey_yesterday = ReportController.HOT_PRODUCT + ":" + storeId + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(),-1), "yyyyMMdd");
-//
-//        String zkey = ReportController.HOT_PRODUCT + ":" + storeId + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
-//
-//        //初始化新的一天
-//        redisTemplate.opsForZSet().add(zkey, String.valueOf((long) 0), 0);
-//        redisTemplate.expire(zkey, 30, TimeUnit.DAYS);
-//        redisTemplate.opsForZSet().remove(zkey, "0");
+
 //
 //        //清除前一天商品只留销量前十
 //        redisTemplate.opsForZSet().removeRange(zkey_yesterday,0,-11);

@@ -60,7 +60,6 @@ public class UserController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description:店长注册
      */
-    @Transactional
     @PostMapping("/user/register")
     @ApiOperation(value = "店长注册", notes = "")
     @ApiResponses({@ApiResponse(code = 400, message = "注册信息有误")})

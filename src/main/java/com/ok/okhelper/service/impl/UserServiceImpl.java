@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
      * @Description:店长注册
      */
     @Override
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
+    @Transactional
     public void userRegister(UserAndStoreDto userAndStoreDto) {
 //        logger.info("Enter method userRegister" + userAndStoreDto);
         if (StringUtils.isBlank(userAndStoreDto.getUserName())

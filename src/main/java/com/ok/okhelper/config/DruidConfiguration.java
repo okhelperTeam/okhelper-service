@@ -30,8 +30,8 @@ public class DruidConfiguration {
         //IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
 //        bean.addInitParameter("deny", "192.168.1.73");
         //登录查看信息的账号密码.
-        bean.addInitParameter("loginUsername", PropertiesUtil.getProperty("spring.datasource.username"));
-        bean.addInitParameter("loginPassword", PropertiesUtil.getProperty("spring.datasource.password"));
+        bean.addInitParameter("loginUsername", "admin");
+        bean.addInitParameter("loginPassword", "admin");
         //是否能够重置数据.
         bean.addInitParameter("resetEnable", "false");
         return bean;
