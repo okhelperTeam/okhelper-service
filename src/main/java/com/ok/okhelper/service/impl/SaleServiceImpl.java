@@ -4,15 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.*;
+import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
-import com.ok.okhelper.pojo.dto.SaleTotalVo;
+import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.po.Product;
-import com.ok.okhelper.pojo.po.SalesOrder;
-import com.ok.okhelper.pojo.po.SalesOrderDetail;
+import com.ok.okhelper.pojo.po.SaleOrder;
+import com.ok.okhelper.pojo.po.SaleOrderDetail;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
@@ -45,10 +46,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class SaleServiceImpl implements SaleService {
     @Autowired
-    private SalesOrderMapper salesOrderMapper;
+    private SaleOrderMapper saleOrderMapper;
 
     @Autowired
-    private SalesOrderDetailMapper salesOrderDetailMapper;
+    private SaleOrderDetailMapper saleOrderDetailMapper;
 
     @Autowired
     private ProductMapper productMapper;
@@ -73,24 +74,24 @@ public class SaleServiceImpl implements SaleService {
      * @Author zc
      * @Date 2018/4/29 上午11:01
      * @Param [storeId, saleOrderDto, pageNum, limit]
-     * @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.po.SalesOrder>
+     * @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.po.SaleOrder>
      * @Description:获取指定时间内的历史订单(包含已关闭订单)
      */
     @Override
-    public PageModel<SalesOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit) {
+    public PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit) {
         //启动分页
         PageHelper.startPage(pageNum, limit);
 
         //启动排序
         PageHelper.orderBy(saleOrderDto.getOrderBy());
 
-        Example example = new Example(SalesOrder.class);
+        Example example = new Example(SaleOrder.class);
         example.createCriteria()
                 .andBetween("createdTime", saleOrderDto.getStartDate(), saleOrderDto.getEndDate())
                 .andEqualTo("storeId", storeId);
-        List<SalesOrder> salesOrders = salesOrderMapper.selectByExample(example);
+        List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
 
-        PageInfo<SalesOrder> pageInfo = new PageInfo<>(salesOrders);
+        PageInfo<SaleOrder> pageInfo = new PageInfo<>(saleOrders);
 
         return PageModel.convertToPageModel(pageInfo);
     }
@@ -99,27 +100,27 @@ public class SaleServiceImpl implements SaleService {
      * @Author zc
      * @Date 2018/4/29 上午11:00
      * @Param [storeId, startDate, endDate]
-     * @Return com.ok.okhelper.pojo.dto.SaleTotalVo
+     * @Return com.ok.okhelper.pojo.vo.SaleTotalVo
      * @Description:获取指定时间范围的销售聚合 (去除 已关闭订单)
      */
     @Override
     public SaleTotalVo getSaleTotalVo(Long storeId, Date startDate, Date endDate) {
-        Example example = new Example(SalesOrder.class);
+        Example example = new Example(SaleOrder.class);
         example.createCriteria()
                 .andBetween("createdTime", startDate, endDate)
                 .andEqualTo("storeId", storeId)
                 .andNotEqualTo("orderStatus", ConstEnum.SALESTATUS_CLOSE.getCode());
-        List<SalesOrder> salesOrders = salesOrderMapper.selectByExample(example);
+        List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
 
 
         SaleTotalVo saleTotalVo = new SaleTotalVo();
-        saleTotalVo.setSaleCount(salesOrders.size());
+        saleTotalVo.setSaleCount(saleOrders.size());
 
         //java 8流式操作集合 计算总和
-        BigDecimal totalMoney = salesOrders
+        BigDecimal totalMoney = saleOrders
                 .stream()
-                .filter(salesOrder -> salesOrder.getSumPrice() != null)
-                .map(SalesOrder::getSumPrice)
+                .filter(saleOrder -> saleOrder.getSumPrice() != null)
+                .map(SaleOrder::getSumPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         saleTotalVo.setTotalSales(totalMoney);
@@ -155,17 +156,17 @@ public class SaleServiceImpl implements SaleService {
 
         placeOrderDto.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_NOSEND.getCode());
 
-        SalesOrder salesOrder = new SalesOrder();
-        BeanUtils.copyProperties(placeOrderDto, salesOrder);
+        SaleOrder saleOrder = new SaleOrder();
+        BeanUtils.copyProperties(placeOrderDto, saleOrder);
 
-        salesOrderMapper.insertSelective(salesOrder);
+        saleOrderMapper.insertSelective(saleOrder);
 
         if (CollectionUtils.isNotEmpty(placeOrderItemDtos)) {
-            assembleSalesOrderDetail(placeOrderItemDtos, salesOrder.getId());
+            assembleSaleOrderDetail(placeOrderItemDtos, saleOrder.getId());
         }
 
         PlaceOrderVo placeOrderVo = new PlaceOrderVo();
-        BeanUtils.copyProperties(salesOrder, placeOrderVo);
+        BeanUtils.copyProperties(saleOrder, placeOrderVo);
 
         return placeOrderVo;
     }
@@ -178,16 +179,16 @@ public class SaleServiceImpl implements SaleService {
      * @Return void
      * @Description:组装订单子项并持久化到数据库
      */
-    public void assembleSalesOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
+    public void assembleSaleOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
-            SalesOrderDetail salesOrderDetail = new SalesOrderDetail();
-            Product product = productService.getProduct(salesOrderDetail.getProductId());
-            salesOrderDetail.setMainImg(product.getMainImg());
-            salesOrderDetail.setProductName(product.getProductName());
-            salesOrderDetail.setProductTitle(product.getProductTitle());
-            salesOrderDetail.setSalesOrderId(saleOrderId);
+            SaleOrderDetail saleOrderDetail = new SaleOrderDetail();
+            Product product = productService.getProduct(saleOrderDetail.getProductId());
+            saleOrderDetail.setMainImg(product.getMainImg());
+            saleOrderDetail.setProductName(product.getProductName());
+            saleOrderDetail.setProductTitle(product.getProductTitle());
+            saleOrderDetail.setSaleOrderId(saleOrderId);
 
-            salesOrderDetailMapper.insertSelective(salesOrderDetail);
+            saleOrderDetailMapper.insertSelective(saleOrderDetail);
         });
     }
 
@@ -212,6 +213,33 @@ public class SaleServiceImpl implements SaleService {
             }
 
         });
+    }
+
+    /**
+     * @Author zc
+     * @Date 2018/5/3 上午10:25
+     * @Param [saleOrderId]
+     * @Return void
+     * @Description:确认收货
+     */
+    public void confirmReceipt(Long saleOrderId) {
+        SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
+
+        if (ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode().equals(saleOrder.getLogisticsStatus())) {
+            throw new IllegalException("已经确认收货，请不要重复确认");
+        }
+
+        SaleOrder newSaleOrder = new SaleOrder();
+        newSaleOrder.setId(saleOrder.getId());
+        newSaleOrder.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode());
+        newSaleOrder.setCloseTime(new Date());
+        //如果已付全款则变更为交易完成
+        if (ConstEnum.SALESTATUS_PAID.getCode().equals(newSaleOrder.getOrderStatus())) {
+            newSaleOrder.setOrderStatus(ConstEnum.SALESTATUS_SUCCESS.getCode());
+            newSaleOrder.setSuccessTime(new Date());
+        }
+
+        saleOrderMapper.updateByPrimaryKeySelective(newSaleOrder);
     }
 
 

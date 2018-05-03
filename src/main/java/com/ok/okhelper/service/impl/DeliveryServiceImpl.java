@@ -3,6 +3,7 @@ package com.ok.okhelper.service.impl;
 import com.ok.okhelper.dao.*;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
+import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.po.*;
 import com.ok.okhelper.service.DeliveryService;
@@ -19,6 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private StockMapper stockMapper;
 
     @Autowired
-    private SalesOrderMapper salesOrderMapper;
+    private SaleOrderMapper saleOrderMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -68,7 +70,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
         //插入发货单
         DeliveryOrder deliveryOrder = new DeliveryOrder();
-        deliveryOrder.setSalesOrderId(deliveryOrder.getSalesOrderId());
+        deliveryOrder.setSaleOrderId(deliveryDto.getSaleOrderId());
         deliveryOrder.setStockouter(JWTUtil.getUserId());
 
         deliveryOrderMapper.insertSelective(deliveryOrder);
@@ -108,6 +110,13 @@ public class DeliveryServiceImpl implements DeliveryService {
             stockMapper.updateByPrimaryKeySelective(dbstock);
         });
 
+        //修改订单状态
+        SaleOrder saleOrder = new SaleOrder();
+        saleOrder.setId(deliveryDto.getSaleOrderId());
+        saleOrder.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_SEND.getCode());
+        saleOrder.setSendTime(new Date());
+        saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
+
         return deliveryOrderId;
     }
 
@@ -121,9 +130,9 @@ public class DeliveryServiceImpl implements DeliveryService {
      */
     @Async
     public void sendEmail(Long saleOrderId) {
-        SalesOrder salesOrder = salesOrderMapper.selectByPrimaryKey(saleOrderId);
+        SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
 
-        Long customerId = salesOrder.getCustomerId();
+        Long customerId = saleOrder.getCustomerId();
 
         User user = userMapper.selectByPrimaryKey(customerId);
 
@@ -133,7 +142,7 @@ public class DeliveryServiceImpl implements DeliveryService {
             message.setFrom(mailUsername);
             message.setTo(user.getUserEmail());
             message.setSubject("标题：发货通知");
-            message.setText(user.getUserName() + "你好，你的订单：" + salesOrder.getOrderNumber() + "已经发货了");
+            message.setText(user.getUserName() + "你好，你的订单：" + saleOrder.getOrderNumber() + "已经发货了");
             try {
                 mailSender.send(message);
             } catch (Exception e) {

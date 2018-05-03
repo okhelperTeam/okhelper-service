@@ -21,7 +21,7 @@ public enum ConstEnum {
 	SALESTATUS_CLOSE("交易关闭",5),
 
 	LOGISTICSSTATUS_NOSEND("未发货",1),
-	LOGISTICSSTATUS_SEND("未发货",2),
+    LOGISTICSSTATUS_SEND("已发货", 2),
 	LOGISTICSSTATUS_RECEIVED("已经送达",3),
 
 	PAYTYPE_CASH("现金交易",1),

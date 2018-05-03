@@ -1,4 +1,4 @@
-package com.ok.okhelper.pojo.dto;
+package com.ok.okhelper.pojo.vo;
 
 import lombok.Data;
 
@@ -123,7 +123,7 @@ public class HotSaleVo {
     private Long storeId;
 
     /**
-     * 销量
+     * 实时销量
      */
     private Integer salesVolume;
 }

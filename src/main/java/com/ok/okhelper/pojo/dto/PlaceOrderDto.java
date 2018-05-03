@@ -1,6 +1,5 @@
 package com.ok.okhelper.pojo.dto;
 
-import com.ok.okhelper.pojo.po.SalesOrderDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

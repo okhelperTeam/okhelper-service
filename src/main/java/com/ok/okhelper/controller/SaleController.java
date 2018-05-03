@@ -3,31 +3,25 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
-import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
-import com.ok.okhelper.pojo.dto.SaleTotalVo;
-import com.ok.okhelper.pojo.po.SalesOrder;
+import com.ok.okhelper.pojo.vo.SaleTotalVo;
+import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 import com.ok.okhelper.service.DeliveryService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.DateUntil;
-import com.ok.okhelper.until.NumberGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Author: zc
@@ -46,12 +40,12 @@ public class SaleController {
 
     @GetMapping("/sale/sale_table")
     @ApiOperation(value = "获取销售历史订单", notes = "查询指定日期的销售订单列表")
-    public ServerResponse<PageModel<SalesOrder>> getSaleOrderRecords(@Valid SaleOrderDto saleOrderDto, @Valid PageModel pageModel) {
+    public ServerResponse<PageModel<SaleOrder>> getSaleOrderRecords(@Valid SaleOrderDto saleOrderDto, @Valid PageModel pageModel) {
         Long storeId = JWTUtil.getStoreId();
         if (null == storeId) {
             throw new IllegalException("商店Id无效");
         }
-        PageModel<SalesOrder> saleOrderRecords = saleService.getSaleOrderRecords(storeId, saleOrderDto, pageModel.getPageNum(), pageModel.getLimit());
+        PageModel<SaleOrder> saleOrderRecords = saleService.getSaleOrderRecords(storeId, saleOrderDto, pageModel.getPageNum(), pageModel.getLimit());
         return ServerResponse.createBySuccess(saleOrderRecords);
     }
 
@@ -66,7 +60,7 @@ public class SaleController {
 
     @PostMapping("/sale/place_order")
     @ApiOperation(value = "下订单", notes = "下单并付款")
-    public ServerResponse placeOrder(@Valid PlaceOrderDto placeOrderDto) {
+    public ServerResponse<PlaceOrderVo> placeOrder(@Valid PlaceOrderDto placeOrderDto) {
         PlaceOrderVo placeOrderVo = saleService.placeOrder(JWTUtil.getStoreId(), JWTUtil.getUserId(), placeOrderDto);
         if (placeOrderDto != null) {
             saleService.recordHotSale(placeOrderDto.getPlaceOrderItemDtos());
@@ -81,9 +75,17 @@ public class SaleController {
 
         Long deliveryId = deliveryService.deliverGoods(deliveryDto);
         if (deliveryId != null) {
-            deliveryService.sendEmail(deliveryDto.getSalesOrderId());
+            deliveryService.sendEmail(deliveryDto.getSaleOrderId());
         }
         return ServerResponse.createBySuccessMessage("发货成功");
+    }
+
+
+    @PostMapping("/sale/confirm_receipt/{saleOrderId}")
+    @ApiOperation(value = "确认收货")
+    public ServerResponse confirmReceipt(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId) {
+        saleService.confirmReceipt(saleOrderId);
+        return ServerResponse.createBySuccessMessage("确认收货");
     }
 
 }

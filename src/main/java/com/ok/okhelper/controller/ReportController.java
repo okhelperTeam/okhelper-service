@@ -3,7 +3,7 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.constenum.ConstStr;
-import com.ok.okhelper.pojo.dto.HotSaleVo;
+import com.ok.okhelper.pojo.vo.HotSaleVo;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.shiro.JWTUtil;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ok.okhelper.dao.SalesOrderDetailMapper">
-  <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.SalesOrderDetail">
+<mapper namespace="com.ok.okhelper.dao.SaleOrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.SaleOrderDetail">
     <!--
       WARNING - @mbg.generated
     -->
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="sales_order_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="sale_order_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
       <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="product_title" javaType="java.lang.String" jdbcType="VARCHAR" />

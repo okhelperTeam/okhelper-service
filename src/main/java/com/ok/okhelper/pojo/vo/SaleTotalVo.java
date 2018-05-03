@@ -1,4 +1,4 @@
-package com.ok.okhelper.pojo.dto;
+package com.ok.okhelper.pojo.vo;
 
 import lombok.Data;
 

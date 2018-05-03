@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "sales_order")
-public class SalesOrder {
+public class SaleOrder {
     /**
      * 主键
      */
@@ -124,7 +124,7 @@ public class SalesOrder {
     @Column(name = "store_id")
     private Long storeId;
 
-    public SalesOrder(Long id, String orderNumber, Long customerId, Long seller, Long stockouter, BigDecimal sumPrice, BigDecimal realPay, BigDecimal discountPrice, BigDecimal toBePaid, Integer payType, Integer orderStatus, Integer logisticsStatus, String remarks, Date createTime, Date payTime, Date sendTime, Date successTime, Date closeTime, Date updateTime, Long storeId) {
+    public SaleOrder(Long id, String orderNumber, Long customerId, Long seller, Long stockouter, BigDecimal sumPrice, BigDecimal realPay, BigDecimal discountPrice, BigDecimal toBePaid, Integer payType, Integer orderStatus, Integer logisticsStatus, String remarks, Date createTime, Date payTime, Date sendTime, Date successTime, Date closeTime, Date updateTime, Long storeId) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.customerId = customerId;
@@ -147,7 +147,7 @@ public class SalesOrder {
         this.storeId = storeId;
     }
 
-    public SalesOrder() {
+    public SaleOrder() {
         super();
     }
 

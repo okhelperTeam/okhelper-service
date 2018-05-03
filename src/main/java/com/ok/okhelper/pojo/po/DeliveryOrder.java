@@ -15,8 +15,8 @@ public class DeliveryOrder {
     /**
      * 销售单id
      */
-    @Column(name = "sales_order_id")
-    private Long salesOrderId;
+    @Column(name = "sale_order_id")
+    private Long saleOrderId;
 
     /**
      * 创建日期(出库时间)
@@ -46,9 +46,9 @@ public class DeliveryOrder {
      */
     private Long stockouter;
 
-    public DeliveryOrder(Long id, Long salesOrderId, Date createTime, Date updateTime, Integer deleteStatus, String description, Long stockouter) {
+    public DeliveryOrder(Long id, Long saleOrderId, Date createTime, Date updateTime, Integer deleteStatus, String description, Long stockouter) {
         this.id = id;
-        this.salesOrderId = salesOrderId;
+        this.saleOrderId = saleOrderId;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
@@ -81,19 +81,19 @@ public class DeliveryOrder {
     /**
      * 获取销售单id
      *
-     * @return sales_order_id - 销售单id
+     * @return sale_order_id - 销售单id
      */
-    public Long getSalesOrderId() {
-        return salesOrderId;
+    public Long getSaleOrderId() {
+        return saleOrderId;
     }
 
     /**
      * 设置销售单id
      *
-     * @param salesOrderId 销售单id
+     * @param saleOrderId 销售单id
      */
-    public void setSalesOrderId(Long salesOrderId) {
-        this.salesOrderId = salesOrderId;
+    public void setSaleOrderId(Long saleOrderId) {
+        this.saleOrderId = saleOrderId;
     }
 
     /**

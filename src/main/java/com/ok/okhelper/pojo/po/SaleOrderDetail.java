@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Table(name = "sales_order_detail")
-public class SalesOrderDetail {
+public class SaleOrderDetail {
     /**
      * 主键
      */
@@ -15,8 +15,8 @@ public class SalesOrderDetail {
     /**
      * 销售Id 
      */
-    @Column(name = "sales_order_id")
-    private Long salesOrderId;
+    @Column(name = "sale_order_id")
+    private Long saleOrderId;
 
     /**
      * 商品Id 
@@ -59,9 +59,9 @@ public class SalesOrderDetail {
      */
     private String remarks;
 
-    public SalesOrderDetail(Long id, Long salesOrderId, Long productId, String productName, String productTitle, String mainImg, Integer salesCount, BigDecimal salesPrice, String remarks) {
+    public SaleOrderDetail(Long id, Long saleOrderId, Long productId, String productName, String productTitle, String mainImg, Integer salesCount, BigDecimal salesPrice, String remarks) {
         this.id = id;
-        this.salesOrderId = salesOrderId;
+        this.saleOrderId = saleOrderId;
         this.productId = productId;
         this.productName = productName;
         this.productTitle = productTitle;
@@ -71,7 +71,7 @@ public class SalesOrderDetail {
         this.remarks = remarks;
     }
 
-    public SalesOrderDetail() {
+    public SaleOrderDetail() {
         super();
     }
 
@@ -98,17 +98,17 @@ public class SalesOrderDetail {
      *
      * @return sales_order_id - 销售Id 
      */
-    public Long getSalesOrderId() {
-        return salesOrderId;
+    public Long getSaleOrderId() {
+        return saleOrderId;
     }
 
     /**
      * 设置销售Id 
      *
-     * @param salesOrderId 销售Id 
+     * @param saleOrderId 销售Id
      */
-    public void setSalesOrderId(Long salesOrderId) {
-        this.salesOrderId = salesOrderId;
+    public void setSaleOrderId(Long saleOrderId) {
+        this.saleOrderId = saleOrderId;
     }
 
     /**

@@ -17,7 +17,7 @@ public class DeliveryDto {
 
     @NotNull
     @ApiModelProperty(value = "销售单Id", required = true)
-    private Long salesOrderId;
+    private Long saleOrderId;
 
     private List<DeliverItemDto> deliverItemDtos;
 }
