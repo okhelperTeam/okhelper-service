@@ -2,6 +2,7 @@ package com.ok.okhelper.shiro;
 
 import com.ok.okhelper.exception.ConflictException;
 import com.ok.okhelper.exception.IllegalException;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
@@ -42,13 +43,18 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      *
      */
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("token");
 
         JWTToken token = new JWTToken(authorization);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
-        getSubject(request, response).login(token);
+        try {
+            getSubject(request, response).login(token);
+        } catch (Exception e) {
+            request.setAttribute("error", e);
+            return false;
+        }
 
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
@@ -66,20 +72,17 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (!isLoginAttempt(request, response)) {
+            request.setAttribute("error", new AuthenticationException("token invalid"));
             response401(request, response);
             return false;
         } else {
-            try {
-                executeLogin(request, response);
-            } catch (Exception e) {
-                request.setAttribute("error", e);
+            if (!executeLogin(request, response)) {
                 response401(request, response);
+                return false;
+            } else {
+                return true;
             }
-
-
         }
-        return true;
-
     }
 
     /**
@@ -105,7 +108,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
      */
     private void response401(ServletRequest req, ServletResponse resp) {
         try {
-           req.getRequestDispatcher("/401").forward(req,resp);
+            req.getRequestDispatcher("/401").forward(req, resp);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }

@@ -136,7 +136,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
         User user = userMapper.selectByPrimaryKey(customerId);
 
-        if (user != null && StringUtils.isNoneBlank(user.getUserEmail())) {
+        if (user != null && StringUtils.isNotBlank(user.getUserEmail())) {
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(mailUsername);
