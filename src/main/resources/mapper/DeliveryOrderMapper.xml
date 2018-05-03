@@ -7,7 +7,7 @@
         -->
         <constructor>
             <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="sales_order_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="sale_order_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
             <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>

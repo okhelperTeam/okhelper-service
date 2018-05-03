@@ -1,7 +1,6 @@
 package com.ok.okhelper.service;
 
 import com.ok.okhelper.pojo.dto.DeliveryDto;
-import com.ok.okhelper.pojo.po.SalesOrder;
 
 /**
  * Author: zc

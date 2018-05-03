@@ -1,7 +1,7 @@
 package com.ok.okhelper.pojo.vo;
 
 import com.ok.okhelper.common.PageModel;
-import com.ok.okhelper.pojo.po.SalesOrder;
+import com.ok.okhelper.pojo.po.SaleOrder;
 import lombok.Data;
 
 /**
@@ -15,5 +15,5 @@ public class SaleOrderRrecordVo {
     //总销售额
     private String totalSales;
 
-    private PageModel<SalesOrder> pageModel;
+    private PageModel<SaleOrder> pageModel;
 }

@@ -2,6 +2,7 @@ package com.ok.okhelper.exception;
 
 
 import com.ok.okhelper.common.ServerResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -23,6 +24,7 @@ import javax.servlet.ServletRequest;
 
 @RestController
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler implements ErrorController {
 
     private static final String ERROR_PATH = "/error";
@@ -106,6 +108,7 @@ public class GlobalExceptionHandler implements ErrorController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Object defaultErrorHandler(Exception e) {
+        log.error("异常：", e);
         return ServerResponse.createDefaultErrorMessage(e.getMessage());
     }
 
