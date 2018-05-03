@@ -9,6 +9,7 @@ import com.ok.okhelper.pojo.dto.StorageDetailDto;
 import com.ok.okhelper.pojo.dto.StorageOrderDto;
 import com.ok.okhelper.pojo.po.*;
 import com.ok.okhelper.pojo.vo.StorageOrderVo;
+import com.ok.okhelper.service.StockService;
 import com.ok.okhelper.service.StorageOrderService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
@@ -51,7 +52,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	ProductMapper productMapper;
 	
 	@Autowired
-	StockMapper stockMapper;
+	StockService stockService;
 	
 	
 	@Override
@@ -75,11 +76,12 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 			BeanUtils.copyProperties(storageDetailDto, storageOrderDetail);
 			storageOrderDetail.setStorageInId(storageOrder.getId());
 			
-			//TODO 减库存
-//			Stock stock = new Stock();
-//			stock.setProductDate(storageDetailDto.getProductDate());
-//			stock.set
-//			stockMapper.insert()
+			// 增加库存
+			Stock stock = new Stock();
+			stock.setProductDate(storageDetailDto.getProductDate());
+			stock.setProductId(storageDetailDto.getProductId());
+			stock.setWarehouseId(storageDetailDto.getWarehouseId());
+			stockService.updateOrAddStockNumber(stock,storageDetailDto.getStorageCount());
 			
 			
 			storageOrderDetailMapper.insertSelective(storageOrderDetail);
@@ -94,6 +96,13 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		return storageOrderVo;
 	}
 	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/3 17:27
+	* @Params [storageOrderDto]  
+	* @Return boolean  
+	* @Description:检查入库参数
+	*/  
 	private boolean checkStorageOrderDto(StorageOrderDto storageOrderDto){
 		
 		List<StorageDetailDto> storageDetailDtos = storageOrderDto.getStorageDetail();
@@ -143,9 +152,9 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		List<StorageDetailBo> storageDetailBoList = getStorageDetailBo(storageOrder.getId());
 		storageOrderVo.setStorageDetail(storageDetailBoList);
 		
-		IdAndNameBo stockiner = userMapper.getIdAndName(storageOrder.getStockiner());
+//		IdAndNameBo stockiner = userMapper.getIdAndName(storageOrder.getStockiner());
 		IdAndNameBo supplier = supplierMapper.getIdAndName(storageOrder.getSupplierId());
-		storageOrderVo.setStockiner(stockiner);
+//		storageOrderVo.setStockiner(stockiner);
 		storageOrderVo.setSupplier(supplier);
 		
 		

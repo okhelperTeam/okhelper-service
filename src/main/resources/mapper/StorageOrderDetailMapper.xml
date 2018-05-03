@@ -23,8 +23,7 @@
     
     
     
-    
-    <!--//入库订单查询子单-->
+
     <select id="getStorageOrderDetailByOrderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT * from storage_order_detail where storage_in_id = #{id}
     </select>
