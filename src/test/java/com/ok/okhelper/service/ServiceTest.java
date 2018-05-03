@@ -96,8 +96,8 @@ public class ServiceTest {
     public void testForUpdate() {
         PlaceOrderItemDto placeOrderItemDto = new PlaceOrderItemDto();
         placeOrderItemDto.setProductId(Long.valueOf(686));
-        placeOrderItemDto.setSalesCount(10);
-        placeOrderItemDto.setSalesPrice(BigDecimal.valueOf(100));
+        placeOrderItemDto.setSaleCount(10);
+        placeOrderItemDto.setSalePrice(BigDecimal.valueOf(100));
         List list = new ArrayList();
         list.add(placeOrderItemDto);
         otherService.checkAndCutStock(list);

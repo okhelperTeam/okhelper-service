@@ -73,10 +73,10 @@
         <!--<table tableName="storage_order_detail">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <!--<table tableName="sales_order">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
-        <table tableName="sales_order_detail">
+        <table tableName="sale_order">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="sale_order_detail">
             <generatedKey column="id" sqlStatement="Mysql"/>
         </table>
         <!--<table tableName="stock">-->

@@ -72,7 +72,6 @@ public class SaleController {
     @PostMapping("/sale/deliver_goods")
     @ApiOperation(value = "发货/出库")
     public ServerResponse deliverGoods(DeliveryDto deliveryDto) {
-
         Long deliveryId = deliveryService.deliverGoods(deliveryDto);
         if (deliveryId != null) {
             deliveryService.sendEmail(deliveryDto.getSaleOrderId());

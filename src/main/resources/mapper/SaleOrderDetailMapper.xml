@@ -7,13 +7,13 @@
     -->
     <constructor>
       <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="sale_order_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+      <arg column="sale_order_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT" />
       <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="product_title" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="main_img" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="sales_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="sales_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="sale_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sale_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
     </constructor>
   </resultMap>

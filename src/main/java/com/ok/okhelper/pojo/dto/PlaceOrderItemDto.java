@@ -26,15 +26,15 @@ public class PlaceOrderItemDto {
      * 商品数量(最小单位)
      */
     @NotNull
-    @Column(name = "sales_count")
+    @Column(name = "sale_count")
     @ApiModelProperty(value = "下单数量",required = true)
-    private Integer salesCount;
+    private Integer saleCount;
 
     /**
      * 商品单价 (销售时单价&最小单位)
      */
     @NotNull
-    @Column(name = "sales_price")
+    @Column(name = "sale_price")
     @ApiModelProperty(value = "下单时单价",required = true)
-    private BigDecimal salesPrice;
+    private BigDecimal salePrice;
 }

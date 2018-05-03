@@ -54,7 +54,7 @@ public class OtherServiceImpl implements OtherService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAndCutStock(List<PlaceOrderItemDto> placeOrderItemDtos) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
-            int i = productMapper.cutSalesStock(placeOrderItemDto.getSalesCount(), placeOrderItemDto.getProductId());
+            int i = productMapper.cutSalesStock(placeOrderItemDto.getSaleCount(), placeOrderItemDto.getProductId());
             if (i <= 0) {
                 throw new IllegalException("商品id：" + placeOrderItemDto.getProductId() + "库存不足下单失败");
             }
@@ -103,13 +103,13 @@ public class OtherServiceImpl implements OtherService {
                     SaleOrderDetail saleOrderDetail = new SaleOrderDetail();
                     saleOrderDetail.setSaleOrderId(deliveryDto.getSaleOrderId());
                     saleOrderDetail.setProductId(pId);
-                    SaleOrderDetail saleOrderDetail1 = saleOrderDetailMapper.selectOne(saleOrderDetail);
+                    SaleOrderDetail dbsaleOrderDetail = saleOrderDetailMapper.selectOne(saleOrderDetail);
 
-                    if (saleOrderDetail1 == null) {
+                    if (dbsaleOrderDetail == null) {
                         throw new IllegalException("要发货的商品信息错误，原订单无此商品，商品Id：" + pId);
                     }
 
-                    if (ObjectUtils.notEqual(saleOrderDetail1.getSalesCount(), sum)) {
+                    if (ObjectUtils.notEqual(dbsaleOrderDetail.getSaleCount(), sum)) {
                         throw new IllegalException("出库数量与原定的不符合，商品Id：" + pId);
                     }
 

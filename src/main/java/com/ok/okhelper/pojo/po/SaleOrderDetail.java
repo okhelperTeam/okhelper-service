@@ -3,7 +3,7 @@ package com.ok.okhelper.pojo.po;
 import java.math.BigDecimal;
 import javax.persistence.*;
 
-@Table(name = "sales_order_detail")
+@Table(name = "sale_order_detail")
 public class SaleOrderDetail {
     /**
      * 主键
@@ -45,29 +45,29 @@ public class SaleOrderDetail {
     /**
      * 商品数量(最小单位)
      */
-    @Column(name = "sales_count")
-    private Integer salesCount;
+    @Column(name = "sale_count")
+    private Integer saleCount;
 
     /**
      * 商品单价 (销售时单价&最小单位)
      */
-    @Column(name = "sales_price")
-    private BigDecimal salesPrice;
+    @Column(name = "sale_price")
+    private BigDecimal salePrice;
 
     /**
      * 备注
      */
     private String remarks;
 
-    public SaleOrderDetail(Long id, Long saleOrderId, Long productId, String productName, String productTitle, String mainImg, Integer salesCount, BigDecimal salesPrice, String remarks) {
+    public SaleOrderDetail(Long id, Long saleOrderId, Long productId, String productName, String productTitle, String mainImg, Integer saleCount, BigDecimal salePrice, String remarks) {
         this.id = id;
         this.saleOrderId = saleOrderId;
         this.productId = productId;
         this.productName = productName;
         this.productTitle = productTitle;
         this.mainImg = mainImg;
-        this.salesCount = salesCount;
-        this.salesPrice = salesPrice;
+        this.saleCount = saleCount;
+        this.salePrice = salePrice;
         this.remarks = remarks;
     }
 
@@ -96,7 +96,7 @@ public class SaleOrderDetail {
     /**
      * 获取销售Id 
      *
-     * @return sales_order_id - 销售Id 
+     * @return sale_order_id - 销售Id 
      */
     public Long getSaleOrderId() {
         return saleOrderId;
@@ -105,7 +105,7 @@ public class SaleOrderDetail {
     /**
      * 设置销售Id 
      *
-     * @param saleOrderId 销售Id
+     * @param saleOrderId 销售Id 
      */
     public void setSaleOrderId(Long saleOrderId) {
         this.saleOrderId = saleOrderId;
@@ -186,37 +186,37 @@ public class SaleOrderDetail {
     /**
      * 获取商品数量(最小单位)
      *
-     * @return sales_count - 商品数量(最小单位)
+     * @return sale_count - 商品数量(最小单位)
      */
-    public Integer getSalesCount() {
-        return salesCount;
+    public Integer getSaleCount() {
+        return saleCount;
     }
 
     /**
      * 设置商品数量(最小单位)
      *
-     * @param salesCount 商品数量(最小单位)
+     * @param saleCount 商品数量(最小单位)
      */
-    public void setSalesCount(Integer salesCount) {
-        this.salesCount = salesCount;
+    public void setSaleCount(Integer saleCount) {
+        this.saleCount = saleCount;
     }
 
     /**
      * 获取商品单价 (销售时单价&最小单位)
      *
-     * @return sales_price - 商品单价 (销售时单价&最小单位)
+     * @return sale_price - 商品单价 (销售时单价&最小单位)
      */
-    public BigDecimal getSalesPrice() {
-        return salesPrice;
+    public BigDecimal getSalePrice() {
+        return salePrice;
     }
 
     /**
      * 设置商品单价 (销售时单价&最小单位)
      *
-     * @param salesPrice 商品单价 (销售时单价&最小单位)
+     * @param salePrice 商品单价 (销售时单价&最小单位)
      */
-    public void setSalesPrice(BigDecimal salesPrice) {
-        this.salesPrice = salesPrice;
+    public void setSalePrice(BigDecimal salePrice) {
+        this.salePrice = salePrice;
     }
 
     /**

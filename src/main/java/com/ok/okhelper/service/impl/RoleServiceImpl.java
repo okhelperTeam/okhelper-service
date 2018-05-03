@@ -39,22 +39,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
 //    @Cacheable(value = "role_list", key = "#storeId")
     public List<RolePermissionVo> getRoleListByStore(Long storeId) {
-//        Example example = new Example(Role.class);
-//        example.createCriteria().andEqualTo("storeId", storeId)
-//                .orEqualTo("storeId", 0)
-//                .andNotBetween("id", 1, 2);
         List<RolePermissionVo> rolePermission = roleMapper.findRolePermissionByRoleId(storeId);
-
-
-//        List<RolePermissionVo> rolePermissionVos = new ArrayList<>();
-//        roles.forEach(
-//                role -> {
-//                    RolePermissionVo rolePermissionVo=new RolePermissionVo();
-//                    BeanUtils.copyProperties(role,rolePermissionVo);
-//
-//                    rolePermissionVos.add()
-//                }
-//        );
         return rolePermission;
     }
 

@@ -187,7 +187,8 @@ public class SaleServiceImpl implements SaleService {
             saleOrderDetail.setProductName(product.getProductName());
             saleOrderDetail.setProductTitle(product.getProductTitle());
             saleOrderDetail.setSaleOrderId(saleOrderId);
-
+            saleOrderDetail.setSaleCount(placeOrderItemDto.getSaleCount());
+            saleOrderDetail.setSalePrice(placeOrderItemDto.getSalePrice());
             saleOrderDetailMapper.insertSelective(saleOrderDetail);
         });
     }
@@ -204,7 +205,7 @@ public class SaleServiceImpl implements SaleService {
         String zkey = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             Long productId = placeOrderItemDto.getProductId();
-            Integer salesCount = placeOrderItemDto.getSalesCount();
+            Integer salesCount = placeOrderItemDto.getSaleCount();
             redisTemplate.opsForZSet().incrementScore(zkey, String.valueOf(productId), salesCount);
 
             //如果不存在zkey说明当前是今天第一单，设置失效时间30天

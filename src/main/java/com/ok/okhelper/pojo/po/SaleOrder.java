@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "sales_order")
+@Table(name = "sale_order")
 public class SaleOrder {
     /**
      * 主键
@@ -60,7 +60,7 @@ public class SaleOrder {
     private BigDecimal toBePaid;
 
     /**
-     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      */
     @Column(name = "pay_type")
     private Integer payType;
@@ -314,18 +314,18 @@ public class SaleOrder {
     }
 
     /**
-     * 获取付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+     * 获取付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      *
-     * @return pay_type - 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+     * @return pay_type - 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      */
     public Integer getPayType() {
         return payType;
     }
 
     /**
-     * 设置付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+     * 设置付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      *
-     * @param payType 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+     * @param payType 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      */
     public void setPayType(Integer payType) {
         this.payType = payType;
@@ -440,18 +440,18 @@ public class SaleOrder {
     }
 
     /**
-     * 获取交易成功时间
+     * 获取交易完成时间
      *
-     * @return success_time - 交易成功时间
+     * @return success_time - 交易完成时间
      */
     public Date getSuccessTime() {
         return successTime;
     }
 
     /**
-     * 设置交易成功时间
+     * 设置交易完成时间
      *
-     * @param successTime 交易成功时间
+     * @param successTime 交易完成时间
      */
     public void setSuccessTime(Date successTime) {
         this.successTime = successTime;
