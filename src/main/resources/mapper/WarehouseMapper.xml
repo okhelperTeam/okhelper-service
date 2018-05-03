@@ -51,4 +51,7 @@
       FROM  warehouse WHERE store_id = #{storeId}
     </select>
 
+    <!--<select id="getUserWarehouse" parameterType="long" resultMap=""-->
+
+
 </mapper>

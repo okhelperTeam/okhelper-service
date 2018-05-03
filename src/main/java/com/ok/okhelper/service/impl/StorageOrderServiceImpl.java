@@ -71,7 +71,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		List<StorageDetailDto> storageDetailDtos = storageOrderDto.getStorageDetail();
 		
 		//遍历将订单子项插入数据库
-		storageDetailDtos.stream().forEach(storageDetailDto -> {
+		storageDetailDtos.forEach(storageDetailDto -> {
 			StorageOrderDetail storageOrderDetail = new StorageOrderDetail();
 			BeanUtils.copyProperties(storageDetailDto, storageOrderDetail);
 			storageOrderDetail.setStorageInId(storageOrder.getId());
@@ -109,7 +109,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		if (CollectionUtils.isEmpty(storageDetailDtos)) {
 			throw new IllegalException("子项为空");
 		}
-		storageDetailDtos.stream().forEach(storageDetailDto -> {
+		storageDetailDtos.forEach(storageDetailDto -> {
 			//子项参数不为空
 			if (storageDetailDto.getProductDate() == null
 					|| storageDetailDto.getShelfLife() == null
@@ -135,7 +135,13 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	}
 	
 	
-	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/3 18:55
+	* @Params [orderNumber]  
+	* @Return com.ok.okhelper.pojo.vo.StorageOrderVo  
+	* @Description:获取订单
+*/
 	@Override
 	public StorageOrderVo getStorageOrderByOrderNumber(String orderNumber) {
 		log.info("Enter method getStorageOrderByOrderNUmber params:" + orderNumber);

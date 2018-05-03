@@ -15,13 +15,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
 @RestController
-@Api(tags = "入库模块")
+@Api(tags = "存储模块")
 @Slf4j
 public class StorageController {
 
@@ -37,7 +39,19 @@ public class StorageController {
 		StorageOrderVo storageOrderVo = storageOrderService.insertStorage(storageOrderDto);
 		ServerResponse<StorageOrderVo> serverResponse = ServerResponse.createBySuccess(storageOrderVo);
 		
-		log.info("Enter method storageIn params:"+ serverResponse);
+		log.info("Exit method storageIn params:"+ serverResponse);
+		return serverResponse;
+	}
+	
+	@ApiOperation(value = "入库订单",notes = "通过入库单查询")
+	@GetMapping("/storage/{number}")
+	public ServerResponse<StorageOrderVo> storageOrder(@PathVariable String number){
+		log.info("Enter method storageOrder params:"+ number);
+		
+		StorageOrderVo storageOrderVo = storageOrderService.getStorageOrderByOrderNumber(number);
+		ServerResponse<StorageOrderVo> serverResponse = ServerResponse.createBySuccess(storageOrderVo);
+		
+		log.info("Exit method storageIn params:"+ serverResponse);
 		return serverResponse;
 	}
 
