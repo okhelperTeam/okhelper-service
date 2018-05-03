@@ -34,6 +34,17 @@
     </resultMap>
 
 
+    <resultMap id="IdAndNameMap" type="com.ok.okhelper.pojo.bo.IdAndNameBo">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="warehouse_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+
+    <select id="getIdAndName" parameterType="java.lang.Long" resultMap="IdAndNameMap">
+        select id,warehouse_name from warehouse WHERE id = #{id};
+    </select>
+
 
     <select id="getWarehouseByStoreId" parameterType="long" resultMap="WarehouseVoMap"  >
       SELECT id,warehouse_name,description,store_keeper,operator,create_time,delete_status

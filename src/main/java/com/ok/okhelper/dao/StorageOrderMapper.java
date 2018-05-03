@@ -4,4 +4,6 @@ import com.ok.okhelper.pojo.po.StorageOrder;
 import com.ok.okhelper.until.MyMapper;
 
 public interface StorageOrderMapper extends MyMapper<StorageOrder> {
+	
+	StorageOrder getStorageOrderByOrderNumber(String orderNumber);
 }

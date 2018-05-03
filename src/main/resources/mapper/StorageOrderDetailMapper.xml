@@ -20,4 +20,49 @@
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
         </constructor>
     </resultMap>
+    
+    
+    
+    
+    <!--//入库订单查询子单-->
+    <select id="getStorageOrderDetailByOrderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT * from storage_order_detail where storage_in_id = #{id}
+    </select>
+    
+    
+
+    <!--<resultMap id="StorageDetailDtoResultMap" type="com.ok.okhelper.pojo.po.StorageOrderDetail">-->
+        <!--&lt;!&ndash;-->
+          <!--WARNING - @mbg.generated-->
+        <!--&ndash;&gt;-->
+        <!--<constructor>-->
+            <!--<arg column="storage_in_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="warehouse_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="storage_count" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+            <!--<arg column="storage_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
+            <!--<arg column="product_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>-->
+            <!--<arg column="shelf_life" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+            <!--<arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+        <!--</constructor>-->
+    <!--</resultMap>-->
+    <!--<sql id="tableName">-->
+      <!--storage_order_detail-->
+    <!--</sql>-->
+
+    <!--<insert id="insertStorageDetail" parameterType="com.ok.okhelper.pojo.dto.StorageDetailDto">-->
+        <!--INSERT INTO-->
+        <!--<include refid="tableName"/>-->
+        <!--(storage_in_id,warehouse_id,product_id,storage_count,storage_price,product_date,shelf_life,-->
+        <!--<if test=" remarks != null and remarks != '' ">-->
+            <!--remarks-->
+
+        <!--</if>-->
+        <!--)-->
+        <!--VALUES-->
+        <!--()-->
+
+    <!--</insert>-->
+
+
 </mapper>

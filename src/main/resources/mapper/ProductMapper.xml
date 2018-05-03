@@ -43,6 +43,18 @@
         </constructor>
     </resultMap>
 
+    <resultMap id="IdAndNameMap" type="com.ok.okhelper.pojo.bo.IdAndNameBo">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+
+    <select id="getIdAndName" parameterType="java.lang.Long" resultMap="IdAndNameMap">
+        select id,product_name from product WHERE id = #{id};
+    </select>
+
+
     <update id="addSalesStock" parameterType="map">
         update product
         set sales_stock = sales_stock + #{salesCount}

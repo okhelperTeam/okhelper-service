@@ -65,14 +65,10 @@ public class ProductController {
 	@GetMapping("product/category")
 	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(Long[] categoryIds, String orderBy, PageModel pageModel) {
 		logger.info("Enter method searchProduct params:categoryId:" + categoryIds + "pageModel:" + pageModel);
+		
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
-		try {
-			PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryIds, orderBy, pageModel);
-			serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
-		} catch (Exception e) {
-			e.printStackTrace();
-			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
-		}
+		PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryIds, orderBy, pageModel);
+		serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
 		
 		
 		logger.info("Exit method searchProduct params:" + serverResponse);
@@ -138,16 +134,9 @@ public class ProductController {
 	@GetMapping("product/{id}")
 	public ServerResponse getProduct(@PathVariable Long id) {
 		logger.info("Enter method getProduct params:id:" + id);
-		ServerResponse serverResponse;
-		try {
-			Product products = productService.getProduct(id);
-			serverResponse = ServerResponse.createBySuccess(products);
-		} catch (Exception e) {
-			e.printStackTrace();
-			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
-		}
+		Product products = productService.getProduct(id);
 		
-		
+		ServerResponse serverResponse = ServerResponse.createBySuccess(products);
 		logger.info("Exit method getProduct params:" + serverResponse);
 		return serverResponse;
 	}

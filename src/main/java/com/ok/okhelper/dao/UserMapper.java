@@ -1,9 +1,8 @@
 package com.ok.okhelper.dao;
 
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.bo.UserBo;
-import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.po.User;
-import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.until.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -28,8 +27,9 @@ public interface UserMapper extends MyMapper<User> {
     int deleteAllRoleFromUser(Long userId);
 
     int insertRoleToUser(@Param("user_id") Long user_id, @Param("role_id") Long role_id, @Param("operator") Long operator);
-	
     
+    
+    IdAndNameBo getIdAndName(Long id);
     
 	List<UserBo> getEmployeeList(Long storeId);
 

@@ -16,4 +16,12 @@
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
+    
+    
+    <select id="getStorageOrderByOrderNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * FROM storage_order WHERE order_number = #{orderNumber}
+    </select>
+
+
+
 </mapper>

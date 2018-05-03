@@ -39,6 +39,18 @@
         </constructor>
     </resultMap>
 
+    <resultMap id="IdAndNameMap" type="com.ok.okhelper.pojo.bo.IdAndNameBo">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </constructor>
+    </resultMap>
+
+    <select id="getIdAndName" parameterType="java.lang.Long" resultMap="IdAndNameMap">
+        select id,user_name from user WHERE id = #{id} ;
+    </select>
+
+
 
     <select id="findUserIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
         select user.id
@@ -94,6 +106,9 @@
     <select id="getEmployeeList" parameterType="long" resultMap="UserBoMap" >
       SELECT id,user_name,user_nick,user_avatar,user_sex,user_phone,delete_status from user WHERE store_id = #{storeId}
     </select>
+
+
+
 
 
 </mapper>

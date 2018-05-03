@@ -20,6 +20,16 @@
   </constructor>
 </resultMap>
 
+  <resultMap id="IdAndNameMap" type="com.ok.okhelper.pojo.bo.IdAndNameBo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+      <arg column="supplier_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </constructor>
+  </resultMap>
+
+  <select id="getIdAndName" parameterType="java.lang.Long" resultMap="IdAndNameMap">
+    select id,supplier_name from supplier WHERE id = #{id};
+  </select>
   <select id="getSupplierByStoreId" parameterType="long" resultMap="BaseResultMap"  >
     SELECT *
     FROM  supplier WHERE store_id = #{storeId}

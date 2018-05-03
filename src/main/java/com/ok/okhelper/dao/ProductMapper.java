@@ -1,5 +1,6 @@
 package com.ok.okhelper.dao;
 
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
@@ -25,6 +26,8 @@ public interface ProductMapper extends MyMapper<Product> {
     * @Description:ͨ�������ѯ��Ʒ
     */  
     List<ProductsVo> getProductsListByCategoryId(List<CategoryVo> categoryListTotal);
+    
+    IdAndNameBo getIdAndName(Long id);
     
     void updateStatus(Long id);
 
