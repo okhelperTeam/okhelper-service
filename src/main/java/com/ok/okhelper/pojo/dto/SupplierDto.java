@@ -20,13 +20,6 @@ import java.util.Date;
 @Data
 public class SupplierDto {
 	
-	
-	/**
-	 * 主键
-	 */
-    @ApiModelProperty(value = "供应商Id")
-	private Long id;
-	
 	/**
 	 * 供应商名称
 	 */

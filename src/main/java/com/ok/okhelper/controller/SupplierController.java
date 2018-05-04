@@ -58,10 +58,10 @@ public class SupplierController {
 	
 	@RequiresPermissions("supplier:edit")
 	@ApiOperation(value = "修改供应商信息",notes = "修改具体供应商信息")
-	@PutMapping("/supplier")
-	public ServerResponse updateSupplier(@Valid  SupplierDto supplierDto){
+	@PutMapping("/supplier/{id}")
+	public ServerResponse updateSupplier(@PathVariable Long id, @Valid SupplierDto supplierDto) {
 		logger.info("Enter method getSupplier() Params:" + supplierDto);
-		return supplierService.updateSupplier(supplierDto);
+		return supplierService.updateSupplier(id, supplierDto);
 		
 	}
 	

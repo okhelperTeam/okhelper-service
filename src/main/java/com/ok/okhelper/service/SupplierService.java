@@ -21,8 +21,8 @@ public interface SupplierService {
 	PageModel<Supplier> getSupplierList(PageModel pageModel);
 	
 	Supplier getSupplierById(Long whId);
-	
-	ServerResponse updateSupplier(SupplierDto SupplierDto);
+
+    ServerResponse updateSupplier(Long id, SupplierDto SupplierDto);
 	
 	ServerResponse deleteSupplierById(Long whId);
 	

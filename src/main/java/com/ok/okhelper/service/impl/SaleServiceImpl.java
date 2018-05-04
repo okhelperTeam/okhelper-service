@@ -142,7 +142,7 @@ public class SaleServiceImpl implements SaleService {
 
         placeOrderDto.setSeller(seller);
         placeOrderDto.setStoreId(storeId);
-        placeOrderDto.setOrderNumber(NumberGenerator.generatorPlaceOrderNumber(seller));
+        placeOrderDto.setOrderNumber(NumberGenerator.generatorPlaceOrderNumber(11, seller));
 
         BigDecimal toBePaid = placeOrderDto.getToBePaid();
         if (toBePaid != null && toBePaid.doubleValue() > 0.0) {

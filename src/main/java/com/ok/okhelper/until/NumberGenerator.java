@@ -24,17 +24,17 @@ public class NumberGenerator {
     /**
      * @Author zc  
      * @Date 2018/4/28 下午10:53
-     * @Param [userId, payType]  
-     * @Return java.lang.String  
-     * @Description:yyMMddHHmmss + userId后四位 + random 4位
-     */  
-    public static String generatorPlaceOrderNumber(Long userId){
+     * @Param [orderType, userId]  orderType 11 销售单  12 入库单
+     * @Return java.lang.String
+     * @Description: orderType两位 +yyMMddHHmmss + userId后四位 + random 4位
+     */
+    public static String generatorPlaceOrderNumber(Integer orderType, Long userId) {
         String str_m = String.valueOf(userId);
         String str ="00000000000000000000";
         str_m=str.substring(0, 20-str_m.length())+str_m;
         String userIdString = str_m.substring(16, 20);
         String date = DateFormatUtils.format(new Date(), "yyMMddHHmmss");
         String random = RandomStringUtils.randomNumeric(4);
-        return date+userIdString+random;
+        return orderType + date + userIdString + random;
     }
 }

@@ -90,15 +90,15 @@ public class SupplierServiceImpl implements SupplierService {
 	* @Description:更新供应商信息
 	*/
 	@Override
-	public ServerResponse updateSupplier(SupplierDto supplierDto) {
+	public ServerResponse updateSupplier(Long id, SupplierDto supplierDto) {
 		
 		logger.info("Enter method updateSupplier(SupplierDto supplierDto) Params:"+ supplierDto);
 		if( !ObjectUtils.anyNotNull(supplierDto)){
 			logger.debug("supplierDto 为空");
 			throw  new IllegalException("参数为空");
 		}
-		
-		if(supplierDto.getId() == null){
+
+		if (id == null) {
 			
 			logger.debug("供应商id 为空");
 			throw  new IllegalException("更新时Id为空");
