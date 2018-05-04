@@ -77,21 +77,19 @@ public class SaleServiceImpl implements SaleService {
      * @Description:获取指定时间内的历史订单(包含已关闭订单)
      */
     @Override
-    public PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit) {
+    public PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit, String orderBy) {
         //启动分页
         PageHelper.startPage(pageNum, limit);
 
         //启动排序
-        PageHelper.orderBy(saleOrderDto.getOrderBy());
+        PageHelper.orderBy(orderBy);
 
         Example example = new Example(SaleOrder.class);
         example.createCriteria()
-                .andBetween("createdTime", saleOrderDto.getStartDate(), saleOrderDto.getEndDate())
+                .andBetween("createTime", saleOrderDto.getStartDate(), saleOrderDto.getEndDate())
                 .andEqualTo("storeId", storeId);
         List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
-
         PageInfo<SaleOrder> pageInfo = new PageInfo<>(saleOrders);
-
         return PageModel.convertToPageModel(pageInfo);
     }
 
@@ -106,7 +104,7 @@ public class SaleServiceImpl implements SaleService {
     public SaleTotalVo getSaleTotalVo(Long storeId, Date startDate, Date endDate) {
         Example example = new Example(SaleOrder.class);
         example.createCriteria()
-                .andBetween("createdTime", startDate, endDate)
+                .andBetween("createTime", startDate, endDate)
                 .andEqualTo("storeId", storeId)
                 .andNotEqualTo("orderStatus", ConstEnum.SALESTATUS_CLOSE.getCode());
         List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);

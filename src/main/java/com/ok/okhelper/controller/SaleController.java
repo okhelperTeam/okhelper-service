@@ -45,7 +45,7 @@ public class SaleController {
         if (null == storeId) {
             throw new IllegalException("商店Id无效");
         }
-        PageModel<SaleOrder> saleOrderRecords = saleService.getSaleOrderRecords(storeId, saleOrderDto, pageModel.getPageNum(), pageModel.getLimit());
+        PageModel<SaleOrder> saleOrderRecords = saleService.getSaleOrderRecords(storeId, saleOrderDto, pageModel.getPageNum(), pageModel.getLimit(), pageModel.getOrderBy());
         return ServerResponse.createBySuccess(saleOrderRecords);
     }
 

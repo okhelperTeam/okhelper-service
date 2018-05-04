@@ -17,7 +17,7 @@ import java.util.List;
  * Description:
  */
 public interface SaleService {
-    PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit);
+    PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit, String orderBy);
 
     SaleTotalVo getSaleTotalVo(Long storeId,Date startDate,Date endDate);
 

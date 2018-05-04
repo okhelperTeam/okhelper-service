@@ -2,6 +2,7 @@ package com.ok.okhelper.common;
 
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.exception.NotFoundException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -24,7 +25,7 @@ public class PageModel<T> {
     * */
     @NotNull
     @AssertTrue(message = "分页参数错误(paging不能为空)")
-    @ApiModelProperty(value = "开启分页", required = true, notes = "必须传true分页才能开启")
+    @ApiModelProperty(value = "开启分页(必须传true分页才能开启)", required = true)
     private boolean paging = true;
 
     //请求页码
@@ -41,11 +42,17 @@ public class PageModel<T> {
     @ApiModelProperty(value = "总页数(返回数据不用传)")
     private int pageCount;
 
-
     //总记录数
     @ApiModelProperty(value = "总记录数(返回数据不用传)")
     private long total;
 
+    //是否是最后一页
+    @ApiModelProperty(value = "是否是最后一页(返回数据不用传)")
+    private boolean lastPage;
+
+    //排序规则
+    @ApiModelProperty(value = "排序参数(格式为：'create_time desc' 或者 'create_time asc' 注意前面的是数据库的字段名，不传默认按时间正序)")
+    private String orderBy = "create_time asc";
 
     //数据
     @ApiModelProperty(value = "数据(返回数据不用传)")
@@ -53,15 +60,16 @@ public class PageModel<T> {
 
 
     public static <T> PageModel<T> convertToPageModel(PageInfo pageResult) {
-        PageModel pageModel = new PageModel();
-        if (pageResult.getSize() == 0 && pageResult.getPageNum() > 1) {
-            throw new IllegalException("没有更多了");
+        if (pageResult.getTotal() <= 0) {
+            throw new NotFoundException("没有找到相关数据");
         }
+        PageModel pageModel = new PageModel();
         pageModel.setPageNum(pageResult.getPageNum());
         pageModel.setLimit(pageResult.getPageSize());
         pageModel.setPageCount(pageResult.getPages());
         pageModel.setTotal(pageResult.getTotal());
         pageModel.setResults(pageResult.getList());
+        pageModel.setLastPage(pageResult.isIsLastPage());
         return pageModel;
     }
 
