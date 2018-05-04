@@ -72,7 +72,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (!isLoginAttempt(request, response)) {
-            request.setAttribute("error", new AuthenticationException("token invalid"));
+            request.setAttribute("error", new AuthenticationException("no login"));
             response401(request, response);
             return false;
         } else {

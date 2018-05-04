@@ -50,7 +50,9 @@ public class AuthRealm extends AuthorizingRealm {
         // 解密获得username，用于和数据库进行对比
         String token = (String) auth.getCredentials();
         String username = JWTUtil.getUsername(token);
-        if (username == null) {
+        Long userId = JWTUtil.getUserId(token);
+        Long storeId = JWTUtil.getStoreId(token);
+        if (username == null || userId == null || storeId == null) {
             throw new AuthenticationException("token invalid");
         }
 
@@ -63,7 +65,7 @@ public class AuthRealm extends AuthorizingRealm {
             throw new AuthenticationException("当前账户不可用");
         }
 
-        if (!JWTUtil.verify(token, username, userBean.getUserPassword())) {
+        if (!JWTUtil.verify(token, userBean.getUserPassword())) {
             throw new AuthenticationException("token 失效");
         }
 

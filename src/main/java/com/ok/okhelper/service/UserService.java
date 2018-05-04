@@ -26,7 +26,7 @@ public interface UserService {
      *Data:Created in  .21:30 2018/4/10
      */
 
-    public User findUserByUserNme(String username);
+    User findUserByUserNme(String username);
 
     ServerResponse loginUser(String userName, String password, String ip);
 
@@ -40,8 +40,9 @@ public interface UserService {
     void userRegister(UserAndStoreDto userAndStoreDto);
 
     ServerResponse checkUserName(String userName);
-    
+
     ServerResponse getUserListByStoreId(String token);
+
     /*
      * @Author zhangxin_an
      * @Date 2018/4/25 8:47
@@ -52,13 +53,14 @@ public interface UserService {
     ServerResponse addEmployee(UserDto userDto);
 
     ServerResponse changeRole(Long employeeId, List<Long> roles);
+
     /*
-    * @Author zhangxin_an 
-    * @Date 2018/4/19 17:38
-    * @Params []  
-    * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>  
-    * @Description:获取员工
-    */
+     * @Author zhangxin_an
+     * @Date 2018/4/19 17:38
+     * @Params []
+     * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>
+     * @Description:获取员工
+     */
     PageModel<EmployeeVo> getEmployeeList(PageModel pageModel);
 
 }
