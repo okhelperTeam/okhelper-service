@@ -11,7 +11,7 @@ import com.ok.okhelper.pojo.vo.StorageOrderVo;
 
 public interface StorageOrderService {
 	
-	StorageOrderVo insertStorage(StorageOrderDto storageOrderDto);
+	void insertStorage(StorageOrderDto storageOrderDto);
 	
 	
 	

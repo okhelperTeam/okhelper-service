@@ -35,15 +35,14 @@ public class StorageController {
 	@Transactional
 	public ServerResponse<StorageOrderVo> storageIn(@Valid StorageOrderDto storageOrderDto){
 		log.info("Enter method storageIn params:"+ storageOrderDto);
-		
-		StorageOrderVo storageOrderVo = storageOrderService.insertStorage(storageOrderDto);
-		ServerResponse<StorageOrderVo> serverResponse = ServerResponse.createBySuccess(storageOrderVo);
+		storageOrderService.insertStorage(storageOrderDto);
+		ServerResponse<StorageOrderVo> serverResponse = ServerResponse.createBySuccess();
 		
 		log.info("Exit method storageIn params:"+ serverResponse);
 		return serverResponse;
 	}
 	
-	@ApiOperation(value = "入库订单",notes = "通过入库单查询")
+	@ApiOperation(value = "入库订单",notes = "通过入库单号查询")
 	@GetMapping("/storage/{number}")
 	public ServerResponse<StorageOrderVo> storageOrder(@PathVariable String number){
 		log.info("Enter method storageOrder params:"+ number);

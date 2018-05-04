@@ -2,6 +2,7 @@ package com.ok.okhelper.service.impl;
 
 import com.ok.okhelper.dao.*;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.bo.StorageDetailBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
@@ -56,7 +57,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	
 	
 	@Override
-	public StorageOrderVo insertStorage(StorageOrderDto storageOrderDto) {
+	public void insertStorage(StorageOrderDto storageOrderDto) {
 		
 		log.info("Enter method insertStorage params:" + storageOrderDto);
 		checkStorageOrderDto(storageOrderDto);
@@ -76,24 +77,26 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 			BeanUtils.copyProperties(storageDetailDto, storageOrderDetail);
 			storageOrderDetail.setStorageInId(storageOrder.getId());
 			
-			// 增加库存
+			// 增加库存(分别于库存表商品表修改)
 			Stock stock = new Stock();
 			stock.setProductDate(storageDetailDto.getProductDate());
 			stock.setProductId(storageDetailDto.getProductId());
 			stock.setWarehouseId(storageDetailDto.getWarehouseId());
 			stockService.updateOrAddStockNumber(stock,storageDetailDto.getStorageCount());
 			
+			productMapper.addSalesStock(storageDetailDto.getStorageCount(),storageDetailDto.getProductId());
+			
 			
 			storageOrderDetailMapper.insertSelective(storageOrderDetail);
 		});
 		
-		StorageOrderVo storageOrderVo = getStorageOrderByOrderNumber(storageOrder.getOrderNumber());
+//		StorageOrderVo storageOrderVo = getStorageOrderByOrderNumber(storageOrder.getOrderNumber());
 		
 		
 		log.info("Exit method insertStorage params:" + storageOrderDto);
 		
 		
-		return storageOrderVo;
+//		return storageOrderVo;
 	}
 	
 	/*
@@ -150,17 +153,23 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 			throw new IllegalException("参数错误");
 		}
 		
-		
+		//前端订单数据
 		StorageOrderVo storageOrderVo = new StorageOrderVo();
 		StorageOrder storageOrder = storageOrderMapper.getStorageOrderByOrderNumber(orderNumber);
+		if(storageOrder == null){
+			throw new NotFoundException("未找到该订单");
+		}
 		BeanUtils.copyProperties(storageOrder, storageOrderVo);
 		
+		//获取子项
 		List<StorageDetailBo> storageDetailBoList = getStorageDetailBo(storageOrder.getId());
 		storageOrderVo.setStorageDetail(storageDetailBoList);
 		
-//		IdAndNameBo stockiner = userMapper.getIdAndName(storageOrder.getStockiner());
+		//转换入库员，供应商id到name,前端识别
+		
+		IdAndNameBo stockiner = userMapper.getIdAndName(storageOrder.getStockiner());
 		IdAndNameBo supplier = supplierMapper.getIdAndName(storageOrder.getSupplierId());
-//		storageOrderVo.setStockiner(stockiner);
+		storageOrderVo.setStockiner(stockiner);
 		storageOrderVo.setSupplier(supplier);
 		
 		
@@ -178,17 +187,28 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	private List<StorageDetailBo> getStorageDetailBo(Long id) {
 		
 		log.info("Enter method getStorageDetailBo params:" + id);
+		
+		//获取入货单子项
 		List<StorageOrderDetail> storageOrderDetailList = storageOrderDetailMapper.getStorageOrderDetailByOrderId(id);
+		if(CollectionUtils.isEmpty(storageOrderDetailList)){
+			throw new IllegalException("子项为空");
+		}
+		
+		//前端展示子项数据
 		List<StorageDetailBo> storageDetailBoList = new ArrayList<>(storageOrderDetailList.size());
-		storageOrderDetailList.stream().forEach(storageOrderDetail -> {
-			IdAndNameBo warehouse = warehouseMapper.getIdAndName(storageOrderDetail.getWarehouseId());
-			IdAndNameBo product = productMapper.getIdAndName(storageOrderDetail.getProductId());
-			StorageDetailBo storageDetailBo = new StorageDetailBo();
+		
+		IdAndNameBo warehouse;
+		IdAndNameBo product;
+		StorageDetailBo storageDetailBo;
+		for(StorageOrderDetail storageOrderDetail : storageOrderDetailList){
+			warehouse = warehouseMapper.getIdAndName(storageOrderDetail.getWarehouseId());
+			product = productMapper.getIdAndName(storageOrderDetail.getProductId());
+			storageDetailBo = new StorageDetailBo();
 			BeanUtils.copyProperties(storageOrderDetail, storageDetailBo);
 			storageDetailBo.setWarehouse(warehouse);
 			storageDetailBo.setProduct(product);
 			storageDetailBoList.add(storageDetailBo);
-		});
+		}
 		
 		log.info("Exit method getStorageDetailBo params:" + storageDetailBoList);
 		return storageDetailBoList;
