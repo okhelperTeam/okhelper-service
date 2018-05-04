@@ -6,17 +6,18 @@
       WARNING - @mbg.generated
     -->
     <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-      <arg column="store_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="store_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="store_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="store_photo" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-      <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-      <arg column="leader_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <arg column="store_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="store_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="store_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="store_logo" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="money_code" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <arg column="operator" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <arg column="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <arg column="leader_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
     </constructor>
   </resultMap>
 </mapper>

@@ -39,4 +39,5 @@ public class StoreServiceImpl implements StoreService {
         Store storeInfo = storeMapper.selectByPrimaryKey(store_id);
         return storeInfo;
     }
+
 }

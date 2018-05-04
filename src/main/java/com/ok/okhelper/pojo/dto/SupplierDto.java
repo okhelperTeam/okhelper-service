@@ -24,7 +24,7 @@ public class SupplierDto {
 	/**
 	 * 主键
 	 */
-	@ApiModelProperty(value = "仓库Id")
+    @ApiModelProperty(value = "供应商Id")
 	private Long id;
 	
 	/**

@@ -56,7 +56,7 @@ public class OtherServiceImpl implements OtherService {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             int i = productMapper.cutSalesStock(placeOrderItemDto.getSaleCount(), placeOrderItemDto.getProductId());
             if (i <= 0) {
-                throw new IllegalException("商品id：" + placeOrderItemDto.getProductId() + "库存不足下单失败");
+                throw new IllegalException("商品id：" + placeOrderItemDto.getProductId() + "库存不足或已经下架，下单失败");
             }
         });
     }

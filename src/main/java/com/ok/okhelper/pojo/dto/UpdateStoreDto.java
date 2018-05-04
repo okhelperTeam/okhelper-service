@@ -34,10 +34,10 @@ public class UpdateStoreDto {
     private String storeAddress;
 
     /**
-     * 店铺图像
+     * 店铺logo
      */
-    @Column(name = "store_photo")
-    private String storePhoto;
+    @Column(name = "store_logo")
+    private String storeLogo;
 
     /**
      * 描述

@@ -55,9 +55,9 @@
         <!--<table tableName="permission">-->
         <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <!--<table tableName="store">-->
-        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
+        <table tableName="store">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
         <!--<table tableName="category">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
@@ -73,12 +73,12 @@
         <!--<table tableName="storage_order_detail">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <table tableName="sale_order">
-            <generatedKey column="id" sqlStatement="Mysql"/>
-        </table>
-        <table tableName="sale_order_detail">
-            <generatedKey column="id" sqlStatement="Mysql"/>
-        </table>
+        <!--<table tableName="sale_order">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--</table>-->
+        <!--<table tableName="sale_order_detail">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--</table>-->
         <!--<table tableName="stock">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->

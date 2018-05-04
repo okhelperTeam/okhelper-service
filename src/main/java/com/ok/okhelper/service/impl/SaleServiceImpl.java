@@ -57,7 +57,6 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @Lazy
     @Autowired
     private ProductService productService;
 

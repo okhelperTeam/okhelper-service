@@ -64,7 +64,7 @@
     <update id="cutSalesStock" parameterType="map">
         update product
         set sales_stock = sales_stock - #{salesCount}
-        where sales_stock >= #{salesCount} AND id = #{productId}
+        where sales_stock >= #{salesCount} AND id = #{productId} AND delete_status = 1
     </update>
 
     <select id="getProductsList" resultMap="ProductVoMap" >

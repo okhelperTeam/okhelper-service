@@ -13,6 +13,7 @@ import com.ok.okhelper.service.SupplierService;
 import com.ok.okhelper.shiro.JWTUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -67,9 +68,15 @@ public class SupplierServiceImpl implements SupplierService {
 		Supplier supplier = supplierMapper.selectByPrimaryKey(supplierId);
 		if (supplier == null){
 			throw new IllegalException("未找到当前供应商");
-			
 		}
-		
+
+		if (ObjectUtils.notEqual(supplier.getStoreId(), JWTUtil.getStoreId())) {
+			throw new AuthorizationException("资源不在你当前商铺查看范围");
+		}
+		if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(supplier.getDeleteStatus())) {
+			throw new IllegalException("当前资源状态不可用");
+		}
+
 		logger.info("Exit method getSupplierById() return:"+ supplier);
 		return supplier;
 	}
@@ -184,7 +191,7 @@ public class SupplierServiceImpl implements SupplierService {
 			int i = supplierMapper.insertSelective(supplier);
 			serverResponse = ServerResponse.createBySuccess("添加成功",i);
 		}catch (Exception e){
-			serverResponse = ServerResponse.createDefaultErrorMessage("数据库添加失败，请检查信息");
+			serverResponse = ServerResponse.createByErrorCodeMessage(400, "数据库添加失败，请检查信息");
 		}
 		
 		

@@ -30,10 +30,16 @@ public class Store {
     private String storeAddress;
 
     /**
-     * 店铺图像
+     * 店铺logo
      */
-    @Column(name = "store_photo")
-    private String storePhoto;
+    @Column(name = "store_logo")
+    private String storeLogo;
+
+    /**
+     * 收款码
+     */
+    @Column(name = "money_code")
+    private String moneyCode;
 
     /**
      * 描述
@@ -69,12 +75,13 @@ public class Store {
     @Column(name = "leader_id")
     private Long leaderId;
 
-    public Store(Long id, String storeName, String storePhone, String storeAddress, String storePhoto, String description, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long leaderId) {
+    public Store(Long id, String storeName, String storePhone, String storeAddress, String storeLogo, String moneyCode, String description, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long leaderId) {
         this.id = id;
         this.storeName = storeName;
         this.storePhone = storePhone;
         this.storeAddress = storeAddress;
-        this.storePhoto = storePhoto;
+        this.storeLogo = storeLogo;
+        this.moneyCode = moneyCode;
         this.description = description;
         this.operator = operator;
         this.createTime = createTime;
@@ -160,21 +167,39 @@ public class Store {
     }
 
     /**
-     * 获取店铺图像
+     * 获取店铺logo
      *
-     * @return store_photo - 店铺图像
+     * @return store_logo - 店铺logo
      */
-    public String getStorePhoto() {
-        return storePhoto;
+    public String getStoreLogo() {
+        return storeLogo;
     }
 
     /**
-     * 设置店铺图像
+     * 设置店铺logo
      *
-     * @param storePhoto 店铺图像
+     * @param storeLogo 店铺logo
      */
-    public void setStorePhoto(String storePhoto) {
-        this.storePhoto = storePhoto == null ? null : storePhoto.trim();
+    public void setStoreLogo(String storeLogo) {
+        this.storeLogo = storeLogo == null ? null : storeLogo.trim();
+    }
+
+    /**
+     * 获取收款码
+     *
+     * @return money_code - 收款码
+     */
+    public String getMoneyCode() {
+        return moneyCode;
+    }
+
+    /**
+     * 设置收款码
+     *
+     * @param moneyCode 收款码
+     */
+    public void setMoneyCode(String moneyCode) {
+        this.moneyCode = moneyCode == null ? null : moneyCode.trim();
     }
 
     /**

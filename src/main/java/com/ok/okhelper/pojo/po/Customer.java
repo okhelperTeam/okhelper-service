@@ -70,7 +70,7 @@ public class Customer {
     private Date updateTime;
 
     /**
-     * 状态 0下架，1上架
+     * 状态
      */
     @Column(name = "delete_status")
     private Integer deleteStatus;
