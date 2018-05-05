@@ -61,9 +61,9 @@
         <!--<table tableName="category">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <!--<table tableName="customer">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
-        <!--</table>-->
+        <table tableName="customer">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
         <!--<table tableName="product">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
@@ -73,9 +73,9 @@
         <!--<table tableName="storage_order_detail">-->
             <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->
-        <table tableName="sale_order">
-            <generatedKey column="id" sqlStatement="Mysql"/>
-        </table>
+        <!--<table tableName="sale_order">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--</table>-->
         <!--<table tableName="sale_order_detail">-->
         <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
         <!--</table>-->

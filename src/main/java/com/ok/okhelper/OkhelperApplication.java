@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -13,8 +12,8 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 
 @SpringBootApplication
-@EnableTransactionManagement
 @MapperScan(basePackages = {"com.ok.okhelper.dao"})
+@EnableTransactionManagement
 @EnableAsync
 @EnableScheduling
 public class OkhelperApplication {

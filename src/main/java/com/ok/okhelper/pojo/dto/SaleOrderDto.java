@@ -15,14 +15,16 @@ import java.util.Date;
 @Data
 public class SaleOrderDto {
 
-    @NotNull(message = "开始时间不能为空")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "开始时间", required = true)
+@ApiModelProperty(value = "开始时间")
     private Date startDate;
 
     @NotNull(message = "结束时间不能为空")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "结束时间", required = true)
+    @ApiModelProperty(value = "结束时间")
     private Date endDate;
+
+    @ApiModelProperty(value = "查询范围(当指定这个值时另外两个值失效)&&(今天->today 三天内->threeDays 一周内->week 近30天->month)")
+    private String range = "";
 
 }

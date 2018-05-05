@@ -116,7 +116,7 @@ public class ReportController {
     @ApiOperation(value = "滞销商品", notes = "获取销量后十的商品")
     @GetMapping("/report/unsalable")
     public ServerResponse<List<HotSaleVo>> getUnsalable(
-            @ApiParam(value = "查询范围(今天->today 三天内->threeDays 一周内->week 一个月->month)") @RequestParam(required = true) String range) {
+            @ApiParam(value = "查询范围(今天->today 三天内->threeDays 一周内->week 近30天->month)") @RequestParam(required = true) String range) {
         Set<ZSetOperations.TypedTuple<String>> projectIdTop10 = null;
         String zkey_today = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
 

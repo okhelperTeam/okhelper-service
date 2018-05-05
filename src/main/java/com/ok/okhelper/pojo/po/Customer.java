@@ -30,7 +30,13 @@ public class Customer {
     private String customerPhone;
 
     /**
-     * 客户积分
+     * 邮箱
+     */
+    @Column(name = "customer_email")
+    private String customerEmail;
+
+    /**
+     * 客户积分(每次消费取整)
      */
     @Column(name = "customer_score")
     private Integer customerScore;
@@ -70,22 +76,23 @@ public class Customer {
     private Date updateTime;
 
     /**
-     * 状态
+     * 状态 0不启用，1启用
      */
     @Column(name = "delete_status")
     private Integer deleteStatus;
 
     /**
-     * 所属商店Id
+     * 所属商店Id 
      */
     @Column(name = "store_id")
     private Long storeId;
 
-    public Customer(Long id, String customerName, String customerStoreName, String customerPhone, Integer customerScore, Integer customerLevel, String customerAddress, String remarks, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long storeId) {
+    public Customer(Long id, String customerName, String customerStoreName, String customerPhone, String customerEmail, Integer customerScore, Integer customerLevel, String customerAddress, String remarks, Long operator, Date createTime, Date updateTime, Integer deleteStatus, Long storeId) {
         this.id = id;
         this.customerName = customerName;
         this.customerStoreName = customerStoreName;
         this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
         this.customerScore = customerScore;
         this.customerLevel = customerLevel;
         this.customerAddress = customerAddress;
@@ -174,18 +181,36 @@ public class Customer {
     }
 
     /**
-     * 获取客户积分
+     * 获取邮箱
      *
-     * @return customer_score - 客户积分
+     * @return customer_email - 邮箱
+     */
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    /**
+     * 设置邮箱
+     *
+     * @param customerEmail 邮箱
+     */
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail == null ? null : customerEmail.trim();
+    }
+
+    /**
+     * 获取客户积分(每次消费取整)
+     *
+     * @return customer_score - 客户积分(每次消费取整)
      */
     public Integer getCustomerScore() {
         return customerScore;
     }
 
     /**
-     * 设置客户积分
+     * 设置客户积分(每次消费取整)
      *
-     * @param customerScore 客户积分
+     * @param customerScore 客户积分(每次消费取整)
      */
     public void setCustomerScore(Integer customerScore) {
         this.customerScore = customerScore;
@@ -300,36 +325,36 @@ public class Customer {
     }
 
     /**
-     * 获取状态 0下架，1上架
+     * 获取状态 0不启用，1启用
      *
-     * @return delete_status - 状态 0下架，1上架
+     * @return delete_status - 状态 0不启用，1启用
      */
     public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
     /**
-     * 设置状态 0下架，1上架
+     * 设置状态 0不启用，1启用
      *
-     * @param deleteStatus 状态 0下架，1上架
+     * @param deleteStatus 状态 0不启用，1启用
      */
     public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
     /**
-     * 获取所属商店Id
+     * 获取所属商店Id 
      *
-     * @return store_id - 所属商店Id
+     * @return store_id - 所属商店Id 
      */
     public Long getStoreId() {
         return storeId;
     }
 
     /**
-     * 设置所属商店Id
+     * 设置所属商店Id 
      *
-     * @param storeId 所属商店Id
+     * @param storeId 所属商店Id 
      */
     public void setStoreId(Long storeId) {
         this.storeId = storeId;

@@ -49,7 +49,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private SaleOrderMapper saleOrderMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private CustomerMapper customerMapper;
 
     @Autowired
     JavaMailSender mailSender;
@@ -117,6 +117,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         SaleOrder saleOrder = new SaleOrder();
         saleOrder.setId(deliveryDto.getSaleOrderId());
         saleOrder.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_SEND.getCode());
+        saleOrder.setStockouter(JWTUtil.getUserId());
         saleOrder.setSendTime(new Date());
         saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
 
@@ -137,15 +138,15 @@ public class DeliveryServiceImpl implements DeliveryService {
 
         Long customerId = saleOrder.getCustomerId();
 
-        User user = userMapper.selectByPrimaryKey(customerId);
+        Customer customer = customerMapper.selectByPrimaryKey(customerId);
 
-        if (user != null && StringUtils.isNotBlank(user.getUserEmail())) {
+        if (customer != null && StringUtils.isNotBlank(customer.getCustomerEmail())) {
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(mailUsername);
-            message.setTo(user.getUserEmail());
+            message.setTo(customer.getCustomerEmail());
             message.setSubject("标题：发货通知");
-            message.setText(user.getUserName() + "你好，你的订单：" + saleOrder.getOrderNumber() + "已经发货了");
+            message.setText(customer.getCustomerName() + "你好，你的订单：" + saleOrder.getOrderNumber() + "已经发货了");
             try {
                 mailSender.send(message);
             } catch (Exception e) {

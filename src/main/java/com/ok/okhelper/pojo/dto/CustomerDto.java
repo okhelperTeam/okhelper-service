@@ -39,6 +39,13 @@ public class CustomerDto {
     private String customerPhone;
 
     /**
+     * 邮箱
+     */
+    @ApiModelProperty(value = "客户邮箱", required = false)
+    @Column(name = "customer_email")
+    private String customerEmail;
+
+    /**
      * 客户积分
      */
     @Column(name = "customer_score")

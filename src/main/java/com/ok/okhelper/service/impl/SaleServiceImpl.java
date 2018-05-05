@@ -3,6 +3,7 @@ package com.ok.okhelper.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
+import com.ok.okhelper.dao.CustomerMapper;
 import com.ok.okhelper.dao.ProductMapper;
 import com.ok.okhelper.dao.SaleOrderDetailMapper;
 import com.ok.okhelper.dao.SaleOrderMapper;
@@ -14,6 +15,7 @@ import com.ok.okhelper.pojo.dto.PaymentDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
+import com.ok.okhelper.pojo.po.Customer;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.po.SaleOrderDetail;
@@ -67,6 +69,9 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private OtherService otherService;
 
+    @Autowired
+    private CustomerMapper customerMapper;
+
     /**
      * 库存不足
      */
@@ -81,17 +86,17 @@ public class SaleServiceImpl implements SaleService {
      * @Description:获取指定时间内的历史订单(包含已关闭订单)
      */
     @Override
-    public PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit, String orderBy) {
+    public PageModel<SaleOrder> getSaleOrderRecords(Date startDate, Date endDate, PageModel pageModel) {
         //启动分页
-        PageHelper.startPage(pageNum, limit);
+        PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 
         //启动排序
-        PageHelper.orderBy(orderBy);
+        PageHelper.orderBy(pageModel.getOrderBy());
 
         Example example = new Example(SaleOrder.class);
         example.createCriteria()
-                .andBetween("createTime", saleOrderDto.getStartDate(), saleOrderDto.getEndDate())
-                .andEqualTo("storeId", storeId);
+                .andBetween("createTime", startDate, endDate)
+                .andEqualTo("storeId", JWTUtil.getStoreId());
         List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
         PageInfo<SaleOrder> pageInfo = new PageInfo<>(saleOrders);
         return PageModel.convertToPageModel(pageInfo);
@@ -238,6 +243,39 @@ public class SaleServiceImpl implements SaleService {
 
     /**
      * @Author zc
+     * @Date 2018/5/5 下午10:44
+     * @Param [customerId, sumPrice]
+     * @Return void
+     * @Description:记录客户积分
+     */
+    @Async
+    public void recordCustomerScore(Long customerId, BigDecimal sumPrice) {
+        Customer dbcustomer = customerMapper.selectByPrimaryKey(customerId);
+
+        if (dbcustomer == null) {
+            throw new NotFoundException("资源不存在");
+        }
+        if (ObjectUtils.notEqual(dbcustomer.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == dbcustomer.getDeleteStatus()) {
+            throw new IllegalException("当前资源不可用");
+        }
+
+        Integer oldCustomerScore = dbcustomer.getCustomerScore();
+        Integer newCustomer = oldCustomerScore + sumPrice.intValue();
+        Customer customer = new Customer();
+        customer.setCustomerScore(newCustomer);
+        customer.setId(customerId);
+
+        int i = customerMapper.updateByPrimaryKeySelective(customer);
+        if (i <= 0) {
+            throw new IllegalException("更新客户积分失败");
+        }
+    }
+
+    /**
+     * @Author zc
      * @Date 2018/5/3 上午10:25
      * @Param [saleOrderId]
      * @Return void
@@ -309,6 +347,17 @@ public class SaleServiceImpl implements SaleService {
                     productMapper.addSalesStock(dbsaleOrderDetail.getSaleCount(), dbsaleOrderDetail.getProductId()));
         }
 
+        //积分扣回
+        if (saleOrder.getCustomerId() != null) {
+            Customer dbcustomer = customerMapper.selectByPrimaryKey(saleOrder.getCustomerId());
+            if (dbcustomer != null) {
+                Customer customer = new Customer();
+                customer.setId(dbcustomer.getId());
+                customer.setCustomerScore(dbcustomer.getCustomerScore() - saleOrder.getSumPrice().intValue());
+                customerMapper.updateByPrimaryKeySelective(customer);
+            }
+        }
+
     }
 
 
@@ -377,6 +426,7 @@ public class SaleServiceImpl implements SaleService {
         if (i <= 0) {
             throw new IllegalException("订单支付失败");
         }
+
 
     }
 

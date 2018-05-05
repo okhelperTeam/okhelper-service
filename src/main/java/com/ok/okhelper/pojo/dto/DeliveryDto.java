@@ -15,8 +15,7 @@ import java.util.List;
 @Data
 public class DeliveryDto {
 
-    @NotNull
-    @ApiModelProperty(value = "销售单Id", required = true)
+    @ApiModelProperty(value = "销售单Id", hidden = true)
     private Long saleOrderId;
 
     private List<DeliverItemDto> deliverItemDtos;

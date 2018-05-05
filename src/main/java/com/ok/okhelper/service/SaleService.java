@@ -9,6 +9,7 @@ import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -18,13 +19,15 @@ import java.util.List;
  * Description:
  */
 public interface SaleService {
-    PageModel<SaleOrder> getSaleOrderRecords(Long storeId, SaleOrderDto saleOrderDto, Integer pageNum, Integer limit, String orderBy);
+    PageModel<SaleOrder> getSaleOrderRecords(Date startDate, Date endDate, PageModel pageModel);
 
     SaleTotalVo getSaleTotalVo(Long storeId,Date startDate,Date endDate);
 
     PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto);
 
     void recordHotSale(List<PlaceOrderItemDto> placeOrderItemDtos);
+
+    void recordCustomerScore(Long customerId, BigDecimal sumPrice);
 
     void confirmReceipt(Long saleOrderId);
 
