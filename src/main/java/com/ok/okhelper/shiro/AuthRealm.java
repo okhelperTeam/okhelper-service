@@ -61,7 +61,7 @@ public class AuthRealm extends AuthorizingRealm {
             throw new AuthenticationException("User didn't existed!");
         }
 
-        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(userBean.getDeleteStatus())) {
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == userBean.getDeleteStatus()) {
             throw new AuthenticationException("当前账户不可用");
         }
 

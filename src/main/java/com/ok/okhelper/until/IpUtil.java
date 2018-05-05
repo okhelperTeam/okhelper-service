@@ -6,7 +6,7 @@ import java.net.UnknownHostException;
 
 /**
  * @author: zc
- * @description:
+ * @description:IP工具
  * @date: 2018/4/14
  */
 public class IpUtil {

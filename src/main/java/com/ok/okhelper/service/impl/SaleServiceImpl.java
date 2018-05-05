@@ -142,7 +142,7 @@ public class SaleServiceImpl implements SaleService {
 
         placeOrderDto.setSeller(seller);
         placeOrderDto.setStoreId(storeId);
-        placeOrderDto.setOrderNumber(NumberGenerator.generatorPlaceOrderNumber(11, seller));
+        placeOrderDto.setOrderNumber(NumberGenerator.generatorOrderNumber(11, seller));
 
         BigDecimal toBePaid = placeOrderDto.getToBePaid();
         if (toBePaid != null && toBePaid.doubleValue() > 0.0) {
@@ -223,7 +223,7 @@ public class SaleServiceImpl implements SaleService {
     public void confirmReceipt(Long saleOrderId) {
         SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
 
-        if (ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode().equals(saleOrder.getLogisticsStatus())) {
+        if (ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode() == saleOrder.getLogisticsStatus()) {
             throw new IllegalException("已经确认收货，请不要重复确认");
         }
 
@@ -232,7 +232,7 @@ public class SaleServiceImpl implements SaleService {
         newSaleOrder.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode());
         newSaleOrder.setCloseTime(new Date());
         //如果已付全款则变更为交易完成
-        if (ConstEnum.SALESTATUS_PAID.getCode().equals(newSaleOrder.getOrderStatus())) {
+        if (ConstEnum.SALESTATUS_PAID.getCode() == newSaleOrder.getOrderStatus()) {
             newSaleOrder.setOrderStatus(ConstEnum.SALESTATUS_SUCCESS.getCode());
             newSaleOrder.setSuccessTime(new Date());
         }

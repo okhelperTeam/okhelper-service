@@ -28,7 +28,7 @@ public class NumberGenerator {
      * @Return java.lang.String
      * @Description: orderType两位 +yyMMddHHmmss + userId后四位 + random 4位
      */
-    public static String generatorPlaceOrderNumber(Integer orderType, Long userId) {
+    public static String generatorOrderNumber(Integer orderType, Long userId) {
         String str_m = String.valueOf(userId);
         String str ="00000000000000000000";
         str_m=str.substring(0, 20-str_m.length())+str_m;

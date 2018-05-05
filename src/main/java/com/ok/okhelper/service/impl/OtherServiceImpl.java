@@ -76,13 +76,13 @@ public class OtherServiceImpl implements OtherService {
         if (saleOrder == null) {
             throw new NotFoundException("无此订单");
         }
-        if (ConstEnum.SALESTATUS_CLOSE.getCode().equals(saleOrder.getOrderStatus())) {
+        if (ConstEnum.SALESTATUS_CLOSE.getCode() == saleOrder.getOrderStatus()) {
             throw new IllegalException("订单已经关闭");
         }
-        if (ConstEnum.SALESTATUS_NOPAYMENT.getCode().equals(saleOrder.getOrderStatus())) {
+        if (ConstEnum.SALESTATUS_NOPAYMENT.getCode() == saleOrder.getOrderStatus()) {
             throw new IllegalException("订单未付款");
         }
-        if (ObjectUtils.notEqual(ConstEnum.LOGISTICSSTATUS_NOSEND.getCode(), saleOrder.getLogisticsStatus())) {
+        if (ConstEnum.LOGISTICSSTATUS_NOSEND.getCode() != saleOrder.getLogisticsStatus()) {
             throw new IllegalException("订单已出库");
         }
         if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {

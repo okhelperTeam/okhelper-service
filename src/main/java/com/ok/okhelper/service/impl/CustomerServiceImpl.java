@@ -53,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (ObjectUtils.notEqual(customer.getStoreId(), JWTUtil.getStoreId())) {
             throw new AuthorizationException("资源不在你当前商铺查看范围");
         }
-        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(customer.getDeleteStatus())) {
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == customer.getDeleteStatus()) {
             throw new IllegalException("当前资源状态不可用");
         }
         return customer;
@@ -68,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (ObjectUtils.notEqual(dbcustomer.getStoreId(), JWTUtil.getStoreId())) {
             throw new AuthorizationException("资源不在你当前商铺查看范围");
         }
-        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(dbcustomer.getDeleteStatus())) {
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == dbcustomer.getDeleteStatus()) {
             throw new IllegalException("当前资源状态不可用");
         }
 
@@ -94,7 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (ObjectUtils.notEqual(dbcustomer.getStoreId(), JWTUtil.getStoreId())) {
             throw new AuthorizationException("资源不在你当前商铺查看范围");
         }
-        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(dbcustomer.getDeleteStatus())) {
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == dbcustomer.getDeleteStatus()) {
             throw new IllegalException("当前资源状态不可用");
         }
         Customer customer = new Customer();

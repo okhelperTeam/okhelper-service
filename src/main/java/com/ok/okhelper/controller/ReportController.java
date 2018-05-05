@@ -113,4 +113,76 @@ public class ReportController {
     }
 
 
+    @ApiOperation(value = "滞销商品", notes = "获取销量后十的商品")
+    @GetMapping("/report/unsalable")
+    public ServerResponse<List<HotSaleVo>> getUnsalable(
+            @ApiParam(value = "查询范围(今天->today 三天内->threeDays 一周内->week 一个月->month)") @RequestParam(required = true) String range) {
+        Set<ZSetOperations.TypedTuple<String>> projectIdTop10 = null;
+        String zkey_today = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
+
+        Set<String> keySet = new HashSet<>();
+        switch (range) {
+            case ConstStr.QUERY_RANGE_TODAY:
+                projectIdTop10 = redisTemplate.opsForZSet().rangeWithScores(zkey_today, 0, 9);
+                break;
+            case ConstStr.QUERY_RANGE_THREEDAYS:
+                String zkey_three_days = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + "last_threeDays";
+                keySet.clear();
+                // 生成前两天的keys
+                for (int i = 1; i <= 2; i++) {
+                    String oneKey =
+                            ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -i), "yyyyMMdd");
+                    keySet.add(oneKey);
+                }
+                redisTemplate.opsForZSet().unionAndStore(zkey_today, keySet, zkey_three_days);
+                projectIdTop10 = redisTemplate.opsForZSet().rangeWithScores(zkey_three_days, 0, 9);
+                break;
+            case ConstStr.QUERY_RANGE_WEEK:
+                String zkey_week = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + "last_week";
+                keySet.clear();
+                // 生成前6天
+                for (int i = 1; i <= 6; i++) {
+                    String oneKey =
+                            ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -i), "yyyyMMdd");
+                    keySet.add(oneKey);
+                }
+                redisTemplate.opsForZSet().unionAndStore(zkey_today, keySet, zkey_week);
+                projectIdTop10 = redisTemplate.opsForZSet().rangeWithScores(zkey_week, 0, 9);
+                break;
+            case ConstStr.QUERY_RANGE_MONTH:
+                String zkey_month = ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + "last_month";
+                keySet.clear();
+
+                for (int i = 1; i <= 29; i++) {
+                    String oneKey =
+                            ConstStr.HOT_SALE + ":" + JWTUtil.getStoreId() + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -i), "yyyyMMdd");
+                    keySet.add(oneKey);
+                }
+                redisTemplate.opsForZSet().unionAndStore(zkey_today, keySet, zkey_month);
+                projectIdTop10 = redisTemplate.opsForZSet().rangeWithScores(zkey_month, 0, 9);
+                break;
+            default:
+                throw new IllegalException("range参数错误");
+        }
+
+        List<HotSaleVo> hotSaleVos = projectIdTop10.stream().map(p -> {
+            Product product;
+            try {
+                product = productService.getProduct(Long.valueOf(p.getValue()));
+                HotSaleVo hotSaleVo = new HotSaleVo();
+                BeanUtils.copyProperties(product, hotSaleVo);
+                hotSaleVo.setSalesVolume(p.getScore().intValue());
+                return hotSaleVo;
+            } catch (IllegalException e) {
+                log.debug(e.getMessage());
+                return null;
+            }
+        }).collect(Collectors.toList());
+
+        hotSaleVos.removeIf(Objects::isNull);
+
+        return ServerResponse.createBySuccess(hotSaleVos);
+    }
+
+
 }

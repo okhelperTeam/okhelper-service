@@ -32,14 +32,14 @@ public enum ConstEnum {
 
 	// 成员变量
 	private String description;
-	private Integer code;
+	private int code;
 
-	ConstEnum(String description, Integer code) {
+	ConstEnum(String description, int code) {
 		this.description = description;
 		this.code = code;
 	}
 
-	public void setCode(Integer code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 
@@ -51,7 +51,7 @@ public enum ConstEnum {
 		return description;
 	}
 
-	public Integer getCode() {
+	public int getCode() {
 		return code;
 	}
 }

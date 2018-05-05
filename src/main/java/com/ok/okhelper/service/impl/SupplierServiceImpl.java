@@ -73,7 +73,7 @@ public class SupplierServiceImpl implements SupplierService {
 		if (ObjectUtils.notEqual(supplier.getStoreId(), JWTUtil.getStoreId())) {
 			throw new AuthorizationException("资源不在你当前商铺查看范围");
 		}
-		if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode().equals(supplier.getDeleteStatus())) {
+		if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == supplier.getDeleteStatus()) {
 			throw new IllegalException("当前资源状态不可用");
 		}
 

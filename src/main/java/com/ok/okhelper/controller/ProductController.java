@@ -33,7 +33,7 @@ public class ProductController {
 	
 	@ApiOperation(value = "商品搜索", notes = "指定查询条件搜索")
 	@GetMapping("product/search")
-	public ServerResponse<PageModel<ProductsVo>> searchProduct(String condition, PageModel pageModel) {
+    public ServerResponse<PageModel<ProductsVo>> searchProduct(String condition, @Valid PageModel pageModel) {
 		logger.info("Enter method searchProduct params:productCondition:" + condition + "pageModel:" + pageModel);
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
 		try {

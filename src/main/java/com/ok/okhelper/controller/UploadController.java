@@ -17,6 +17,7 @@ import com.ok.okhelper.until.PropertiesUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,19 +44,30 @@ public class UploadController {
     @Autowired
     private StoreMapper storeMapper;
 
+    @Value("${cos.server.http.prefix}")
+    private String cosHttpPrefix;
+
+    @Value("${cos.path.img}")
+    private String cosPathImg;
+
+    @Value("${cos.path.avator}")
+    private String cosPathAvator;
+
+    @Value("${cos.path.money-code}")
+    private String cosPathMoneyCode;
+
 
     @PostMapping(value = "/upload/img")
     @ApiOperation(value = "上传图片(包括商品图片、分类图片等等，用户头像请转到头像上传接口)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        if (!file.isEmpty()&&file.getContentType().startsWith("image")) {
+        if (!file.isEmpty() && file.getContentType().startsWith("image")) {
             //定义临时文件夹
             String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
 
-            String targetFileName =
-                    uploadService.upload(file, tmp_path, PropertiesUtil.getProperty("cos.path.img"));
-            String url =
-                    PropertiesUtil.getProperty("cos.server.http.prefix") + PropertiesUtil.getProperty("cos.path.img") + targetFileName;
+            String targetFileName = uploadService.upload(file, tmp_path, cosPathImg);
+
+            String url = cosHttpPrefix + cosPathImg + targetFileName;
 
             UploadVo uploadVo = new UploadVo(targetFileName, url);
 
@@ -70,15 +82,13 @@ public class UploadController {
     @ApiOperation(value = "头像上传", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadAvator(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        if (!file.isEmpty()&&file.getContentType().startsWith("image")) {
+        if (!file.isEmpty() && file.getContentType().startsWith("image")) {
 
             //定义临时文件夹
             String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
 
-            String targetFileName =
-                    uploadService.upload(file, tmp_path, PropertiesUtil.getProperty("cos.path.avator"));
-            String url =
-                    PropertiesUtil.getProperty("cos.server.http.prefix") + PropertiesUtil.getProperty("cos.path.avator") + targetFileName;
+            String targetFileName = uploadService.upload(file, tmp_path, cosPathAvator);
+            String url = cosHttpPrefix + cosPathAvator + targetFileName;
 
             UploadVo uploadVo = new UploadVo(targetFileName, url);
 
@@ -96,15 +106,14 @@ public class UploadController {
     public ServerResponse<UploadVo> uploadMoneyCode(@RequestParam("file") MultipartFile file,
                                                     @ApiParam(value = "收款码类型(alipay/weichat)", required = true)
                                                     @RequestParam(required = true) String codeType, HttpServletRequest request) throws IOException {
-        if (!file.isEmpty()&&file.getContentType().startsWith("image")) {
+        if (!file.isEmpty() && file.getContentType().startsWith("image")) {
 
             //定义临时文件夹
             String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
 
-            String targetFileName =
-                    uploadService.upload(file, tmp_path, PropertiesUtil.getProperty("cos.path.money-code"));
-            String url =
-                    PropertiesUtil.getProperty("cos.server.http.prefix") + PropertiesUtil.getProperty("cos.path.money-code") + targetFileName;
+            String targetFileName = uploadService.upload(file, tmp_path, cosPathMoneyCode);
+
+            String url = cosHttpPrefix + cosPathMoneyCode + targetFileName;
 
             //修改收款码
             Store dbstore = storeMapper.selectByPrimaryKey(JWTUtil.getStoreId());
