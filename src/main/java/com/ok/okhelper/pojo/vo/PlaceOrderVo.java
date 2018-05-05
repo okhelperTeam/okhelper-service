@@ -68,7 +68,7 @@ public class PlaceOrderVo {
      * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
      */
     @Column(name = "pay_type")
-    private Integer payType;
+    private String payType;
 
     /**
      * 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）

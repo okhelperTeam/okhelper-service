@@ -4,6 +4,7 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.dto.DeliveryDto;
+import com.ok.okhelper.pojo.dto.PaymentDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
@@ -84,7 +85,20 @@ public class SaleController {
     @ApiOperation(value = "确认收货")
     public ServerResponse confirmReceipt(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId) {
         saleService.confirmReceipt(saleOrderId);
-        return ServerResponse.createBySuccessMessage("确认收货");
+        return ServerResponse.createBySuccessMessage("确认收货成功");
     }
 
+    @PostMapping("/sale/close_order/{saleOrderId}")
+    @ApiOperation(value = "关闭订单")
+    public ServerResponse closeOrder(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId) {
+        saleService.closeOrder(saleOrderId);
+        return ServerResponse.createBySuccessMessage("订单关闭成功");
+    }
+
+    @PostMapping("/sale/payment/{saleOrderId}")
+    @ApiOperation(value = "付款", notes = "支付接口，包括还款，未来扩展为支付宝接口")
+    public ServerResponse payment(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId, PaymentDto paymentDto) {
+        saleService.payment(saleOrderId, paymentDto);
+        return ServerResponse.createBySuccessMessage("订单支付成功");
+    }
 }

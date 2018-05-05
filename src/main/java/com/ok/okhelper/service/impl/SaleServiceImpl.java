@@ -3,18 +3,22 @@ package com.ok.okhelper.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
-import com.ok.okhelper.dao.*;
+import com.ok.okhelper.dao.ProductMapper;
+import com.ok.okhelper.dao.SaleOrderDetailMapper;
+import com.ok.okhelper.dao.SaleOrderMapper;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.constenum.ConstStr;
+import com.ok.okhelper.pojo.dto.PaymentDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
-import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.po.SaleOrderDetail;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
+import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.SaleService;
@@ -22,10 +26,11 @@ import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -33,8 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -137,31 +141,50 @@ public class SaleServiceImpl implements SaleService {
     public PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
-        //TODO 试一试 去掉try catch
-        otherService.checkAndCutStock(placeOrderItemDtos);
+        //判断金额正确性
+        BigDecimal amountPayable = placeOrderDto.getSumPrice().subtract(placeOrderDto.getDiscountPrice());
+        if (placeOrderDto.getDiscountPrice().compareTo(placeOrderDto.getSumPrice()) > 0) {
+            throw new IllegalException("优惠金额不能大于订单总金额");
+        }
 
-        placeOrderDto.setSeller(seller);
-        placeOrderDto.setStoreId(storeId);
-        placeOrderDto.setOrderNumber(NumberGenerator.generatorOrderNumber(11, seller));
+        if (placeOrderDto.getRealPay().compareTo(amountPayable) > 0) {
+            throw new IllegalException("实付金额不能大于应付金额");
+        }
 
-        BigDecimal toBePaid = placeOrderDto.getToBePaid();
-        if (toBePaid != null && toBePaid.doubleValue() > 0.0) {
+        //计算欠款金额
+        //欠款金额=订单总价-优惠金额-实付金额
+        BigDecimal toBePaid
+                = placeOrderDto.getSumPrice() != null ? placeOrderDto.getSumPrice() : BigDecimal.ZERO
+                .subtract(placeOrderDto.getDiscountPrice() != null ? placeOrderDto.getDiscountPrice() : BigDecimal.ZERO)
+                .subtract(placeOrderDto.getRealPay() != null ? placeOrderDto.getRealPay() : BigDecimal.ZERO);
+
+        if (toBePaid.doubleValue() > 0.0) {
             placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_DEBT.getCode());
         } else {
             placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_PAID.getCode());
         }
 
-        placeOrderDto.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_NOSEND.getCode());
-
+        //加入销售订单
         SaleOrder saleOrder = new SaleOrder();
         BeanUtils.copyProperties(placeOrderDto, saleOrder);
+        saleOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(11, seller));
+        saleOrder.setToBePaid(toBePaid);
+        saleOrder.setStoreId(storeId);
+        saleOrder.setSeller(seller);
+        saleOrder.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_NOSEND.getCode());
 
         saleOrderMapper.insertSelective(saleOrder);
 
+
         if (CollectionUtils.isNotEmpty(placeOrderItemDtos)) {
+            //插入订单子项
             assembleSaleOrderDetail(placeOrderItemDtos, saleOrder.getId());
+            //减商品库存
+            otherService.checkAndCutStock(placeOrderItemDtos);
         }
 
+
+        //返回vo
         PlaceOrderVo placeOrderVo = new PlaceOrderVo();
         BeanUtils.copyProperties(saleOrder, placeOrderVo);
 
@@ -223,6 +246,15 @@ public class SaleServiceImpl implements SaleService {
     public void confirmReceipt(Long saleOrderId) {
         SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
 
+        if (saleOrder == null) {
+            throw new NotFoundException("订单不存在");
+        }
+        if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
+        if (ConstEnum.SALESTATUS_CLOSE.getCode() == saleOrder.getOrderStatus()) {
+            throw new IllegalException("订单已关闭");
+        }
         if (ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode() == saleOrder.getLogisticsStatus()) {
             throw new IllegalException("已经确认收货，请不要重复确认");
         }
@@ -240,5 +272,112 @@ public class SaleServiceImpl implements SaleService {
         saleOrderMapper.updateByPrimaryKeySelective(newSaleOrder);
     }
 
+    /**
+     * @Author zc
+     * @Date 2018/5/5 下午2:28
+     * @Param [saleOrderId]
+     * @Return void
+     * @Description:关闭订单
+     */
+    @Transactional
+    public void closeOrder(Long saleOrderId) {
+        SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
+        if (saleOrder == null) {
+            throw new NotFoundException("订单不存在");
+        }
+        if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
+        if (ConstEnum.SALESTATUS_CLOSE.getCode() == saleOrder.getOrderStatus()) {
+            throw new IllegalException("订单已关闭");
+        }
+
+        saleOrder.setOrderStatus(ConstEnum.SALESTATUS_CLOSE.getCode());
+        saleOrder.setCloseTime(new Date());
+        int i = saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
+
+        if (i <= 0) {
+            throw new IllegalException("订单关闭失败");
+        }
+
+        //把库存加回来
+        SaleOrderDetail saleOrderDetail = new SaleOrderDetail();
+        saleOrderDetail.setSaleOrderId(saleOrderId);
+        List<SaleOrderDetail> saleOrderDetails = saleOrderDetailMapper.select(saleOrderDetail);
+        if (CollectionUtils.isNotEmpty(saleOrderDetails)) {
+            saleOrderDetails.forEach(dbsaleOrderDetail ->
+                    productMapper.addSalesStock(dbsaleOrderDetail.getSaleCount(), dbsaleOrderDetail.getProductId()));
+        }
+
+    }
+
+
+    /**
+     * @Author zc
+     * @Date 2018/5/5 下午5:24
+     * @Param [saleOrderId, paymentDto]
+     * @Return void
+     * @Description:支付
+     */
+    public void payment(Long saleOrderId, PaymentDto paymentDto) {
+        SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
+        if (saleOrder == null) {
+            throw new NotFoundException("订单不存在");
+        }
+        if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
+        if (ConstEnum.SALESTATUS_CLOSE.getCode() == saleOrder.getOrderStatus()) {
+            throw new IllegalException("订单已关闭");
+        }
+        if (ConstEnum.SALESTATUS_SUCCESS.getCode() == saleOrder.getOrderStatus()) {
+            throw new IllegalException("交易已完成");
+        }
+        if (ConstEnum.SALESTATUS_PAID.getCode() == saleOrder.getOrderStatus()) {
+            throw new IllegalException("订单已支付全款，不要再支付了");
+        }
+
+        BigDecimal realPay = saleOrder.getRealPay().add(paymentDto.getRealPay());
+        BigDecimal discountPrice = saleOrder.getDiscountPrice().add(paymentDto.getDiscountPrice());
+
+        //欠款金额=订单总价-(历史优惠金额+这次优惠金额)-(历史已经付款金额+这次实付金额)
+        BigDecimal toBePaid
+                = saleOrder.getSumPrice().subtract(discountPrice).subtract(realPay);
+
+        saleOrder.setRealPay(realPay);
+        saleOrder.setToBePaid(toBePaid);
+        saleOrder.setDiscountPrice(discountPrice);
+        saleOrder.setPayTime(new Date());
+
+        if (toBePaid.doubleValue() > 0.0) {
+            saleOrder.setOrderStatus(ConstEnum.SALESTATUS_DEBT.getCode());
+        } else {
+            saleOrder.setOrderStatus(ConstEnum.SALESTATUS_PAID.getCode());
+            if (ConstEnum.LOGISTICSSTATUS_RECEIVED.getCode() == saleOrder.getLogisticsStatus()) {
+                saleOrder.setOrderStatus(ConstEnum.SALESTATUS_SUCCESS.getCode());
+            }
+        }
+
+        //拼接支付方式
+        Set<String> payTypeSet = new HashSet<>();
+        if (paymentDto.getPayType() != null) {
+            String[] newPayType = paymentDto.getPayType().split(",");
+            payTypeSet.addAll(Arrays.asList(newPayType));
+        }
+        if (saleOrder.getPayType() != null) {
+            String[] oldPayType = saleOrder.getPayType().split(",");
+            payTypeSet.addAll(Arrays.asList(oldPayType));
+        }
+
+        String[] strings = payTypeSet.toArray(new String[payTypeSet.size()]);
+        String payType = String.join(",", strings);
+        saleOrder.setPayType(payType);
+
+        int i = saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
+        if (i <= 0) {
+            throw new IllegalException("订单支付失败");
+        }
+
+    }
 
 }

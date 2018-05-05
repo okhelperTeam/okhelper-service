@@ -13,6 +13,12 @@ public class DeliveryOrder {
     private Long id;
 
     /**
+     * 出库单号
+     */
+    @Column(name = "order_number")
+    private String orderNumber;
+
+    /**
      * 销售单id
      */
     @Column(name = "sale_order_id")
@@ -46,14 +52,22 @@ public class DeliveryOrder {
      */
     private Long stockouter;
 
-    public DeliveryOrder(Long id, Long saleOrderId, Date createTime, Date updateTime, Integer deleteStatus, String description, Long stockouter) {
+    /**
+     * 商铺Id
+     */
+    @Column(name = "store_id")
+    private Long storeId;
+
+    public DeliveryOrder(Long id, String orderNumber, Long saleOrderId, Date createTime, Date updateTime, Integer deleteStatus, String description, Long stockouter, Long storeId) {
         this.id = id;
+        this.orderNumber = orderNumber;
         this.saleOrderId = saleOrderId;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.deleteStatus = deleteStatus;
         this.description = description;
         this.stockouter = stockouter;
+        this.storeId = storeId;
     }
 
     public DeliveryOrder() {
@@ -76,6 +90,24 @@ public class DeliveryOrder {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * 获取出库单号
+     *
+     * @return order_number - 出库单号
+     */
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    /**
+     * 设置出库单号
+     *
+     * @param orderNumber 出库单号
+     */
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber == null ? null : orderNumber.trim();
     }
 
     /**
@@ -184,5 +216,23 @@ public class DeliveryOrder {
      */
     public void setStockouter(Long stockouter) {
         this.stockouter = stockouter;
+    }
+
+    /**
+     * 获取商铺Id
+     *
+     * @return store_id - 商铺Id
+     */
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    /**
+     * 设置商铺Id
+     *
+     * @param storeId 商铺Id
+     */
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
     }
 }

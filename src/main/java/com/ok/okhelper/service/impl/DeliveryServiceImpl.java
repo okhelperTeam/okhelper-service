@@ -9,6 +9,7 @@ import com.ok.okhelper.pojo.po.*;
 import com.ok.okhelper.service.DeliveryService;
 import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.until.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -72,6 +73,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         DeliveryOrder deliveryOrder = new DeliveryOrder();
         deliveryOrder.setSaleOrderId(deliveryDto.getSaleOrderId());
         deliveryOrder.setStockouter(JWTUtil.getUserId());
+        deliveryOrder.setStoreId(JWTUtil.getStoreId());
+        deliveryOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(13, JWTUtil.getUserId()));
 
         deliveryOrderMapper.insertSelective(deliveryOrder);
         Long deliveryOrderId = deliveryOrder.getId();

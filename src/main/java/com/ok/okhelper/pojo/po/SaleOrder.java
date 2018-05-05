@@ -63,7 +63,7 @@ public class SaleOrder {
      * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      */
     @Column(name = "pay_type")
-    private Integer payType;
+    private String payType;
 
     /**
      * 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
@@ -124,7 +124,7 @@ public class SaleOrder {
     @Column(name = "store_id")
     private Long storeId;
 
-    public SaleOrder(Long id, String orderNumber, Long customerId, Long seller, Long stockouter, BigDecimal sumPrice, BigDecimal realPay, BigDecimal discountPrice, BigDecimal toBePaid, Integer payType, Integer orderStatus, Integer logisticsStatus, String remarks, Date createTime, Date payTime, Date sendTime, Date successTime, Date closeTime, Date updateTime, Long storeId) {
+    public SaleOrder(Long id, String orderNumber, Long customerId, Long seller, Long stockouter, BigDecimal sumPrice, BigDecimal realPay, BigDecimal discountPrice, BigDecimal toBePaid, String payType, Integer orderStatus, Integer logisticsStatus, String remarks, Date createTime, Date payTime, Date sendTime, Date successTime, Date closeTime, Date updateTime, Long storeId) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.customerId = customerId;
@@ -318,7 +318,7 @@ public class SaleOrder {
      *
      * @return pay_type - 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      */
-    public Integer getPayType() {
+    public String getPayType() {
         return payType;
     }
 
@@ -327,8 +327,8 @@ public class SaleOrder {
      *
      * @param payType 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接)
      */
-    public void setPayType(Integer payType) {
-        this.payType = payType;
+    public void setPayType(String payType) {
+        this.payType = payType == null ? null : payType.trim();
     }
 
     /**

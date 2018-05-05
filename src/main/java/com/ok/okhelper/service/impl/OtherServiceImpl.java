@@ -15,6 +15,7 @@ import com.ok.okhelper.pojo.po.SaleOrderDetail;
 import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.shiro.JWTUtil;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -76,6 +77,9 @@ public class OtherServiceImpl implements OtherService {
         if (saleOrder == null) {
             throw new NotFoundException("无此订单");
         }
+        if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
         if (ConstEnum.SALESTATUS_CLOSE.getCode() == saleOrder.getOrderStatus()) {
             throw new IllegalException("订单已经关闭");
         }
@@ -84,9 +88,6 @@ public class OtherServiceImpl implements OtherService {
         }
         if (ConstEnum.LOGISTICSSTATUS_NOSEND.getCode() != saleOrder.getLogisticsStatus()) {
             throw new IllegalException("订单已出库");
-        }
-        if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
-            throw new IllegalException("订单不在你的店铺操作范围");
         }
 
         //校验发货数量是否正确(java8 分组求和)

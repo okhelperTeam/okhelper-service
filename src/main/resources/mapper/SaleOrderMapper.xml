@@ -15,7 +15,7 @@
       <arg column="real_pay" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="discount_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
       <arg column="to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="pay_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <arg column="pay_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="order_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="logistics_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
