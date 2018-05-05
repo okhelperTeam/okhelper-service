@@ -2,8 +2,6 @@ package com.ok.okhelper.pojo.bo;
 
 import lombok.Data;
 
-import javax.persistence.Id;
-
 /*
 *Author:zhangxin_an
 *Description:查询员工信息
@@ -12,7 +10,9 @@ import javax.persistence.Id;
 @Data
 public class UserBo {
 	
+	public  UserBo(){
 	
+	}
 	public UserBo(Long id, String userName, String userNick, String userAvatar, String userSex, String userPhone, Integer deleteStatus) {
 		this.id = id;
 		this.userName = userName;

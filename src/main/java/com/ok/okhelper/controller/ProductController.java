@@ -2,7 +2,6 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.pojo.dto.ProductCondition;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.ProductsVo;
@@ -34,11 +33,11 @@ public class ProductController {
 	
 	@ApiOperation(value = "商品搜索", notes = "指定查询条件搜索")
 	@GetMapping("product/search")
-	public ServerResponse<PageModel<ProductsVo>> searchProduct(ProductCondition productCondition, PageModel pageModel) {
-		logger.info("Enter method searchProduct params:productCondition:" + productCondition + "pageModel:" + pageModel);
+	public ServerResponse<PageModel<ProductsVo>> searchProduct(String condition, PageModel pageModel) {
+		logger.info("Enter method searchProduct params:productCondition:" + condition + "pageModel:" + pageModel);
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
 		try {
-			PageModel<ProductsVo> productsVoPageModel = productService.getProductsList(productCondition, pageModel);
+			PageModel<ProductsVo> productsVoPageModel = productService.getProductsList(condition, pageModel);
 			serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,13 +79,9 @@ public class ProductController {
 	public ServerResponse deleteProduct(@PathVariable Long id) {
 		logger.info("Enter method deleteProduct params:productCondition:" + id);
 		ServerResponse serverResponse;
-		try {
-			productService.deleteProduct(id);
-			serverResponse = ServerResponse.createBySuccessMessage("删除成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
-		}
+		
+		productService.deleteProduct(id);
+		serverResponse = ServerResponse.createBySuccessMessage("删除成功");
 		
 		
 		logger.info("Exit method deleteProduct params:" + serverResponse);
@@ -100,12 +95,8 @@ public class ProductController {
 		
 		ServerResponse serverResponse;
 		
-		try {
-			serverResponse = ServerResponse.createBySuccess("添加成功", productService.addProduct(productDto));
-		} catch (Exception e) {
-			e.printStackTrace();
-			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
-		}
+		
+		serverResponse = ServerResponse.createBySuccess("添加成功", productService.addProduct(productDto));
 		
 		
 		logger.info("Exit method addProduct params:" + serverResponse);
@@ -117,12 +108,9 @@ public class ProductController {
 	public ServerResponse<Product> updateProduct(ProductDto productDto) {
 		logger.info("Enter method addProduct params:productDto:" + productDto);
 		ServerResponse serverResponse;
-		try {
+		
 			serverResponse = ServerResponse.createBySuccess("修改成功", productService.updateProduct(productDto));
-		} catch (Exception e) {
-			e.printStackTrace();
-			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
-		}
+	
 		
 		
 		logger.info("Exit method addProduct params:" + serverResponse);

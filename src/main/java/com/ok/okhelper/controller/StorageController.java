@@ -42,7 +42,7 @@ public class StorageController {
 		return serverResponse;
 	}
 	
-	@ApiOperation(value = "入库订单",notes = "通过入库单号查询")
+	@ApiOperation(value = "入库单查询",notes = "通过入库单号查询")
 	@GetMapping("/storage/{number}")
 	public ServerResponse<StorageOrderVo> storageOrder(@PathVariable String number){
 		log.info("Enter method storageOrder params:"+ number);

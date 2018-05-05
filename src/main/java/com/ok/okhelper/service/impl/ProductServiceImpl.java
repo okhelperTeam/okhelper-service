@@ -6,7 +6,6 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.ProductMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
-import com.ok.okhelper.pojo.dto.ProductCondition;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.CategoryVo;
@@ -15,7 +14,6 @@ import com.ok.okhelper.service.CategoryService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
@@ -51,27 +49,22 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:查询商品
 	*/
 	@Override
-	public PageModel<ProductsVo> getProductsList(ProductCondition condition, PageModel pageModel) {
+	public PageModel<ProductsVo> getProductsList(String condition, PageModel pageModel) {
 		logger.info(" Enter getProductsList()  params:" + condition);
-		if (StringUtils.isBlank(condition.getOrderBy())) {
-			condition.setOrderBy("create_time desc");
-		}
+
 		//启动分页
 		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 		
 		//启动排序
-		PageHelper.orderBy(condition.getOrderBy());
+		PageHelper.orderBy(pageModel.getOrderBy());
 		List<ProductsVo> productsVos = null;
 		
 		Long storeId = JWTUtil.getStoreId();
 		if (storeId == null) {
 			throw new AuthenticationException("登陆异常");
 		}
-		productsVos = productMapper.getProductsList(condition.getCondition(), storeId);
+		productsVos = productMapper.getProductsList(condition, storeId);
 		
-		if (CollectionUtils.isEmpty(productsVos)){
-			throw new NotFoundException("查询不存在");
-		}
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
 		logger.info("Exit method getProductsList() return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
@@ -91,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId + orderBy + pageModel);
 		if (categoryId == null) {
 			//查询所有
-			return getProductsList(new ProductCondition(), pageModel);
+			return getProductsList(null, pageModel);
 		}
 		
 		//启动分页
@@ -118,11 +111,6 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductsVo> productsVos = new ArrayList<>();
 		productsVos = productMapper.getProductsListByCategoryId(categoryListTotal);
 		
-		
-		
-		if (CollectionUtils.isEmpty(productsVos)){
-			throw new NotFoundException("查询不存在");
-		}
 		
 		
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);

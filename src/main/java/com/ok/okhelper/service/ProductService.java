@@ -13,7 +13,7 @@ import com.ok.okhelper.pojo.vo.ProductsVo;
 */
 public interface ProductService {
 	
-	PageModel<ProductsVo> getProductsList(ProductCondition condition, PageModel pageModel);
+	PageModel<ProductsVo> getProductsList(String condition, PageModel pageModel);
 	
 	
 	PageModel<ProductsVo> getProductsListByCategory(Long[] categoryId,String orderBy, PageModel pageModel);
