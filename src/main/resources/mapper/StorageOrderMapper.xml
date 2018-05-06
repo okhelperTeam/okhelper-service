@@ -14,6 +14,23 @@
             <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="total_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        </constructor>
+    </resultMap>
+
+
+    <resultMap id="StorageOrderVoResultMap" type="com.ok.okhelper.pojo.vo.StorageOrderVo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="supplier_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="stockiner" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
         </constructor>
     </resultMap>
     
@@ -21,6 +38,11 @@
     <select id="getStorageOrderByOrderNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT * FROM storage_order WHERE order_number = #{orderNumber}
     </select>
+    
+    <!--<select id="getStorageOrderList" resultMap="StorageOrderVoResultMap">-->
+        <!--select id,order_number,supplier_id,stockiner,remarks,create_time,update_time-->
+        <!--from storage_order WHERE storeId = #{storeId} and delete_status = 1-->
+    <!--</select>-->
 
 
 

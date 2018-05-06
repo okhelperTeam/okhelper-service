@@ -1,5 +1,8 @@
 package com.ok.okhelper.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.*;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
@@ -13,15 +16,16 @@ import com.ok.okhelper.pojo.vo.StorageOrderVo;
 import com.ok.okhelper.service.StockService;
 import com.ok.okhelper.service.StorageOrderService;
 import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.until.BigDecimalUtil;
 import com.ok.okhelper.until.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +62,6 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	
 	@Override
 	public void insertStorage(StorageOrderDto storageOrderDto) {
-		
 		log.info("Enter method insertStorage params:" + storageOrderDto);
 		checkStorageOrderDto(storageOrderDto);
         storageOrderDto.setOrderNumber(NumberGenerator.generatorOrderNumber(12, JWTUtil.getUserId()));
@@ -67,15 +70,28 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		StorageOrder storageOrder = new StorageOrder();
 		BeanUtils.copyProperties(storageOrderDto, storageOrder);
 		storageOrder.setStoreId(JWTUtil.getStoreId());
-		storageOrderMapper.insertSelective(storageOrder);
 		
 		List<StorageDetailDto> storageDetailDtos = storageOrderDto.getStorageDetail();
 		
+		
+		BigDecimal sum = storageDetailDtos.stream().map(storageDetailDto ->{
+				return  storageDetailDto.getStoragePrice().multiply(new BigDecimal(storageDetailDto.getStorageCount()));
+				}
+				
+			).reduce(BigDecimal.ZERO,BigDecimal::add);
+		
+		storageOrder.setTotalPrice(sum);
+		
+		storageOrderMapper.insertSelective(storageOrder);
+		
 		//遍历将订单子项插入数据库
-		storageDetailDtos.forEach(storageDetailDto -> {
+		for(StorageDetailDto storageDetailDto : storageDetailDtos){
+			sum = new BigDecimal(0);
 			StorageOrderDetail storageOrderDetail = new StorageOrderDetail();
 			BeanUtils.copyProperties(storageDetailDto, storageOrderDetail);
 			storageOrderDetail.setStorageInId(storageOrder.getId());
+			//子单价格求和
+			sum = sum.add(storageDetailDto.getStoragePrice().multiply(new BigDecimal(storageDetailDto.getStorageCount())));
 			
 			// 增加库存(分别于库存表商品表修改)
 			Stock stock = new Stock();
@@ -88,7 +104,9 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 			
 			
 			storageOrderDetailMapper.insertSelective(storageOrderDetail);
-		});
+		}
+		
+		
 		
 //		StorageOrderVo storageOrderVo = getStorageOrderByOrderNumber(storageOrder.getOrderNumber());
 		
@@ -177,6 +195,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		return storageOrderVo;
 	}
 	
+	
 	/*
 	* @Author zhangxin_an 
 	* @Date 2018/5/3 14:03
@@ -212,6 +231,60 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		
 		log.info("Exit method getStorageDetailBo params:" + storageDetailBoList);
 		return storageDetailBoList;
+	}
+	
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/6 20:39
+	* @Params [pageModel]  
+	* @Return java.util.List<com.ok.okhelper.pojo.vo.StorageOrderVo>  
+	* @Description:获取所有入库单
+	*/  
+	@Override
+	public PageModel<StorageOrderVo> getStorageOrderList(PageModel pageModel) {
+		
+		log.info("Enter method getStorageOrderList params:" + pageModel);
+		//启动分页
+		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+		
+		
+		//启动排序
+		PageHelper.orderBy(pageModel.getOrderBy());
+		
+		
+		List<StorageOrder> storageOrderList = storageOrderMapper.selectAll();
+		
+		if(CollectionUtils.isEmpty(storageOrderList)){
+			throw new NotFoundException("没有入货单");
+		}
+		
+		//前端订单数据
+		List<StorageOrderVo> storageOrderVoList = new ArrayList<>(storageOrderList.size());
+		StorageOrderVo storageOrderVo;
+		
+		for(StorageOrder storageOrder : storageOrderList){
+			storageOrderVo = new StorageOrderVo();
+			
+			BeanUtils.copyProperties(storageOrder, storageOrderVo);
+			
+			//转换入库员，供应商id到name,前端识别
+			IdAndNameBo stockiner = userMapper.getIdAndName(storageOrder.getStockiner());
+			IdAndNameBo supplier = supplierMapper.getIdAndName(storageOrder.getSupplierId());
+			storageOrderVo.setStockiner(stockiner);
+			storageOrderVo.setSupplier(supplier);
+			
+			storageOrderVoList.add(storageOrderVo);
+		
+		}
+		
+		
+		
+		log.info("Exit method getStorageOrderList params:" + storageOrderVoList);
+		PageInfo<StorageOrderVo> pageInfo = new PageInfo<>(storageOrderVoList);
+		log.info("Exit method getProductsListByCategory() return:" + pageInfo);
+		return PageModel.convertToPageModel(pageInfo);
+		
 	}
 	
 	

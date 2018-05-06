@@ -6,6 +6,7 @@ package com.ok.okhelper.controller;
 *Data:Created in 10:09 2018/5/3
 */
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.StorageOrderDto;
 import com.ok.okhelper.pojo.vo.StorageOrderVo;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Api(tags = "存储模块")
@@ -53,6 +55,18 @@ public class StorageController {
 		log.info("Exit method storageIn params:"+ serverResponse);
 		return serverResponse;
 	}
-
+	
+	@ApiOperation(value = "所有入库单",notes = "")
+	@GetMapping("/storage")
+	public ServerResponse<PageModel<StorageOrderVo>> storageOrderList(PageModel pageoModel){
+		log.info("Enter method storageOrder params:");
+		
+		PageModel<StorageOrderVo> storageOrderVoList = storageOrderService.getStorageOrderList(pageoModel);
+		ServerResponse<PageModel<StorageOrderVo>> serverResponse = ServerResponse.createBySuccess(storageOrderVoList);
+		
+		log.info("Exit method storageIn params:"+ serverResponse);
+		return serverResponse;
+	}
+	
 
 }

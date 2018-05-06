@@ -6,6 +6,7 @@ package com.ok.okhelper.service;
 *Data:Created in 10:11 2018/5/3
 */
 
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.pojo.dto.StorageOrderDto;
 import com.ok.okhelper.pojo.vo.StorageOrderVo;
 
@@ -17,6 +18,5 @@ public interface StorageOrderService {
 	
 	StorageOrderVo getStorageOrderByOrderNumber(String orderNumber);
 	
-	
-	
+	PageModel<StorageOrderVo> getStorageOrderList(PageModel pageModel);
 }

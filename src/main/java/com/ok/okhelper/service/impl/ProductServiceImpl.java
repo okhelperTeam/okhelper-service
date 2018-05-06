@@ -78,14 +78,11 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:根据分类查询商品
 	*/
 	@Override
-	public PageModel<ProductsVo> getProductsListByCategory(long[] categoryId, String orderBy, PageModel pageModel) {
+	public PageModel<ProductsVo> getProductsListByCategory(long categoryId, String orderBy, PageModel pageModel) {
 		
 		
 		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId + orderBy + pageModel);
-		if (categoryId == null) {
-			//查询所有
-			return getProductsList(null, pageModel);
-		}
+		
 		
 		//启动分页
 		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
@@ -101,15 +98,14 @@ public class ProductServiceImpl implements ProductService {
 		if (storeId == null) {
 			throw new AuthenticationException("登陆异常");
 		}
-		//获取所有分类子类
-		List<CategoryVo> categoryListTotal = new ArrayList<>();
-		for (long id : categoryId) {
-			List<CategoryVo> categoryList = categoryService.getCategoryItems(id, storeId);
-			categoryListTotal.addAll(categoryList);
-		}
+		//获取分类子类
+		List<CategoryVo> categoryList = categoryService.getCategoryItems(categoryId, storeId);
+		
+		CategoryVo categoryVo = new CategoryVo();
+		categoryVo.setId(categoryId);
+		categoryList.add(categoryVo);
 		//遍历获取每一个分类对应的商品
-		List<ProductsVo> productsVos = new ArrayList<>();
-		productsVos = productMapper.getProductsListByCategoryId(categoryListTotal);
+		List<ProductsVo> productsVos = productMapper.getProductsListByCategoryId(categoryList);
 		
 		
 		

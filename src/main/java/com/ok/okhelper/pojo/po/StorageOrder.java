@@ -1,5 +1,8 @@
 package com.ok.okhelper.pojo.po;
 
+import com.sun.corba.se.impl.oa.toa.TOA;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -51,9 +54,13 @@ public class StorageOrder {
      */
     @Column(name = "store_id")
     private Long storeId;
-
-    public StorageOrder(Long id, String orderNumber, Long supplierId, Long stockiner, String remarks, Date createTime, Date updateTime, Long storeId) {
-        this.id = id;
+    /**
+     * 总金额
+     */
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
+    
+    public StorageOrder(String orderNumber, Long supplierId, Long stockiner, String remarks, Date createTime, Date updateTime, Long storeId, BigDecimal totalPrice) {
         this.orderNumber = orderNumber;
         this.supplierId = supplierId;
         this.stockiner = stockiner;
@@ -61,8 +68,9 @@ public class StorageOrder {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.storeId = storeId;
+        this.totalPrice = totalPrice;
     }
-
+    
     public StorageOrder() {
         super();
     }
@@ -210,4 +218,23 @@ public class StorageOrder {
     public void setStoreId(Long storeId) {
         this.storeId = storeId;
     }
+    
+    /**
+     * 获取入库单总价
+     *
+     * @return sale_price - 获取入库单总价
+     */
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+    
+    /**
+     * 设置入库单总价
+     *
+     * @param totalPrice 获取入库单总价
+     */
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    
 }
