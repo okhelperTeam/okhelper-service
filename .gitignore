@@ -39,3 +39,5 @@
 ### system file ###
 .DS_Store
 Thumbs.db
+*.properties
+
