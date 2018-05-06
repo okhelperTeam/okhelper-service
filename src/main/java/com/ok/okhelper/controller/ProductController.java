@@ -38,9 +38,7 @@ public class ProductController {
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
 			PageModel<ProductsVo> productsVoPageModel = productService.getProductsList(condition, pageModel);
 			serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
-		
-		
-		
+
 		logger.info("Exit method searchProduct params:" + serverResponse);
 		return serverResponse;
 	}
