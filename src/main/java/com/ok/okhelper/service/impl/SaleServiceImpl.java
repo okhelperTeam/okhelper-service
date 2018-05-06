@@ -83,10 +83,13 @@ public class SaleServiceImpl implements SaleService {
      * @Date 2018/4/29 上午11:01
      * @Param [storeId, saleOrderDto, pageNum, limit]
      * @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.po.SaleOrder>
-     * @Description:获取指定时间内的历史订单(包含已关闭订单)
+     * @Description:获取指定时间内的历史订单 (去除 已关闭订单)
      */
     @Override
     public PageModel<SaleOrder> getSaleOrderRecords(Date startDate, Date endDate, PageModel pageModel) {
+        if(startDate.compareTo(endDate)>0){
+            throw new IllegalException("时间参数错误");
+        }
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 
@@ -95,11 +98,18 @@ public class SaleServiceImpl implements SaleService {
 
         Example example = new Example(SaleOrder.class);
         example.createCriteria()
+                .andNotEqualTo("orderStatus", ConstEnum.SALESTATUS_CLOSE.getCode())
                 .andBetween("createTime", startDate, endDate)
                 .andEqualTo("storeId", JWTUtil.getStoreId());
         List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
         PageInfo<SaleOrder> pageInfo = new PageInfo<>(saleOrders);
-        return PageModel.convertToPageModel(pageInfo);
+        PageModel<SaleOrder> dbPageModel = PageModel.convertToPageModel(pageInfo);
+
+        //加入销售聚合汇总
+        SaleTotalVo saleTotalVo = this.getSaleTotalVo(JWTUtil.getStoreId(), startDate, endDate);
+        dbPageModel.setTotalData(saleTotalVo);
+
+        return dbPageModel;
     }
 
     /**
@@ -111,27 +121,10 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     public SaleTotalVo getSaleTotalVo(Long storeId, Date startDate, Date endDate) {
-        Example example = new Example(SaleOrder.class);
-        example.createCriteria()
-                .andBetween("createTime", startDate, endDate)
-                .andEqualTo("storeId", storeId)
-                .andNotEqualTo("orderStatus", ConstEnum.SALESTATUS_CLOSE.getCode());
-        List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
-
-
-        SaleTotalVo saleTotalVo = new SaleTotalVo();
-        saleTotalVo.setSaleCount(saleOrders.size());
-
-        //java 8流式操作集合 计算总和
-        BigDecimal totalMoney = saleOrders
-                .stream()
-                .filter(saleOrder -> saleOrder.getSumPrice() != null)
-                .map(SaleOrder::getSumPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        saleTotalVo.setTotalSales(totalMoney);
-
-        return saleTotalVo;
+        if(startDate.compareTo(endDate)>0){
+            throw new IllegalException("时间参数错误");
+        }
+        return saleOrderMapper.getSaleTotal(storeId, startDate, endDate);
     }
 
     /**

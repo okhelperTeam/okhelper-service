@@ -52,6 +52,13 @@
         </constructor>
     </resultMap>
 
+    <resultMap id="SaleTotalMap" type="com.ok.okhelper.pojo.vo.SaleTotalVo">
+        <constructor>
+            <arg column="sale_count" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="total_sales" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        </constructor>
+    </resultMap>
+
     <select id="getCustomerDebtBo" resultType="com.ok.okhelper.pojo.bo.CustomerDebtBo" parameterType="map">
         SELECT
         so.id so_id,
@@ -77,7 +84,7 @@
     </select>
 
     <select id="getCustomerDebtGroupBo" resultMap="CustomerDebtGroupMap" parameterType="map">
-        SELECT so.customer_id customer_id,sum(so.to_be_paid) sum_to_be_paid
+        SELECT so.customer_id customer_id,SUM(so.to_be_paid) sum_to_be_paid
         FROM sale_order so,customer cs
         WHERE so.customer_id=cs.id
         AND so.store_id=#{storeId}
@@ -87,5 +94,15 @@
             AND (cs.customer_name=#{condition} OR cs.customer_phone=#{condition})
         </if>
         GROUP BY so.customer_id
+    </select>
+
+    <select id="getSaleTotal" resultMap="SaleTotalMap" parameterType="map">
+        SELECT
+            COUNT(sum_price) sale_count,
+            SUM(sum_price)   total_sales
+        FROM sale_order
+        WHERE create_time BETWEEN #{startDate} AND #{endDate}
+              AND store_id = #{storeId}
+              AND order_status != 5
     </select>
 </mapper>
