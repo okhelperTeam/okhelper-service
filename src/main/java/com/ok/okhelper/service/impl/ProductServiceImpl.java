@@ -87,16 +87,6 @@ public class ProductServiceImpl implements ProductService {
 			return getProductsList(null, pageModel);
 		}
 		
-		//启动分页
-		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
-		if (StringUtils.isBlank(orderBy)) {
-			orderBy = "create_time desc";
-		}
-		
-		
-		//启动排序
-		PageHelper.orderBy(orderBy);
-		
 		Long storeId = JWTUtil.getStoreId();
 		if (storeId == null) {
 			throw new AuthenticationException("登陆异常");
@@ -107,13 +97,23 @@ public class ProductServiceImpl implements ProductService {
 			List<CategoryVo> categoryList = categoryService.getCategoryItems(id, storeId);
 			categoryListTotal.addAll(categoryList);
 		}
+
+        //启动分页
+        PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+        if (StringUtils.isBlank(orderBy)) {
+            orderBy = "create_time desc";
+        }
+
+        //启动排序
+        PageHelper.orderBy(orderBy);
+
+
 		//遍历获取每一个分类对应的商品
 		List<ProductsVo> productsVos = new ArrayList<>();
 		productsVos = productMapper.getProductsListByCategoryId(categoryListTotal);
-		
-		
-		
-		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
+
+
+        PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);
 		logger.info("Exit method getProductsListByCategory() return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
 	}

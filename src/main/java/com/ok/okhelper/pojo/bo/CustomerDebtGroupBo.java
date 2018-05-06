@@ -1,5 +1,6 @@
 package com.ok.okhelper.pojo.bo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
  * Description:
  */
 @Data
+@AllArgsConstructor
 public class CustomerDebtGroupBo {
     private Long customerId;
     private BigDecimal sum_to_be_paid;

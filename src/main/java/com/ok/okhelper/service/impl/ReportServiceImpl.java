@@ -46,6 +46,13 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private ProductService productService;
 
+    /**
+     * @Author zc
+     * @Date 2018/5/6 下午2:53
+     * @Param [condition, pageModel]
+     * @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.bo.CustomerDebtBo>
+     * @Description:客户欠款查询
+     */
     @Override
     public PageModel<CustomerDebtBo> getCustomerDebt(String condition, PageModel pageModel) {
         //启动分页

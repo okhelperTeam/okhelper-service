@@ -1,5 +1,6 @@
 package com.ok.okhelper.pojo.bo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import java.util.Date;
  * Description:
  */
 @Data
+@AllArgsConstructor
 public class CustomerDebtBo {
     private Long saleOrderId;
 
