@@ -47,11 +47,37 @@ public class CategoryServiceIMpl implements CategoryService {
 			throw new AuthenticationException("登陆异常");
 		}
 		
-		List<CategoryVo> categoryVoList = categoryMapper.getCategoryListBySuperId(superId, storeId);
+		List<CategoryVo> categoryVoList = getCategoryItems1(superId, storeId);
 		
 		logger.info("Exit method getCategoryList() return：" + categoryVoList);
 		return categoryVoList;
 	}
+	
+	
+	
+	
+	/*
+	 * @Author zhangxin_an
+	 * @Date 2018/4/24 16:56
+	 * @Params [superId, storeId]
+	 * @Return java.util.List<com.ok.okhelper.pojo.vo.CategoryVo>
+	 * @Description:递归调用获取子分类
+	 */
+	private  List<CategoryVo> getCategoryItems1(long superId,Long storeId) {
+		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(superId, storeId);
+		if (CollectionUtils.isEmpty(categorieList)) {
+			return null;
+		} else {
+			categorieList.forEach(category -> {
+				List<CategoryVo> categorieSonList = getCategoryItemsNoSelf(category.getId(), storeId);
+				category.setCategoryVoList(categorieSonList);
+			});
+			return categorieList;
+			
+		}
+		
+	}
+	
 	
 	/*
 	* @Author zhangxin_an 
@@ -97,5 +123,42 @@ public class CategoryServiceIMpl implements CategoryService {
 		return categorieListTotal;
 		
 	}
+
+	public List<CategoryVo> getCategoryItemsNoSelf(long superId, Long storeId) {
+		
+		logger.info("Enter method getCategoryItems() params："+superId);
+		
+		//存储所有包含
+		List<CategoryVo> categorieListTotal = new ArrayList<>();
+		
+		
+		
+		
+		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(superId, storeId);
+		
+		categorieListTotal.addAll(categorieList);
+		while (!CollectionUtils.isEmpty(categorieList)) {
+			if (!CollectionUtils.isEmpty(categorieList)) {
+				
+				for (CategoryVo categoryVo : categorieList) {
+					
+					categorieList = categoryMapper.getCategoryListBySuperId(categoryVo.getId(), storeId);
+					if (CollectionUtils.isEmpty(categorieList)) {
+						continue;
+					}
+					
+					categorieListTotal.addAll(categorieList);
+					
+				}
+			}
+		}
+		
+		logger.info("Enter method getCategoryItems() params："+categorieListTotal);
+		return categorieListTotal;
+		
+	}
+	
+	
 }
+
 

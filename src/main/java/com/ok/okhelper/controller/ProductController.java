@@ -36,13 +36,9 @@ public class ProductController {
     public ServerResponse<PageModel<ProductsVo>> searchProduct(String condition, @Valid PageModel pageModel) {
 		logger.info("Enter method searchProduct params:productCondition:" + condition + "pageModel:" + pageModel);
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
-		try {
 			PageModel<ProductsVo> productsVoPageModel = productService.getProductsList(condition, pageModel);
 			serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
-		} catch (Exception e) {
-			e.printStackTrace();
-			serverResponse = ServerResponse.createDefaultErrorMessage(e.getMessage());
-		}
+		
 		
 		
 		logger.info("Exit method searchProduct params:" + serverResponse);
@@ -61,7 +57,7 @@ public class ProductController {
 			@ApiImplicitParam(name = "categoryIds", value = "分类数组", required = true, paramType = "form"),
 	})
 	@GetMapping("product/category")
-	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(Long[] categoryIds, PageModel pageModel) {
+	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(long[] categoryIds, PageModel pageModel) {
 		logger.info("Enter method searchProduct params:categoryId:" + categoryIds + "pageModel:" + pageModel);
 		
 		ServerResponse<PageModel<ProductsVo>> serverResponse;

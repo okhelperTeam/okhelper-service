@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:根据分类查询商品
 	*/
 	@Override
-	public PageModel<ProductsVo> getProductsListByCategory(Long[] categoryId, String orderBy, PageModel pageModel) {
+	public PageModel<ProductsVo> getProductsListByCategory(long[] categoryId, String orderBy, PageModel pageModel) {
 		
 		
 		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId + orderBy + pageModel);
@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		//获取所有分类子类
 		List<CategoryVo> categoryListTotal = new ArrayList<>();
-		for (Long id : categoryId) {
+		for (long id : categoryId) {
 			List<CategoryVo> categoryList = categoryService.getCategoryItems(id, storeId);
 			categoryListTotal.addAll(categoryList);
 		}
