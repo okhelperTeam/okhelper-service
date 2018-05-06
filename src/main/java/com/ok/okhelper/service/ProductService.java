@@ -16,7 +16,7 @@ public interface ProductService {
 	PageModel<ProductsVo> getProductsList(String condition, PageModel pageModel);
 	
 	
-	PageModel<ProductsVo> getProductsListByCategory(long categoryId,String orderBy, PageModel pageModel);
+	PageModel<ProductsVo> getProductsListByCategory(Long categoryId,String orderBy, PageModel pageModel);
 	
 	Product getProduct(Long pId);
 

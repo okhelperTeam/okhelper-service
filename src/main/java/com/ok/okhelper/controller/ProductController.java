@@ -57,7 +57,7 @@ public class ProductController {
 			@ApiImplicitParam(name = "categoryIds", value = "分类数组", required = true, paramType = "form"),
 	})
 	@GetMapping("product/category")
-	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(long categoryId, PageModel pageModel) {
+	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(Long categoryId, PageModel pageModel) {
 		logger.info("Enter method searchProduct params:categoryId:" + categoryId + "pageModel:" + pageModel);
 		
 		

@@ -78,11 +78,14 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:根据分类查询商品
 	*/
 	@Override
-	public PageModel<ProductsVo> getProductsListByCategory(long categoryId, String orderBy, PageModel pageModel) {
+	public PageModel<ProductsVo> getProductsListByCategory(Long categoryId, String orderBy, PageModel pageModel) {
 		
 		
 		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId + orderBy + pageModel);
 
+		if(categoryId == null){
+			return  getProductsList(null,pageModel);
+		}
 		
 		Long storeId = JWTUtil.getStoreId();
 		if (storeId == null) {

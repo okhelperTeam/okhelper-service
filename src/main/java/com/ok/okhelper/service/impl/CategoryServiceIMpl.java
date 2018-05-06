@@ -95,9 +95,11 @@ public class CategoryServiceIMpl implements CategoryService {
 		
 		//添加自身
 		Category category = categoryMapper.selectByPrimaryKey(superId);
-		CategoryVo categoryVo1 = new CategoryVo();
-		BeanUtils.copyProperties(category,categoryVo1);
-		categorieListTotal.add(categoryVo1);
+		if(category != null) {
+			CategoryVo categoryVo1 = new CategoryVo();
+			BeanUtils.copyProperties(category, categoryVo1);
+			categorieListTotal.add(categoryVo1);
+		}
 		
 		
 		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(superId, storeId);
