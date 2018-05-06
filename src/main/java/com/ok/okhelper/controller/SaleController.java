@@ -56,19 +56,19 @@ public class SaleController {
             switch (saleOrderDto.getRange()) {
                 case ConstStr.QUERY_RANGE_TODAY:
                     saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUntil.weeHours(new Date(), 0), new Date(), pageModel);
+                            (DateUntil.weeHours(new Date(), 0), DateUntil.weeHours(new Date(),1), pageModel);
                     break;
                 case ConstStr.QUERY_RANGE_THREEDAYS:
                     saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2), new Date(), pageModel);
+                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2), DateUntil.weeHours(new Date(),1), pageModel);
                     break;
                 case ConstStr.QUERY_RANGE_WEEK:
                     saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -6), new Date(), pageModel);
+                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -6), DateUntil.weeHours(new Date(),1), pageModel);
                     break;
                 case ConstStr.QUERY_RANGE_MONTH:
                     saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -29), new Date(), pageModel);
+                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -29), DateUntil.weeHours(new Date(),1), pageModel);
                     break;
                 default:
                     throw new IllegalException("range参数错误");
@@ -82,7 +82,7 @@ public class SaleController {
     public ServerResponse<SaleTotalVo> getTodaySales() {
         Long storeId = JWTUtil.getStoreId();
         SaleTotalVo saleTotalVo =
-                saleService.getSaleTotalVo(storeId, DateUntil.weeHours(new Date(), 0), new Date());
+                saleService.getSaleTotalVo(storeId, DateUntil.weeHours(new Date(), 0), DateUntil.weeHours(new Date(),1));
         return ServerResponse.createBySuccess(saleTotalVo);
     }
 
@@ -131,14 +131,4 @@ public class SaleController {
         return ServerResponse.createBySuccessMessage("订单支付成功");
     }
 
-    public static void main(String[] args) {
-        String a = null;
-        switch (a) {
-            case "":
-                System.out.println("y");
-                break;
-            default:
-                System.out.println("n");
-        }
-    }
 }

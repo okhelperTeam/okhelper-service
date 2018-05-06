@@ -51,8 +51,12 @@ public class PageModel<T> {
     private boolean lastPage;
 
     //排序规则
-    @ApiModelProperty(value = "排序参数(格式为：'create_time desc' 或者 'create_time asc' 注意前面的是数据库的字段名，不传默认按时间正序)")
-    private String orderBy = "create_time asc";
+    @ApiModelProperty(value = "排序参数(格式为：'create_time desc' 或者 'create_time asc' 注意前面的是数据库的字段名，不传默认按时间倒序)")
+    private String orderBy = "create_time desc";
+
+    //聚合数据
+    @ApiModelProperty(value = "聚合数据汇总")
+    private Object totalData;
 
     //数据
     @ApiModelProperty(value = "数据(返回数据不用传)")
