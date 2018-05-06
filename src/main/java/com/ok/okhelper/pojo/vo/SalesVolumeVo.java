@@ -15,7 +15,7 @@ import java.util.Date;
  * Description:
  */
 @Data
-public class HotSaleVo {
+public class SalesVolumeVo {
     /**
      * 主键
      */

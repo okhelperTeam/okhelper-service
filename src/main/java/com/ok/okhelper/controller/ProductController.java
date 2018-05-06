@@ -59,14 +59,13 @@ public class ProductController {
 	@ApiOperation(value = "商品搜索", notes = "通过分类搜索")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "categoryIds", value = "分类数组", required = true, paramType = "form"),
-			@ApiImplicitParam(name = "orderBy", value = "排序规则", paramType = "form"),
 	})
 	@GetMapping("product/category")
-	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(Long[] categoryIds, String orderBy, PageModel pageModel) {
+	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(Long[] categoryIds, PageModel pageModel) {
 		logger.info("Enter method searchProduct params:categoryId:" + categoryIds + "pageModel:" + pageModel);
 		
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
-		PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryIds, orderBy, pageModel);
+		PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryIds, pageModel.getOrderBy(), pageModel);
 		serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
 		
 		

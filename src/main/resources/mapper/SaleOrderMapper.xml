@@ -1,31 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ok.okhelper.dao.SaleOrderMapper">
-  <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.SaleOrder">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <constructor>
-      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="seller" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="stockouter" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="sum_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="real_pay" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="discount_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-      <arg column="to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
-        <arg column="pay_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
-      <arg column="order_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="logistics_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="pay_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="send_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="success_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="close_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-    </constructor>
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.ok.okhelper.pojo.po.SaleOrder">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="seller" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="stockouter" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="sum_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="real_pay" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="discount_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="pay_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="order_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="logistics_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="pay_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="send_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="success_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="close_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="CustomerDebtMap" type="com.ok.okhelper.pojo.bo.CustomerDebtBo">
+        <constructor>
+            <arg column="so_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="order_number" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+            <arg column="place_order_time" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_name" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_store_name" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_phone" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_score" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_level" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_address" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="CustomerDebtGroupMap" type="com.ok.okhelper.pojo.bo.CustomerDebtGroupBo">
+        <constructor>
+            <arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
+
+    <select id="getCustomerDebtBo" resultType="com.ok.okhelper.pojo.bo.CustomerDebtBo" parameterType="map">
+        SELECT
+        so.id so_id,
+        order_number,
+        to_be_paid,
+        so.create_time place_order_time,
+        customer_id,
+        customer_name,
+        customer_store_name,
+        customer_phone,
+        customer_email,
+        customer_score,
+        customer_level,
+        customer_address
+        FROM sale_order so, customer cs
+        WHERE so.customer_id = cs.id
+        AND so.store_id = #{storeId}
+        AND so.order_status = 2
+        AND cs.delete_status = 1
+        <if test="condition != null and condition != ''">
+            AND (cs.customer_name=#{condition} OR cs.customer_phone=#{condition})
+        </if>
+    </select>
+
+    <select id="getCustomerDebtGroupBo" resultMap="CustomerDebtGroupMap" parameterType="map">
+        SELECT so.customer_id customer_id,sum(so.to_be_paid) sum_to_be_paid
+        FROM sale_order so,customer cs
+        WHERE so.customer_id=cs.id
+        AND so.store_id=#{storeId}
+        AND so.order_status=2
+        AND cs.delete_status=1
+        <if test="condition != null and condition != ''">
+            AND (cs.customer_name=#{condition} OR cs.customer_phone=#{condition})
+        </if>
+        GROUP BY so.customer_id
+    </select>
 </mapper>

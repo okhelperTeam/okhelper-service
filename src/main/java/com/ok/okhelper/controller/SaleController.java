@@ -131,14 +131,4 @@ public class SaleController {
         return ServerResponse.createBySuccessMessage("订单支付成功");
     }
 
-    public static void main(String[] args) {
-        String a = null;
-        switch (a) {
-            case "":
-                System.out.println("y");
-                break;
-            default:
-                System.out.println("n");
-        }
-    }
 }
