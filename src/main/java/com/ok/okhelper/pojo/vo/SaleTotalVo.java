@@ -1,5 +1,6 @@
 package com.ok.okhelper.pojo.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
  * Description:
  */
 @Data
+@AllArgsConstructor
 public class SaleTotalVo {
 
     //销售总笔数

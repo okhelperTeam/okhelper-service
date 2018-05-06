@@ -82,28 +82,29 @@ public class ProductServiceImpl implements ProductService {
 		
 		
 		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId + orderBy + pageModel);
-		
-		
-		//启动分页
-		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
-		if (StringUtils.isBlank(orderBy)) {
-			orderBy = "create_time desc";
-		}
-		
-		
-		//启动排序
-		PageHelper.orderBy(orderBy);
+
 		
 		Long storeId = JWTUtil.getStoreId();
 		if (storeId == null) {
 			throw new AuthenticationException("登陆异常");
 		}
+
 		//获取分类子类
 		List<CategoryVo> categoryList = categoryService.getCategoryItems(categoryId, storeId);
 		
 		CategoryVo categoryVo = new CategoryVo();
 		categoryVo.setId(categoryId);
 		categoryList.add(categoryVo);
+        //启动分页
+        PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+        if (StringUtils.isBlank(orderBy)) {
+            orderBy = "create_time desc";
+        }
+
+        //启动排序
+        PageHelper.orderBy(orderBy);
+
+
 		//遍历获取每一个分类对应的商品
 		List<ProductsVo> productsVos = productMapper.getProductsListByCategoryId(categoryList);
 		

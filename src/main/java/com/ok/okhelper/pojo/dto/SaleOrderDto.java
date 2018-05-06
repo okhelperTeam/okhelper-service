@@ -15,12 +15,11 @@ import java.util.Date;
 @Data
 public class SaleOrderDto {
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-@ApiModelProperty(value = "开始时间")
+    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "开始时间")
     private Date startDate;
 
-    @NotNull(message = "结束时间不能为空")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "结束时间")
     private Date endDate;
 

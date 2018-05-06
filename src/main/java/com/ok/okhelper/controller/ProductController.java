@@ -60,6 +60,7 @@ public class ProductController {
 	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(long categoryId, PageModel pageModel) {
 		logger.info("Enter method searchProduct params:categoryId:" + categoryId + "pageModel:" + pageModel);
 		
+		
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
 		PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryId, pageModel.getOrderBy(), pageModel);
 		serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
