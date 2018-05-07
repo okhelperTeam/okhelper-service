@@ -70,8 +70,8 @@ public class ReportServiceImpl implements ReportService {
             CustomerDebtTotalBo customerDebtTotalBo = new CustomerDebtTotalBo();
             customerDebtTotalBo.setCustomerCount(customerDebtGroupBos.size());
             BigDecimal totalMoney = customerDebtGroupBos.stream()
-                    .filter(x -> x.getSum_to_be_paid() != null)
-                    .map(CustomerDebtGroupBo::getSum_to_be_paid)
+                    .filter(x -> x.getSumToBePaid() != null)
+                    .map(CustomerDebtGroupBo::getSumToBePaid)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             customerDebtTotalBo.setTotalToBePaid(totalMoney);
         }

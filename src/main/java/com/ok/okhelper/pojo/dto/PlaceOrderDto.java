@@ -30,35 +30,35 @@ public class PlaceOrderDto {
     @ApiModelProperty(value = "订单总金额",required = true)
     private BigDecimal sumPrice;
 
-    /**
-     * 实付款
-     */
-    @NotNull
-    @Column(name = "real_pay")
-    @ApiModelProperty(value = "实付金额",required = true)
-    private BigDecimal realPay;
-
-    /**
-     * 优惠金额
-     */
-    @Column(name = "discount_price")
-    @ApiModelProperty(value = "优惠金额")
-    private BigDecimal discountPrice;
-
-    /**
-     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
-     */
-    @NotNull
-    @Column(name = "pay_type")
-    @ApiModelProperty(value = "支付方式(1-现金,2-支付宝,3-微信,4-刷卡;注:混合方式拼接成 现金+微信-->1,3 )", required = true)
-    private String payType;
-
-    /**
-     * 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
-     */
-    @ApiModelProperty(hidden = true)
-    @Column(name = "order_status")
-    private Integer orderStatus;
+//    /**
+//     * 实付款
+//     */
+//    @NotNull
+//    @Column(name = "real_pay")
+//    @ApiModelProperty(value = "实付金额",required = true)
+//    private BigDecimal realPay;
+//
+//    /**
+//     * 优惠金额
+//     */
+//    @Column(name = "discount_price")
+//    @ApiModelProperty(value = "优惠金额")
+//    private BigDecimal discountPrice;
+//
+//    /**
+//     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+//     */
+//    @NotNull
+//    @Column(name = "pay_type")
+//    @ApiModelProperty(value = "支付方式(1-现金,2-支付宝,3-微信,4-刷卡;注:混合方式拼接成 现金+微信-->1,3 )", required = true)
+//    private String payType;
+//
+//    /**
+//     * 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
+//     */
+//    @ApiModelProperty(hidden = true)
+//    @Column(name = "order_status")
+//    private Integer orderStatus;
 
 
     //销售单详情

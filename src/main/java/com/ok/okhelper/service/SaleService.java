@@ -5,6 +5,7 @@ import com.ok.okhelper.pojo.dto.PaymentDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
+import com.ok.okhelper.pojo.vo.SaleOrderVo;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
@@ -19,7 +20,7 @@ import java.util.List;
  * Description:
  */
 public interface SaleService {
-    PageModel<SaleOrder> getSaleOrderRecords(Date startDate, Date endDate, PageModel pageModel);
+    PageModel<SaleOrderVo> getSaleOrderRecords(SaleOrderDto saleOrderDto, PageModel pageModel);
 
     SaleTotalVo getSaleTotalVo(Long storeId,Date startDate,Date endDate);
 

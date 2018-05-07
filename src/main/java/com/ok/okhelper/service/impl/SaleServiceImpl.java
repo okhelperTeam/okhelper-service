@@ -20,6 +20,7 @@ import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.po.SaleOrderDetail;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
+import com.ok.okhelper.pojo.vo.SaleOrderVo;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
@@ -83,11 +84,11 @@ public class SaleServiceImpl implements SaleService {
      * @Date 2018/4/29 上午11:01
      * @Param [storeId, saleOrderDto, pageNum, limit]
      * @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.po.SaleOrder>
-     * @Description:获取指定时间内的历史订单 (去除 已关闭订单)
+     * @Description:获取指定时间内的历史订单 (包含已关闭订单)
      */
     @Override
-    public PageModel<SaleOrder> getSaleOrderRecords(Date startDate, Date endDate, PageModel pageModel) {
-        if(startDate.compareTo(endDate)>0){
+    public PageModel<SaleOrderVo> getSaleOrderRecords(SaleOrderDto saleOrderDto, PageModel pageModel) {
+        if(saleOrderDto.getStartDate().compareTo(saleOrderDto.getEndDate())>0){
             throw new IllegalException("时间参数错误");
         }
         //启动分页
@@ -96,17 +97,13 @@ public class SaleServiceImpl implements SaleService {
         //启动排序
         PageHelper.orderBy(pageModel.getOrderBy());
 
-        Example example = new Example(SaleOrder.class);
-        example.createCriteria()
-                .andNotEqualTo("orderStatus", ConstEnum.SALESTATUS_CLOSE.getCode())
-                .andBetween("createTime", startDate, endDate)
-                .andEqualTo("storeId", JWTUtil.getStoreId());
-        List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
-        PageInfo<SaleOrder> pageInfo = new PageInfo<>(saleOrders);
-        PageModel<SaleOrder> dbPageModel = PageModel.convertToPageModel(pageInfo);
+        List<SaleOrderVo> saleOrderVos = saleOrderMapper.getSaleOrderVo(JWTUtil.getStoreId(), saleOrderDto);
+
+        PageInfo<SaleOrderVo> pageInfo = new PageInfo<>(saleOrderVos);
+        PageModel<SaleOrderVo> dbPageModel = PageModel.convertToPageModel(pageInfo);
 
         //加入销售聚合汇总
-        SaleTotalVo saleTotalVo = this.getSaleTotalVo(JWTUtil.getStoreId(), startDate, endDate);
+        SaleTotalVo saleTotalVo = this.getSaleTotalVo(JWTUtil.getStoreId(), saleOrderDto.getStartDate(), saleOrderDto.getEndDate());
         dbPageModel.setTotalData(saleTotalVo);
 
         return dbPageModel;
@@ -139,34 +136,36 @@ public class SaleServiceImpl implements SaleService {
     public PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
-        //判断金额正确性
-        BigDecimal amountPayable = placeOrderDto.getSumPrice().subtract(placeOrderDto.getDiscountPrice());
-        if (placeOrderDto.getDiscountPrice().compareTo(placeOrderDto.getSumPrice()) > 0) {
-            throw new IllegalException("优惠金额不能大于订单总金额");
-        }
-
-        if (placeOrderDto.getRealPay().compareTo(amountPayable) > 0) {
-            throw new IllegalException("实付金额不能大于应付金额");
-        }
-
-        //计算欠款金额
-        //欠款金额=订单总价-优惠金额-实付金额
-        BigDecimal toBePaid
-                = placeOrderDto.getSumPrice() != null ? placeOrderDto.getSumPrice() : BigDecimal.ZERO
-                .subtract(placeOrderDto.getDiscountPrice() != null ? placeOrderDto.getDiscountPrice() : BigDecimal.ZERO)
-                .subtract(placeOrderDto.getRealPay() != null ? placeOrderDto.getRealPay() : BigDecimal.ZERO);
-
-        if (toBePaid.doubleValue() > 0.0) {
-            placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_DEBT.getCode());
-        } else {
-            placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_PAID.getCode());
-        }
+//        //判断金额正确性
+//        BigDecimal amountPayable = placeOrderDto.getSumPrice().subtract(placeOrderDto.getDiscountPrice());
+//        if (placeOrderDto.getDiscountPrice().compareTo(placeOrderDto.getSumPrice()) > 0) {
+//            throw new IllegalException("优惠金额不能大于订单总金额");
+//        }
+//
+//        if (placeOrderDto.getRealPay().compareTo(amountPayable) > 0) {
+//            throw new IllegalException("实付金额不能大于应付金额");
+//        }
+//
+//        //计算欠款金额
+//        //欠款金额=订单总价-优惠金额-实付金额
+//        BigDecimal toBePaid
+//                = placeOrderDto.getSumPrice() != null ? placeOrderDto.getSumPrice() : BigDecimal.ZERO
+//                .subtract(placeOrderDto.getDiscountPrice() != null ? placeOrderDto.getDiscountPrice() : BigDecimal.ZERO)
+//                .subtract(placeOrderDto.getRealPay() != null ? placeOrderDto.getRealPay() : BigDecimal.ZERO);
+//
+//        if (toBePaid.doubleValue() > 0.0) {
+//            placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_DEBT.getCode());
+//        } else {
+//            placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_PAID.getCode());
+//        }
 
         //加入销售订单
         SaleOrder saleOrder = new SaleOrder();
+//      saleOrder.setToBePaid(toBePaid);
+
         BeanUtils.copyProperties(placeOrderDto, saleOrder);
         saleOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(11, seller));
-        saleOrder.setToBePaid(toBePaid);
+        saleOrder.setOrderStatus(ConstEnum.SALESTATUS_NOPAYMENT.getCode());
         saleOrder.setStoreId(storeId);
         saleOrder.setSeller(seller);
         saleOrder.setLogisticsStatus(ConstEnum.LOGISTICSSTATUS_NOSEND.getCode());

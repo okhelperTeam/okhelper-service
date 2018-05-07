@@ -8,6 +8,7 @@ import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.dto.PaymentDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
+import com.ok.okhelper.pojo.vo.SaleOrderVo;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
@@ -45,35 +46,33 @@ public class SaleController {
 
     @GetMapping("/sale/sale_table")
     @ApiOperation(value = "获取销售历史订单", notes = "查询指定日期的销售订单列表")
-    public ServerResponse<PageModel<SaleOrder>> getSaleOrderRecords(@Valid SaleOrderDto saleOrderDto, @Valid PageModel pageModel) {
-        PageModel<SaleOrder> saleOrderRecords;
+    public ServerResponse<PageModel<SaleOrderVo>> getSaleOrderRecords(@Valid SaleOrderDto saleOrderDto, @Valid PageModel pageModel) {
+        PageModel<SaleOrderVo> saleOrderRecords;
         if (StringUtils.isBlank(saleOrderDto.getRange())) {
             if (saleOrderDto.getStartDate() == null || saleOrderDto.getEndDate() == null) {
                 throw new IllegalException("参数错误");
             }
-            saleOrderRecords = saleService.getSaleOrderRecords(saleOrderDto.getStartDate(), saleOrderDto.getEndDate(), pageModel);
         } else {
+            saleOrderDto.setEndDate(DateUntil.weeHours(new Date(),1));
             switch (saleOrderDto.getRange()) {
                 case ConstStr.QUERY_RANGE_TODAY:
-                    saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUntil.weeHours(new Date(), 0), DateUntil.weeHours(new Date(),1), pageModel);
+                    saleOrderDto.setStartDate(DateUntil.weeHours(new Date(), 0));
                     break;
                 case ConstStr.QUERY_RANGE_THREEDAYS:
-                    saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2), DateUntil.weeHours(new Date(),1), pageModel);
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2));
                     break;
                 case ConstStr.QUERY_RANGE_WEEK:
-                    saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -6), DateUntil.weeHours(new Date(),1), pageModel);
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -6));
                     break;
                 case ConstStr.QUERY_RANGE_MONTH:
-                    saleOrderRecords = saleService.getSaleOrderRecords
-                            (DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -29), DateUntil.weeHours(new Date(),1), pageModel);
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -29));
                     break;
                 default:
                     throw new IllegalException("range参数错误");
             }
         }
+
+        saleOrderRecords = saleService.getSaleOrderRecords(saleOrderDto, pageModel);
         return ServerResponse.createBySuccess(saleOrderRecords);
     }
 
@@ -87,7 +86,7 @@ public class SaleController {
     }
 
     @PostMapping("/sale/place_order")
-    @ApiOperation(value = "下订单", notes = "下单并付款")
+    @ApiOperation(value = "下订单", notes = "只下单不付款")
     public ServerResponse<PlaceOrderVo> placeOrder(@Valid PlaceOrderDto placeOrderDto) {
         PlaceOrderVo placeOrderVo = saleService.placeOrder(JWTUtil.getStoreId(), JWTUtil.getUserId(), placeOrderDto);
         if (placeOrderVo != null) {

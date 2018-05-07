@@ -14,5 +14,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CustomerDebtGroupBo {
     private Long customerId;
-    private BigDecimal sum_to_be_paid;
+    private BigDecimal sumToBePaid;
 }
