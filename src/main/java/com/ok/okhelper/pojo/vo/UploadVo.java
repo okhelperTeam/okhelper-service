@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UploadVo {
     //相对路径(文件名)
-    private String uri;
+    private String fileName;
 
     //绝对路径
     private String url;

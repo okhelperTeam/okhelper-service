@@ -19,4 +19,14 @@ public class COSUtilTest {
     public void tsetUpload() {
         COSUtil.uploadFile("/2.png", new File("/Users/zc/Desktop/rbac.png"));
     }
+
+    @Test
+    public void testDelete() {
+        COSUtil.deleteFile("https://okhelper-1252411697.cosbj.myqcloud.com/store_logo/b9c98cc2-61b1-444a-bec8-a7ae63859c31.png");
+    }
+
+    @Test
+    public void testFulshB(){
+//        COSUtil.flushBucket();
+    }
 }

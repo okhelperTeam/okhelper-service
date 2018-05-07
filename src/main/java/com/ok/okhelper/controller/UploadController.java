@@ -8,14 +8,18 @@ import com.google.common.collect.Maps;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.StockMapper;
 import com.ok.okhelper.dao.StoreMapper;
+import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.po.Store;
+import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.UploadVo;
 import com.ok.okhelper.service.UploadService;
 import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.until.COSUtil;
 import com.ok.okhelper.until.PropertiesUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +48,9 @@ public class UploadController {
     @Autowired
     private StoreMapper storeMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Value("${cos.server.http.prefix}")
     private String cosHttpPrefix;
 
@@ -56,9 +63,12 @@ public class UploadController {
     @Value("${cos.path.money-code}")
     private String cosPathMoneyCode;
 
+    @Value("${cos.path.store-logo}")
+    private String cosPathStoreLogo;
+
 
     @PostMapping(value = "/upload/img")
-    @ApiOperation(value = "上传图片(包括商品图片、分类图片等等，用户头像请转到头像上传接口)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
+    @ApiOperation(value = "上传图片(包括商品图片、分类图片等等，用户头像请转到头像上传接口)", notes = "此接口只上传图片，无业务逻辑")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty() && file.getContentType().startsWith("image")) {
@@ -78,8 +88,8 @@ public class UploadController {
 
     }
 
-    @PostMapping(value = "/upload/avator")
-    @ApiOperation(value = "头像上传", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
+    @PostMapping(value = "/upload/avator/me")
+    @ApiOperation(value = "上传并修改我的头像", notes = "")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadAvator(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (!file.isEmpty() && file.getContentType().startsWith("image")) {
@@ -89,6 +99,18 @@ public class UploadController {
 
             String targetFileName = uploadService.upload(file, tmp_path, cosPathAvator);
             String url = cosHttpPrefix + cosPathAvator + targetFileName;
+            User dbuser = userMapper.selectByPrimaryKey(JWTUtil.getUserId());
+
+            //删除旧头像
+            if (StringUtils.isNotBlank(dbuser.getUserAvatar())) {
+                COSUtil.deleteFile(dbuser.getUserAvatar());
+            }
+
+            //更新用户头像
+            User user = new User();
+            user.setId(JWTUtil.getUserId());
+            user.setUserAvatar(url);
+            userMapper.updateByPrimaryKeySelective(user);
 
             UploadVo uploadVo = new UploadVo(targetFileName, url);
 
@@ -101,7 +123,7 @@ public class UploadController {
 
 
     @PostMapping(value = "/upload/money_code")
-    @ApiOperation(value = "上传并修改收款码(支付宝/微信)", notes = "注意：url为绝对路径、uri是相对路径，发请求请携带uri相对路径，数据库只存相对路径")
+    @ApiOperation(value = "上传并修改收款码(支付宝/微信)", notes = "")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
     public ServerResponse<UploadVo> uploadMoneyCode(@RequestParam("file") MultipartFile file,
                                                     @ApiParam(value = "收款码类型(alipay/weichat)", required = true)
@@ -128,6 +150,45 @@ public class UploadController {
             Map<String, String> moneyCodeMap = objectMapper.readValue(moneyCode != null ? moneyCode : "{}", Map.class);
             moneyCodeMap.put(codeType, url);
             store.setMoneyCode(objectMapper.writeValueAsString(moneyCodeMap));
+
+            storeMapper.updateByPrimaryKeySelective(store);
+
+            UploadVo uploadVo = new UploadVo(targetFileName, url);
+
+            return ServerResponse.createBySuccess(uploadVo);
+        } else {
+            throw new IllegalException("请求文件文件格式不对");
+        }
+
+    }
+
+    @PostMapping(value = "/upload/store_logo")
+    @ApiOperation(value = "上传并修改商铺logo", notes = "")
+    @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
+    public ServerResponse<UploadVo> uploadStoreLogo(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
+        if (!file.isEmpty() && file.getContentType().startsWith("image")) {
+
+            //定义临时文件夹
+            String tmp_path = request.getSession().getServletContext().getRealPath("tmp");
+
+            String targetFileName = uploadService.upload(file, tmp_path, cosPathStoreLogo);
+
+            String url = cosHttpPrefix + cosPathStoreLogo + targetFileName;
+
+            //修改收款码
+            Store dbstore = storeMapper.selectByPrimaryKey(JWTUtil.getStoreId());
+            if (dbstore == null) {
+                throw new IllegalException("商铺信息错误");
+            }
+
+            //删除旧图片
+            if (StringUtils.isNotBlank(dbstore.getStoreLogo())) {
+                COSUtil.deleteFile(dbstore.getStoreLogo());
+            }
+
+            Store store = new Store();
+            store.setId(JWTUtil.getStoreId());
+            store.setStoreLogo(url);
 
             storeMapper.updateByPrimaryKeySelective(store);
 

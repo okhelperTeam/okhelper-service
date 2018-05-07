@@ -4,6 +4,8 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.model.DeleteObjectRequest;
+import com.qcloud.cos.model.DeleteObjectsRequest;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
@@ -24,9 +26,11 @@ public class COSUtil {
 
     private String secretKey = PropertiesUtil.getProperty("cos.secretKey");
 
+    private String region = PropertiesUtil.getProperty("cos.region");
+
     private String bucketName = PropertiesUtil.getProperty("cos.bucketName");
 
-    private String region = PropertiesUtil.getProperty("cos.region");
+    private String cosServerHttpPrefix = PropertiesUtil.getProperty("cos.server.http.prefix");
 
     private COSUtil() {
         // 1 初始化用户身份信息(secretId, secretKey)
@@ -38,11 +42,11 @@ public class COSUtil {
     }
 
 
-    public static Boolean uploadFile(String cosPath, File localfile) {
+    public static Boolean uploadFile(String key, File localFile) {
         COSUtil cosUtil = new COSUtil();
 
         try {
-            PutObjectRequest putObjectRequest = new PutObjectRequest(cosUtil.bucketName, cosPath, localfile);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(cosUtil.bucketName, key, localFile);
             PutObjectResult putObjectResult = cosUtil.cosClient.putObject(putObjectRequest);
 
             String etag = putObjectResult.getETag();  // 获取文件的etag
@@ -50,10 +54,50 @@ public class COSUtil {
         } catch (RuntimeException exception) {
             log.error(exception.getMessage());
             return false;
+        }finally {
+            cosUtil.cosClient.shutdown();
         }
-
 
         return true;
     }
+
+
+    public static void deleteFile(String url) {
+        COSUtil cosUtil = new COSUtil();
+        try {
+            String key = url.substring(cosUtil.cosServerHttpPrefix.length(), url.length());
+
+            DeleteObjectRequest deleteObjectRequest=new DeleteObjectRequest(cosUtil.bucketName,key);
+            cosUtil.cosClient.deleteObject(deleteObjectRequest);
+            log.debug("文件删除成功{}",key);
+        } catch (RuntimeException exception) {
+            log.error(exception.getMessage());
+        }finally {
+            cosUtil.cosClient.shutdown();
+        }
+
+    }
+
+
+    /**
+     * @Author zc  
+     * @Date 2018/5/8 上午1:31  
+     * @Param []  
+     * @Return void  
+     * @Description:清空整个Bucket
+     */  
+//    public static void flushBucket() {
+//        COSUtil cosUtil = new COSUtil();
+//        try {
+//            DeleteObjectsRequest deleteObjectsRequest=new DeleteObjectsRequest(cosUtil.bucketName);
+//            cosUtil.cosClient.deleteObjects(deleteObjectsRequest);
+//            log.debug("清空Bucket");
+//        } catch (RuntimeException exception) {
+//            log.error(exception.getMessage());
+//        }finally {
+//            cosUtil.cosClient.shutdown();
+//        }
+//
+//    }
 
 }
