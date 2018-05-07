@@ -45,7 +45,7 @@ public class SupplierController {
 	
 	@RequiresPermissions("supplier:view")
 	@ApiOperation(value = "查询供应商",notes = "查询具体供应商")
-	@GetMapping("/supplier/{id}")
+	@GetMapping("/supplier/{id:\\d+}")
 	public ServerResponse<Supplier> getSupplier(@PathVariable Long id){
 		logger.info("Enter method getSupplier() Params:" + id);
 		
@@ -58,7 +58,7 @@ public class SupplierController {
 	
 	@RequiresPermissions("supplier:edit")
 	@ApiOperation(value = "修改供应商信息",notes = "修改具体供应商信息")
-	@PutMapping("/supplier/{id}")
+	@PutMapping("/supplier/{id:\\d+}")
 	public ServerResponse updateSupplier(@PathVariable Long id, @Valid SupplierDto supplierDto) {
 		logger.info("Enter method getSupplier() Params:" + supplierDto);
 		return supplierService.updateSupplier(id, supplierDto);
@@ -67,7 +67,7 @@ public class SupplierController {
 	
 	@RequiresPermissions("supplier:edit")
 	@ApiOperation(value = "删除供应商",notes = "删除指定供应商")
-	@DeleteMapping("/supplier/{id}")
+	@DeleteMapping("/supplier/{id:\\d+}")
 	public ServerResponse updateSupplier(@PathVariable Long id){
 		logger.info("Enter method updateSupplier(Long id) Params:" + id);
 		return supplierService.deleteSupplierById(id);

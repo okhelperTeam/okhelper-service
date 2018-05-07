@@ -73,7 +73,7 @@ public class ProductController {
 	}
 	
 	@ApiOperation(value = "商品删除")
-	@DeleteMapping("product/{id}")
+	@DeleteMapping("product/{id:\\d+}")
 	public ServerResponse deleteProduct(@PathVariable Long id) {
 		logger.info("Enter method deleteProduct params:productCondition:" + id);
 		ServerResponse serverResponse;
@@ -117,7 +117,7 @@ public class ProductController {
 	
 	
 	@ApiOperation(value = "查询单个商品")
-	@GetMapping("product/{id}")
+	@GetMapping("product/{id:\\d+}")
 	public ServerResponse getProduct(@PathVariable Long id) {
 		logger.info("Enter method getProduct params:id:" + id);
 		Product products = productService.getProduct(id);

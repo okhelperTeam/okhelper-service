@@ -102,35 +102,35 @@ public class SaleController {
         return ServerResponse.createBySuccess(placeOrderVo);
     }
 
-    @PostMapping("/sale/deliver_goods/{saleOrderId}")
+    @PostMapping("/sale/deliver_goods/{id:\\d+}")
     @ApiOperation(value = "发货/出库")
-    public ServerResponse deliverGoods(@PathVariable Long saleOrderId, DeliveryDto deliveryDto) {
-        deliveryDto.setSaleOrderId(saleOrderId);
+    public ServerResponse deliverGoods(@ApiParam(value = "销售单Id") @PathVariable Long id, DeliveryDto deliveryDto) {
+        deliveryDto.setSaleOrderId(id);
         Long deliveryId = deliveryService.deliverGoods(deliveryDto);
         if (deliveryId != null) {
-            deliveryService.sendEmail(saleOrderId);
+            deliveryService.sendEmail(id);
         }
         return ServerResponse.createBySuccessMessage("发货成功");
     }
 
-    @PostMapping("/sale/confirm_receipt/{saleOrderId}")
+    @PostMapping("/sale/confirm_receipt/{id:\\d+}")
     @ApiOperation(value = "确认收货")
-    public ServerResponse confirmReceipt(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId) {
-        saleService.confirmReceipt(saleOrderId);
+    public ServerResponse confirmReceipt(@ApiParam(value = "销售单Id") @PathVariable Long id) {
+        saleService.confirmReceipt(id);
         return ServerResponse.createBySuccessMessage("确认收货成功");
     }
 
-    @PostMapping("/sale/close_order/{saleOrderId}")
+    @PostMapping("/sale/close_order/{id:\\d+}")
     @ApiOperation(value = "关闭订单")
-    public ServerResponse closeOrder(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId) {
-        saleService.closeOrder(saleOrderId);
+    public ServerResponse closeOrder(@ApiParam(value = "销售单Id") @PathVariable Long id) {
+        saleService.closeOrder(id);
         return ServerResponse.createBySuccessMessage("订单关闭成功");
     }
 
-    @PostMapping("/sale/payment/{saleOrderId}")
+    @PostMapping("/sale/payment/{id:\\d+}")
     @ApiOperation(value = "付款", notes = "支付接口，包括还款，未来扩展为支付宝接口")
-    public ServerResponse payment(@ApiParam(value = "销售单Id") @PathVariable Long saleOrderId, PaymentDto paymentDto) {
-        saleService.payment(saleOrderId, paymentDto);
+    public ServerResponse payment(@ApiParam(value = "销售单Id") @PathVariable Long id, PaymentDto paymentDto) {
+        saleService.payment(id, paymentDto);
         return ServerResponse.createBySuccessMessage("订单支付成功");
     }
 

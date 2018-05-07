@@ -30,11 +30,13 @@ public class PageModel<T> {
 
     //请求页码
     @NotNull(message = "分页参数错误(pageNum不能为空)")
+    @Min(1)
     @ApiModelProperty(value = "请求页码", required = true)
     private Integer pageNum;
 
     //每页多少条
     @NotNull(message = "分页参数错误(limit不能为空)")
+    @Min(1)
     @ApiModelProperty(value = "每页多少条", required = true)
     private Integer limit;
 

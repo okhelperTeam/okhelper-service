@@ -48,7 +48,7 @@ public class WarehouseController {
 	
 	@RequiresPermissions("warehouse:view")
 	@ApiOperation(value = "查询仓库",notes = "查询具体仓库")
-	@GetMapping("/warehouse/{id}")
+	@GetMapping("/warehouse/{id:\\d+}")
 	public ServerResponse<WarehouseVo> getWarehouse(@PathVariable Long id){
 		logger.info("Enter method getWarehouse() Params::" + id);
 		
@@ -69,7 +69,7 @@ public class WarehouseController {
 	}
 	@RequiresPermissions("warehouse:edit")
 	@ApiOperation(value = "删除仓库",notes = "删除指定仓库")
-	@DeleteMapping("/warehouse/{id}")
+	@DeleteMapping("/warehouse/{id:\\d+}")
 	public ServerResponse updateWarehouse(@PathVariable Long id){
 		logger.info("Enter method updateWarehouse(Long id) Params:" + id);
 		return wareHouseService.deleteWarehouseById(id);

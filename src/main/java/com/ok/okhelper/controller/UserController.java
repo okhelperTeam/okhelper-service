@@ -121,12 +121,12 @@ public class UserController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description: 变更角色
      */
-    @PutMapping("/user/role/{employeeId}")
+    @PutMapping("/user/role/{id:\\d+}")
     @ApiOperation(value = "变更角色")
-    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long employeeId,
+    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long id,
                                              UserAndRoleDto userAndRoleDto) {
         System.out.println(userAndRoleDto.getRoles().toString());
-        return userService.changeRole(employeeId, userAndRoleDto.getRoles());
+        return userService.changeRole(id, userAndRoleDto.getRoles());
     }
 
     @ApiIgnore//使用该注解忽略这个API

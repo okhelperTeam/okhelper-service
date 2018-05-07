@@ -41,26 +41,26 @@ public class CustomerController {
 
     @RequiresPermissions("customer:view")
     @ApiOperation(value = "查询客户", notes = "查询具体客户")
-    @GetMapping("/customer/{customerId}")
-    public ServerResponse<Customer> getCustomer(@PathVariable Long customerId) {
-        Customer customer = customerService.getCustomerById(customerId);
+    @GetMapping("/customer/{id:\\d+}")
+    public ServerResponse<Customer> getCustomer(@PathVariable Long id) {
+        Customer customer = customerService.getCustomerById(id);
         return ServerResponse.createBySuccess(customer);
     }
 
     @RequiresPermissions("customer:edit")
     @ApiOperation(value = "修改客户信息", notes = "修改具体客户信息")
-    @PutMapping("/customer/{customerId}")
-    public ServerResponse<String> updateCustomer(@PathVariable Long customerId, @Valid CustomerDto customerDto) {
-        customerService.updateCustomer(customerId, customerDto);
+    @PutMapping("/customer/{id:\\d+}")
+    public ServerResponse<String> updateCustomer(@PathVariable Long id, @Valid CustomerDto customerDto) {
+        customerService.updateCustomer(id, customerDto);
         return ServerResponse.createBySuccessMessage("更新客户信息成功");
 
     }
 
     @RequiresPermissions("customer:edit")
     @ApiOperation(value = "删除客户", notes = "删除指定客户")
-    @DeleteMapping("/customer/{customerId}")
-    public ServerResponse<String> deleteCustomer(@PathVariable Long customerId) {
-        customerService.deleteCustomerById(customerId);
+    @DeleteMapping("/customer/{id:\\d+}")
+    public ServerResponse<String> deleteCustomer(@PathVariable Long id) {
+        customerService.deleteCustomerById(id);
         return ServerResponse.createBySuccessMessage("删除客户成功");
 
     }

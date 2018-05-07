@@ -29,7 +29,7 @@ public class CategoryControler {
 	CategoryService categoryService;
 	
 	@ApiOperation(value = "分类查询",notes = "分类查询，父类包含子类")
-	@GetMapping("/categorys/{id}")
+	@GetMapping("/categorys/{id:\\d+}")
 	public ServerResponse<List<CategoryVo>> getAllCategory(@PathVariable long id){
 		logger.info("Enter method getAllCategory() params：");
 		List<CategoryVo> categoryVoList = categoryService.getCategoryList(id);
