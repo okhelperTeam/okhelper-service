@@ -81,6 +81,7 @@
         <result column="send_time" property="sendTime"/>
         <result column="success_time" property="successTime"/>
         <result column="close_time" property="closeTime"/>
+        <result column="remarks" property="remarks"/>
         <collection property="saleOrderItemVos" ofType="com.ok.okhelper.pojo.vo.SaleOrderItemVo">
             <result column="product_id" property="productId"/>
             <result column="product_name" property="productName"/>
@@ -160,32 +161,33 @@
         sale_order.send_time,
         sale_order.success_time,
         sale_order.close_time,
+        sale_order.remarks,
         sale_order_detail.*
         from sale_order
         LEFT JOIN sale_order_detail on sale_order.id = sale_order_detail.sale_order_id
         LEFT JOIN customer on sale_order.customer_id = customer.id
         where sale_order.create_time BETWEEN #{saleOrderDto.startDate} AND #{saleOrderDto.endDate}
         AND sale_order.store_id = #{storeId}
-        <if test="customerName != null and customerName != ''">
-            AND customer.customer_name=#{customerName}
+        <if test="saleOrderDto.customerName != null and saleOrderDto.customerName != ''">
+            AND customer.customer_name=#{saleOrderDto.customerName}
         </if>
-        <if test="customerLevel != null">
-            AND customer.customer_level=#{customerLevel}
+        <if test="saleOrderDto.customerLevel != null">
+            AND customer.customer_level=#{saleOrderDto.customerLevel}
         </if>
-        <if test="seller != null">
-            AND sale_order.seller=#{seller}
+        <if test="saleOrderDto.seller != null">
+            AND sale_order.seller=#{saleOrderDto.seller}
         </if>
-        <if test="stockouter != null">
-            AND sale_order.stockouter=#{stockouter}
+        <if test="saleOrderDto.stockouter != null">
+            AND sale_order.stockouter=#{saleOrderDto.stockouter}
         </if>
-        <if test="orderStatus != null">
+        <if test="saleOrderDto.orderStatus != null">
             AND sale_order.order_status=#{orderStatus}
         </if>
-        <if test="logisticsStatus != null">
-            AND sale_order.logistics_status=#{logisticsStatus}
+        <if test="saleOrderDto.logisticsStatus != null">
+            AND sale_order.logistics_status=#{saleOrderDto.logisticsStatus}
         </if>
-        <if test="payType != null and payType != ''">
-            AND sale_order.pay_type=#{payType}
+        <if test="saleOrderDto.payType != null and saleOrderDto.payType != ''">
+            AND sale_order.pay_type like '%${saleOrderDto.payType}%'
         </if>
     </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.ok.okhelper.pojo.vo;
 
 import com.ok.okhelper.pojo.po.SaleOrderDetail;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -148,6 +149,12 @@ public class SaleOrderVo {
      */
     @Column(name = "close_time")
     private Date closeTime;
+
+
+    /**
+     * 备注
+     */
+    private String remarks;
 
 
     private List<SaleOrderItemVo> saleOrderItemVos;

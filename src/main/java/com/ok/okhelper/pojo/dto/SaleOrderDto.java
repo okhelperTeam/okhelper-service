@@ -25,7 +25,7 @@ public class SaleOrderDto {
     @ApiModelProperty(value = "结束时间")
     private Date endDate;
 
-    @ApiModelProperty(value = "查询范围(当指定这个值时startDate&endDate失效)&&(今天->today 三天内->threeDays 一周内->week 近30天->month)")
+    @ApiModelProperty(value = "查询范围(当指定这个值时startDate&endDate失效)&&(今天->today 昨天->yesterday 三天内->threeDays 一周内->week 近30天->month)")
     private String range = "";
 
     @ApiModelProperty(value = "客户姓名")

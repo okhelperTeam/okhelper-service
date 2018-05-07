@@ -45,6 +45,9 @@ public class SupplierServiceImpl implements SupplierService {
 		logger.info("Enter method getSupplierList()");
 		//启动分页
 		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+
+		//启动排序
+		PageHelper.orderBy(pageModel.getOrderBy());
 		
 		Long storeId = JWTUtil.getStoreId();
 		if(storeId == null){

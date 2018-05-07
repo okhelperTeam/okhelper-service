@@ -9,6 +9,7 @@ package com.ok.okhelper.pojo.constenum;
 public interface ConstStr {
 
     String QUERY_RANGE_TODAY = "today";
+    String QUERY_RANGE_YESTERDAY = "yesterday";
     String QUERY_RANGE_THREEDAYS = "threeDays";
     String QUERY_RANGE_WEEK = "week";
     String QUERY_RANGE_MONTH = "month";

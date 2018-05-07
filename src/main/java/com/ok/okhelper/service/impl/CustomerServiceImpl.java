@@ -6,6 +6,7 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.CustomerMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.dto.CustomerConditionDto;
 import com.ok.okhelper.pojo.dto.CustomerDto;
 import com.ok.okhelper.pojo.po.Customer;
 import com.ok.okhelper.service.CustomerService;
@@ -30,13 +31,17 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper;
 
     @Override
-    public PageModel<Customer> getCustomerList(PageModel pageModel) {
+    public PageModel<Customer> getCustomerList(CustomerConditionDto customerConditionDto,PageModel pageModel) {
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+
+        //启动排序
+        PageHelper.orderBy(pageModel.getOrderBy());
 
         Customer customer = new Customer();
         customer.setStoreId(JWTUtil.getStoreId());
         customer.setDeleteStatus(ConstEnum.STATUSENUM_AVAILABLE.getCode());
+        BeanUtils.copyProperties(customerConditionDto,customer);
         List<Customer> customers = customerMapper.select(customer);
 
         PageInfo<Customer> pageInfo = new PageInfo<>(customers);

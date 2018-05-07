@@ -58,6 +58,10 @@ public class SaleController {
                 case ConstStr.QUERY_RANGE_TODAY:
                     saleOrderDto.setStartDate(DateUntil.weeHours(new Date(), 0));
                     break;
+                case ConstStr.QUERY_RANGE_YESTERDAY:
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -1));
+                    saleOrderDto.setEndDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 1), -1));
+                    break;
                 case ConstStr.QUERY_RANGE_THREEDAYS:
                     saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2));
                     break;

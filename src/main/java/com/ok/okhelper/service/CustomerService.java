@@ -2,6 +2,7 @@ package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.CustomerConditionDto;
 import com.ok.okhelper.pojo.dto.CustomerDto;
 import com.ok.okhelper.pojo.dto.SupplierDto;
 import com.ok.okhelper.pojo.po.Customer;
@@ -13,7 +14,7 @@ import com.ok.okhelper.pojo.po.Supplier;
  * Description:
  */
 public interface CustomerService {
-    PageModel<Customer> getCustomerList(PageModel pageModel);
+    PageModel<Customer> getCustomerList(CustomerConditionDto customerConditionDto,PageModel pageModel);
 
     Customer getCustomerById(Long customerId);
 

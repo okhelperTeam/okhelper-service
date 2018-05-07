@@ -30,6 +30,13 @@ public class PlaceOrderDto {
     @ApiModelProperty(value = "订单总金额",required = true)
     private BigDecimal sumPrice;
 
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注")
+    private String remarks;
+
+
 //    /**
 //     * 实付款
 //     */

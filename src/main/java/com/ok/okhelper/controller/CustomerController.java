@@ -2,6 +2,7 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.dto.CustomerConditionDto;
 import com.ok.okhelper.pojo.dto.CustomerDto;
 import com.ok.okhelper.pojo.po.Customer;
 import com.ok.okhelper.service.CustomerService;
@@ -29,17 +30,17 @@ public class CustomerController {
 
 
     @RequiresPermissions("customer:view")
-    @ApiOperation(value = "查询所有客户", notes = "查询当前店铺所有客户")
+    @ApiOperation(value = "查询所有客户", notes = "根据条件查询客户列表")
     @GetMapping("/customer")
-    public ServerResponse<PageModel<Customer>> getCustomerList(@Valid PageModel pageModel) {
-        PageModel<Customer> customerList = customerService.getCustomerList(pageModel);
+    public ServerResponse<PageModel<Customer>> getCustomerList(CustomerConditionDto customerConditionDto, @Valid PageModel pageModel) {
+        PageModel<Customer> customerList = customerService.getCustomerList(customerConditionDto,pageModel);
         return ServerResponse.createBySuccess(customerList);
 
     }
 
 
     @RequiresPermissions("customer:view")
-    @ApiOperation(value = "查询供应商", notes = "查询具体客户")
+    @ApiOperation(value = "查询客户", notes = "查询具体客户")
     @GetMapping("/customer/{customerId}")
     public ServerResponse<Customer> getCustomer(@PathVariable Long customerId) {
         Customer customer = customerService.getCustomerById(customerId);
