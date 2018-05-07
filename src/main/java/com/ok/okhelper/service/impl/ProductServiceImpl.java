@@ -4,16 +4,22 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.ProductMapper;
+import com.ok.okhelper.dao.StockMapper;
+import com.ok.okhelper.dao.WarehouseMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
+import com.ok.okhelper.pojo.po.Stock;
 import com.ok.okhelper.pojo.vo.CategoryVo;
+import com.ok.okhelper.pojo.vo.ProductNearDayVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.service.CategoryService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.until.NumberGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
@@ -40,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	StockMapper stockMapper;
+	
+	@Autowired
+	WarehouseMapper warehouseMapper;
 	
 	/*
 	* @Author zhangxin_an 
@@ -78,10 +90,10 @@ public class ProductServiceImpl implements ProductService {
 	* @Description:根据分类查询商品
 	*/
 	@Override
-	public PageModel<ProductsVo> getProductsListByCategory(Long categoryId, String orderBy, PageModel pageModel) {
+	public PageModel<ProductsVo> getProductsListByCategory(Long categoryId, PageModel pageModel) {
 		
 		
-		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId + orderBy + pageModel);
+		logger.info(" Enter getProductsListByCategory()  params: [categoryId,orderBy,pageModel]" + categoryId  + pageModel);
 
 		if(categoryId == null){
 			return  getProductsList(null,pageModel);
@@ -100,12 +112,9 @@ public class ProductServiceImpl implements ProductService {
 		categoryList.add(categoryVo);
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
-        if (StringUtils.isBlank(orderBy)) {
-            orderBy = "create_time desc";
-        }
-
+        
         //启动排序
-        PageHelper.orderBy(orderBy);
+        PageHelper.orderBy(pageModel.getOrderBy());
 
 
 		//遍历获取每一个分类对应的商品
@@ -243,4 +252,57 @@ public class ProductServiceImpl implements ProductService {
 		return product;
 	}
 	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/7 15:06  
+	* @Params [days, pageModel]临近天数
+	* @Return java.util.List<com.ok.okhelper.pojo.po.Product>
+	* @Description:获取临期商品
+	*/  
+	@Override
+	public PageModel<ProductNearDayVo> getNearDaysProduct(Integer days, PageModel pageModel) {
+		logger.info("Enter getNearDaysProduct params:days:"+days+"+pageModel:"+pageModel);
+		
+		if(days == null){
+			days = 0;
+		}
+		//启动分页
+		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+		
+		//启动排序
+		PageHelper.orderBy(pageModel.getOrderBy());
+		
+		//临期商品
+		List<Stock> stocksList = stockMapper.getNearDaysProduct(days);
+		
+		if(CollectionUtils.isEmpty(stocksList)){
+			return null;
+		}
+		
+		List<ProductNearDayVo> productNearDayVoList = new ArrayList<>(stocksList.size());
+		ProductNearDayVo productNearDayVo;
+		
+		for(Stock stock : stocksList){
+			
+			productNearDayVo = new ProductNearDayVo();
+			//获取仓库名
+			IdAndNameBo warehouseMapperIdAndName = warehouseMapper.getIdAndName(stock.getWarehouseId());
+			Product product = productMapper.selectByPrimaryKey(stock.getProductId());
+			BeanUtils.copyProperties(product,productNearDayVo);
+			productNearDayVo.setProductDate(stock.getProductDate());
+			productNearDayVo.setShelfLife(stock.getShelfLife());
+			productNearDayVo.setWarehouse(warehouseMapperIdAndName);
+			productNearDayVo.setStockCount(stock.getStockCount());
+			
+			
+			
+			productNearDayVoList.add(productNearDayVo);
+		}
+		
+		
+		PageInfo<ProductNearDayVo> pageInfo = new PageInfo<>(productNearDayVoList);
+		logger.info("Exit method getNearDaysProduct params: return:" + pageInfo);
+		return PageModel.convertToPageModel(pageInfo);
+		
+	}
 }
