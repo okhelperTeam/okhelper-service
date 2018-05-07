@@ -4,6 +4,7 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
+import com.ok.okhelper.pojo.vo.ProductNearDayVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.service.ProductService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /*
 *Author:zhangxin_an
@@ -62,7 +64,7 @@ public class ProductController {
 		
 		
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
-		PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryId, pageModel.getOrderBy(), pageModel);
+		PageModel<ProductsVo> productsVoPageModel = productService.getProductsListByCategory(categoryId, pageModel);
 		serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
 		
 		
@@ -122,6 +124,16 @@ public class ProductController {
 		
 		ServerResponse serverResponse = ServerResponse.createBySuccess(products);
 		logger.info("Exit method getProduct params:" + serverResponse);
+		return serverResponse;
+	}
+	
+	@ApiOperation(value = "查询临期商品")
+	@GetMapping("product/nearDay/{days}")
+	public ServerResponse<PageModel<ProductNearDayVo>> getNearDaysProduct(@PathVariable Integer days,@Valid  PageModel pageModel) {
+		logger.info("Enter method getNearDaysProduct params:days:" + days);
+		PageModel<ProductNearDayVo> productNearDayVoPageModel = productService.getNearDaysProduct(days,pageModel);
+		ServerResponse serverResponse = ServerResponse.createBySuccess(productNearDayVoPageModel);
+		logger.info("Exit method getNearDaysProduct return:" + serverResponse);
 		return serverResponse;
 	}
 	

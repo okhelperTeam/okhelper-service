@@ -59,7 +59,13 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	@Autowired
 	StockService stockService;
 	
-	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/7 14:31  
+	* @Params [storageOrderDto]  
+	* @Return void
+	* @Description:入库
+	*/  
 	@Override
 	public void insertStorage(StorageOrderDto storageOrderDto) {
 		log.info("Enter method insertStorage params:" + storageOrderDto);
@@ -72,14 +78,12 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		storageOrder.setStoreId(JWTUtil.getStoreId());
 		
 		List<StorageDetailDto> storageDetailDtos = storageOrderDto.getStorageDetail();
-		
-		
+		//获取总价
 		BigDecimal sum = storageDetailDtos.stream().map(storageDetailDto ->{
 				return  storageDetailDto.getStoragePrice().multiply(new BigDecimal(storageDetailDto.getStorageCount()));
 				}
 				
 			).reduce(BigDecimal.ZERO,BigDecimal::add);
-		
 		storageOrder.setTotalPrice(sum);
 		
 		storageOrderMapper.insertSelective(storageOrder);
@@ -98,6 +102,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 			stock.setProductDate(storageDetailDto.getProductDate());
 			stock.setProductId(storageDetailDto.getProductId());
 			stock.setWarehouseId(storageDetailDto.getWarehouseId());
+			stock.setShelfLife(storageDetailDto.getShelfLife());
 			stockService.updateOrAddStockNumber(stock,storageDetailDto.getStorageCount());
 			
 			productMapper.addSalesStock(storageDetailDto.getStorageCount(),storageDetailDto.getProductId());

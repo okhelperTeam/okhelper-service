@@ -19,4 +19,10 @@
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
+
+
+    <select id="getNearDaysProduct" parameterType="int" resultMap="BaseResultMap" >
+        SELECT * FROM stock WHERE shelf_life - (datediff(NOW(), product_date)) BETWEEN 0 and  #{days}
+    </select>
+
 </mapper>
