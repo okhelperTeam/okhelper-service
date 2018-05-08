@@ -110,6 +110,28 @@ public class SaleServiceImpl implements SaleService {
     }
 
     /**
+     * @Author zc  
+     * @Date 2018/5/8 下午8:35  
+     * @Param [id]  
+     * @Return com.ok.okhelper.pojo.vo.SaleOrderVo  
+     * @Description:获取指定订单
+     */
+    public SaleOrderVo getSaleOrderRecordOne(Long id){
+        SaleOrderDto saleOrderDto=new SaleOrderDto();
+        saleOrderDto.setId(id);
+        SaleOrderVo saleOrderVo = saleOrderMapper.getSaleOrderVo(JWTUtil.getStoreId(), saleOrderDto).get(0);
+
+        if (saleOrderVo==null) {
+            throw new NotFoundException("资源不存在");
+        }
+        if (ObjectUtils.notEqual(saleOrderVo.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
+
+        return saleOrderVo;
+    }
+
+    /**
      * @Author zc
      * @Date 2018/4/29 上午11:00
      * @Param [storeId, startDate, endDate]

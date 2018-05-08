@@ -56,7 +56,7 @@ public class ProductController {
 	*/
 	@ApiOperation(value = "商品搜索", notes = "通过分类搜索")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "categoryIds", value = "分类数组", required = true, paramType = "form"),
+			@ApiImplicitParam(name = "categoryId", value = "分类Id", required = true, paramType = "form"),
 	})
 	@GetMapping("product/category")
 	public ServerResponse<PageModel<ProductsVo>> searchProductBycategory(Long categoryId, @Valid PageModel pageModel) {

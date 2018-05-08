@@ -24,7 +24,7 @@ public class UntilController {
     public ServerResponse generatorBarCode(){
         String barCode = NumberGenerator.generatorBarCode();
         Map<String, String> map=new HashMap<>();
-        map.put("goodBarCode",barCode);
+        map.put("barCode",barCode);
         return ServerResponse.createBySuccess(map);
     }
 }

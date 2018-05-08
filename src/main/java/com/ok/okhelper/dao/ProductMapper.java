@@ -31,4 +31,6 @@ public interface ProductMapper extends MyMapper<Product> {
     
     void updateStatus(Long id);
 
+    Integer getSaleStockLock(Long productId);
+
 }

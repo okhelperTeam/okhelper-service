@@ -22,6 +22,8 @@ import java.util.List;
 public interface SaleService {
     PageModel<SaleOrderVo> getSaleOrderRecords(SaleOrderDto saleOrderDto, PageModel pageModel);
 
+    SaleOrderVo getSaleOrderRecordOne(Long id);
+
     SaleTotalVo getSaleTotalVo(Long storeId,Date startDate,Date endDate);
 
     PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto);

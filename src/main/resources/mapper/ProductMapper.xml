@@ -102,4 +102,8 @@
 
     </select>
 
+    <select id="getSaleStockLock" resultType="java.lang.Integer">
+        select sales_stock from product where id=#{productId} for update
+    </select>
+
 </mapper>

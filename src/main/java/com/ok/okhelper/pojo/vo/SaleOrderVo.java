@@ -157,5 +157,11 @@ public class SaleOrderVo {
     private String remarks;
 
 
+    /**
+     * 商铺Id
+     */
+    private Long storeId;
+
+
     private List<SaleOrderItemVo> saleOrderItemVos;
 }

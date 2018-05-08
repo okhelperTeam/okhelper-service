@@ -82,6 +82,7 @@
         <result column="success_time" property="successTime"/>
         <result column="close_time" property="closeTime"/>
         <result column="remarks" property="remarks"/>
+        <result column="so_store_id" property="storeId"/>
         <collection property="saleOrderItemVos" ofType="com.ok.okhelper.pojo.vo.SaleOrderItemVo">
             <result column="product_id" property="productId"/>
             <result column="product_name" property="productName"/>
@@ -162,6 +163,7 @@
         sale_order.success_time,
         sale_order.close_time,
         sale_order.remarks,
+        sale_order.store_id so_store_id,
         sale_order_detail.*
         from sale_order
         LEFT JOIN sale_order_detail on sale_order.id = sale_order_detail.sale_order_id
@@ -188,6 +190,9 @@
         </if>
         <if test="saleOrderDto.payType != null and saleOrderDto.payType != ''">
             AND sale_order.pay_type like '%${saleOrderDto.payType}%'
+        </if>
+        <if test="saleOrderDto.id != null">
+            AND sale_order.id = '#{saleOrderDto.id}'
         </if>
     </select>
 </mapper>

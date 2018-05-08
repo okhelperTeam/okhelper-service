@@ -49,4 +49,7 @@ public class SaleOrderDto {
     @ApiModelProperty(value = "付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接) LIKE模糊查询")
     private String payType;
 
+    @ApiModelProperty(hidden = true)
+    private Long id;
+
 }

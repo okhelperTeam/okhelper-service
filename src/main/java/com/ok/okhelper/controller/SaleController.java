@@ -80,6 +80,13 @@ public class SaleController {
         return ServerResponse.createBySuccess(saleOrderRecords);
     }
 
+    @GetMapping("/sale/{id}")
+    @ApiOperation(value = "获取指定订单", notes = "查询指定订单")
+    public ServerResponse<SaleOrderVo> getSaleOrderRecordOne(@PathVariable Long id) {
+        SaleOrderVo saleOrderRecordOne = saleService.getSaleOrderRecordOne(id);
+        return ServerResponse.createBySuccess(saleOrderRecordOne);
+    }
+
     @GetMapping("/sale/today_total")
     @ApiOperation(value = "获取当天销售汇总", notes = "查询当天成交笔数和销售总金额")
     public ServerResponse<SaleTotalVo> getTodaySales() {
