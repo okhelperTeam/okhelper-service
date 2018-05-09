@@ -1,4 +1,4 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;

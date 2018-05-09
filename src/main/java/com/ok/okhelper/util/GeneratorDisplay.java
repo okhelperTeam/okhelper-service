@@ -1,4 +1,4 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

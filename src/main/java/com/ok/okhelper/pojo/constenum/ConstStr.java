@@ -18,4 +18,7 @@ public interface ConstStr {
 
     String HOT_SALE = "hot_sale";
 
+    String ODERTR_NUM_PREFIX_SALE="ST";
+    String ODERTR_NUM_PREFIX_INSTOCK="IT";
+    String ODERTR_NUM_PREFIX_OUTSTOCK="OT";
 }

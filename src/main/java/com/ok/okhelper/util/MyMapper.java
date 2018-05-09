@@ -1,4 +1,4 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;

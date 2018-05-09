@@ -8,7 +8,7 @@ import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.vo.SalesVolumeVo;
 import com.ok.okhelper.service.ReportService;
-import com.ok.okhelper.until.DateUntil;
+import com.ok.okhelper.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -69,23 +69,23 @@ public class ReportController {
     @GetMapping("/sale/total")
     public ServerResponse<SaleTotalVo> getTodaySales(@ApiParam(value = "查询范围(今天->today 昨天->yesterday 三天内->threeDays 一周内->week 近30天->month)") @RequestParam(required = true) String range) {
         Date startDate = new Date();
-        Date endDate = DateUntil.weeHours(new Date(), 1);
+        Date endDate = DateUtil.weeHours(new Date(), 1);
         switch (range) {
             case ConstStr.QUERY_RANGE_TODAY:
-                startDate = DateUntil.weeHours(new Date(), 0);
+                startDate = DateUtil.weeHours(new Date(), 0);
                 break;
             case ConstStr.QUERY_RANGE_YESTERDAY:
-                startDate = DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -1);
-                endDate = DateUtils.addDays(DateUntil.weeHours(new Date(), 1), -1);
+                startDate = DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -1);
+                endDate = DateUtils.addDays(DateUtil.weeHours(new Date(), 1), -1);
                 break;
             case ConstStr.QUERY_RANGE_THREEDAYS:
-                startDate = DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2);
+                startDate = DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -2);
                 break;
             case ConstStr.QUERY_RANGE_WEEK:
-                startDate = DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -6);
+                startDate = DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -6);
                 break;
             case ConstStr.QUERY_RANGE_MONTH:
-                startDate = DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -29);
+                startDate = DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -29);
                 break;
             default:
                 throw new IllegalException("range参数错误");

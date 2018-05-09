@@ -1,7 +1,7 @@
 package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.until.NumberGenerator;
+import com.ok.okhelper.util.NumberGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @RestController
 @Api(tags = "工具模块")
-public class UntilController {
+public class UtilController {
 
     @ApiOperation(value = "生成随机条码",notes = "当商品没有条码时后端随机生成一个")
     @GetMapping("/until/bar_code")

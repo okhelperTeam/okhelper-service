@@ -22,10 +22,11 @@ import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.PermissionService;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.PasswordHelp;
+import com.ok.okhelper.util.PasswordHelp;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
@@ -35,10 +36,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -71,12 +72,12 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-    * @Author zhangxin_an
-    * @Date 2018/4/25 8:54
-    * @Params [userName, password, ip]
-    * @Return com.ok.okhelper.common.ServerResponse
-    * @Description:员工登陆
-    */
+     * @Author zhangxin_an
+     * @Date 2018/4/25 8:54
+     * @Params [userName, password, ip]
+     * @Return com.ok.okhelper.common.ServerResponse
+     * @Description:员工登陆
+     */
     @Override
     public ServerResponse loginUser(String userName, String password, String ip) {
 
@@ -154,8 +155,7 @@ public class UserServiceImpl implements UserService {
                 || StringUtils.isBlank(userAndStoreDto.getUserPassword())
                 || StringUtils.isBlank(userAndStoreDto.getStoreName())
                 || StringUtils.isBlank(userAndStoreDto.getStorePhone())
-                )
-        {
+                ) {
             throw new IllegalException("注册信息不完善（用户名，密码,店铺信息不能为空）");
         }
 
@@ -335,68 +335,105 @@ public class UserServiceImpl implements UserService {
 
         return ServerResponse.createBySuccessMessage("权限变更成功");
     }
+
     /*
-   * @Author zhangxin_an
-   * @Date 2018/4/19 17:38
-   * @Params []
-   * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>
-   * @Description:获取员工
-   */
+     * @Author zhangxin_an
+     * @Date 2018/4/19 17:38
+     * @Params []
+     * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>
+     * @Description:获取员工
+     */
     @Override
     public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel) {
-        
+
         logger.info("Enter method getEmployeeList()");
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
-        
-        
-        
+
+
         //获取当前登陆者的Id和店铺Id
         Long storeId = JWTUtil.getStoreId();
         Long bossId = JWTUtil.getUserId();
-        
-        if( null == storeId || null == bossId){
-            throw  new UnauthenticatedException("登陆异常");
+
+        if (null == storeId || null == bossId) {
+            throw new UnauthenticatedException("登陆异常");
         }
-        
+
         List<UserBo> userBos = userMapper.getEmployeeList(storeId);
-        
-        if(CollectionUtils.isEmpty(userBos)){
+
+        if (CollectionUtils.isEmpty(userBos)) {
             return null;
         }
-        
+
         List<EmployeeVo> employeeVoList = new ArrayList<>();
-        
-        
-        userBos.forEach(userBo->{
+
+
+        userBos.forEach(userBo -> {
             //前端数据
             EmployeeVo employeeVo = new EmployeeVo();
-            
+
             List<RoleBo> roleBos = new ArrayList<>(1);
-    
-            BeanUtils.copyProperties(userBo,employeeVo);
+
+            BeanUtils.copyProperties(userBo, employeeVo);
             List<Role> roles = roleMapper.findRoleByUserId(userBo.getId());
-            if( !CollectionUtils.isEmpty(roles)){
-                roles.forEach(r->{
+            if (!CollectionUtils.isEmpty(roles)) {
+                roles.forEach(r -> {
                     RoleBo roleBo = new RoleBo();
-                    BeanUtils.copyProperties(r,roleBo);
+                    BeanUtils.copyProperties(r, roleBo);
                     roleBos.add(roleBo);
                 });
                 employeeVo.setRoleList(roleBos);
             }
-            
-            
-            
+
+
             employeeVoList.add(employeeVo);
         });
-    
-    
-    
+
+
         PageInfo<EmployeeVo> pageInfo = new PageInfo<>(employeeVoList);
-    
-        logger.info("Exit method getEmployeeList()"+pageInfo);
-    
+
+        logger.info("Exit method getEmployeeList()" + pageInfo);
+
         return PageModel.convertToPageModel(pageInfo);
-    
+
+    }
+
+    @Override
+    public UserVo getUserInfo(Long id) {
+        //获取用户
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user == null) {
+            throw new IllegalException("用户不存在");
+        }
+
+        //获取用户角色
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(user, userVo);
+        List<Role> roles = roleMapper.findRoleByUserId(user.getId());
+        if (!CollectionUtils.isEmpty(roles)) {
+            userVo.setRoleList(roles);
+        }
+
+        Date expiresAt = JWTUtil.getExpiresAt();
+
+        Date date = DateUtils.addHours(new Date(), 1);
+
+        String secret = PasswordHelp.passwordSalt(user.getUserName(), user.getUserPassword());
+
+        //如果一小时内过期，补签Token
+        if(expiresAt!=null&&date.after(expiresAt)){
+            String token = JWTUtil.sign(user.getId(), user.getUserName(), secret, user.getStoreId());
+            userVo.setToken(secret);
+        }
+
+        return userVo;
+    }
+
+    public static void main(String[] args) {
+        Date date1=new Date();
+
+        Date date2=DateUtils.addHours(new Date(), 1);
+
+        System.out.println(date2.after(date1));
     }
 }

@@ -2,28 +2,25 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.pojo.dto.MyInfoDto;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
-import com.ok.okhelper.until.IpUtil;
+import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.util.IpUtil;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 /*
  *Author:zhangxin_an
@@ -101,18 +98,13 @@ public class UserController {
     }
 
 
-    
-    
-    
-    
-    //暂时不用
-    @ApiIgnore
-    @RequiresPermissions("user/userList:get")
-    @GetMapping("/user")
-    public ServerResponse getUserListByStoreId(HttpServletRequest request) {
-        String token = request.getHeader("token");
-        return userService.getUserListByStoreId(token);
+    @GetMapping("/user/me")
+    @ApiOperation(value = "获取我的信息",notes = "用于检测token是否有效，并补签")
+    public ServerResponse<UserVo> getMyUserInfo() {
+        UserVo userInfo = userService.getUserInfo(JWTUtil.getUserId());
+        return ServerResponse.createBySuccess(userInfo);
     }
+
 
     /**
      * @Author zc
@@ -129,17 +121,21 @@ public class UserController {
         return userService.changeRole(id, userAndRoleDto.getRoles());
     }
 
+
+    //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    //暂时不用
+    @ApiIgnore
+    @RequiresPermissions("user/userList:get")
+    @GetMapping("/user")
+    public ServerResponse getUserListByStoreId(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        return userService.getUserListByStoreId(token);
+    }
+
     @ApiIgnore//使用该注解忽略这个API
     @RequestMapping("/logout")
     public Object logOut(HttpSession session) {
-//        Subject subject = SecurityUtils.getSubject();
-//        subject.logout();
-//        session.removeAttribute("user");
-//        try {
-//            ShiroAuthorizationHelper.clearAuthorizationInfo(JWTUtil.getToken());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         return "登出";
     }
 }

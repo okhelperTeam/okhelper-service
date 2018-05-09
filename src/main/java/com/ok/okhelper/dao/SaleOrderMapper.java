@@ -1,12 +1,11 @@
 package com.ok.okhelper.dao;
 
 import com.ok.okhelper.pojo.bo.CustomerDebtBo;
-import com.ok.okhelper.pojo.bo.CustomerDebtGroupBo;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.vo.SaleOrderVo;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
-import com.ok.okhelper.until.MyMapper;
+import com.ok.okhelper.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

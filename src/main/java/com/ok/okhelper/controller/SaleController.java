@@ -9,18 +9,15 @@ import com.ok.okhelper.pojo.dto.PaymentDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderDto;
 import com.ok.okhelper.pojo.dto.SaleOrderDto;
 import com.ok.okhelper.pojo.vo.SaleOrderVo;
-import com.ok.okhelper.pojo.vo.SaleTotalVo;
-import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
 import com.ok.okhelper.service.DeliveryService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.DateUntil;
+import com.ok.okhelper.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,23 +50,23 @@ public class SaleController {
                 throw new IllegalException("参数错误");
             }
         } else {
-            saleOrderDto.setEndDate(DateUntil.weeHours(new Date(),1));
+            saleOrderDto.setEndDate(DateUtil.weeHours(new Date(),1));
             switch (saleOrderDto.getRange()) {
                 case ConstStr.QUERY_RANGE_TODAY:
-                    saleOrderDto.setStartDate(DateUntil.weeHours(new Date(), 0));
+                    saleOrderDto.setStartDate(DateUtil.weeHours(new Date(), 0));
                     break;
                 case ConstStr.QUERY_RANGE_YESTERDAY:
-                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -1));
-                    saleOrderDto.setEndDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 1), -1));
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -1));
+                    saleOrderDto.setEndDate(DateUtils.addDays(DateUtil.weeHours(new Date(), 1), -1));
                     break;
                 case ConstStr.QUERY_RANGE_THREEDAYS:
-                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -2));
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -2));
                     break;
                 case ConstStr.QUERY_RANGE_WEEK:
-                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -6));
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -6));
                     break;
                 case ConstStr.QUERY_RANGE_MONTH:
-                    saleOrderDto.setStartDate(DateUtils.addDays(DateUntil.weeHours(new Date(), 0), -29));
+                    saleOrderDto.setStartDate(DateUtils.addDays(DateUtil.weeHours(new Date(), 0), -29));
                     break;
                 default:
                     throw new IllegalException("range参数错误");

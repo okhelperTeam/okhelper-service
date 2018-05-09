@@ -2,7 +2,7 @@ package com.ok.okhelper.service.impl;
 
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.service.UploadService;
-import com.ok.okhelper.until.COSUtil;
+import com.ok.okhelper.util.COSUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

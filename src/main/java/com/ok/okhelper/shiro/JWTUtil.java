@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ok.okhelper.until.PropertiesUtil;
+import com.ok.okhelper.util.PropertiesUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -144,6 +144,16 @@ public class JWTUtil {
         try {
             DecodedJWT jwt = JWT.decode(getToken());
             return jwt.getClaim("storeId").asLong();
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
+
+    public static Date getExpiresAt() {
+        try {
+            DecodedJWT jwt = JWT.decode(getToken());
+            return jwt.getExpiresAt();
         } catch (JWTDecodeException e) {
             return null;
         }

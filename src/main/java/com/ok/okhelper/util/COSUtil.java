@@ -1,11 +1,10 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.model.DeleteObjectRequest;
-import com.qcloud.cos.model.DeleteObjectsRequest;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;

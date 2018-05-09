@@ -2,7 +2,7 @@ package com.ok.okhelper.dao;
 
 import com.ok.okhelper.pojo.po.Category;
 import com.ok.okhelper.pojo.vo.CategoryVo;
-import com.ok.okhelper.until.MyMapper;
+import com.ok.okhelper.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

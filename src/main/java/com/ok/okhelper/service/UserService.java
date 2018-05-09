@@ -63,4 +63,6 @@ public interface UserService {
      */
     PageModel<EmployeeVo> getEmployeeList(PageModel pageModel);
 
+
+    UserVo getUserInfo(Long id);
 }

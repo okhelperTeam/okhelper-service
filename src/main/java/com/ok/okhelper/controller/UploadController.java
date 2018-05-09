@@ -1,12 +1,7 @@
 package com.ok.okhelper.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
 import com.ok.okhelper.common.ServerResponse;
-import com.ok.okhelper.dao.StockMapper;
 import com.ok.okhelper.dao.StoreMapper;
 import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.exception.IllegalException;
@@ -15,8 +10,7 @@ import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.UploadVo;
 import com.ok.okhelper.service.UploadService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.COSUtil;
-import com.ok.okhelper.until.PropertiesUtil;
+import com.ok.okhelper.util.COSUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

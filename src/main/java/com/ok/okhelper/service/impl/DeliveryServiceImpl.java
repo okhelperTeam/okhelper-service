@@ -4,12 +4,13 @@ import com.ok.okhelper.dao.*;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.po.*;
 import com.ok.okhelper.service.DeliveryService;
 import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.NumberGenerator;
+import com.ok.okhelper.util.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -74,7 +75,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         deliveryOrder.setSaleOrderId(deliveryDto.getSaleOrderId());
         deliveryOrder.setStockouter(JWTUtil.getUserId());
         deliveryOrder.setStoreId(JWTUtil.getStoreId());
-        deliveryOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(13, JWTUtil.getUserId()));
+        deliveryOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(ConstStr.ODERTR_NUM_PREFIX_OUTSTOCK, JWTUtil.getUserId()));
 
         deliveryOrderMapper.insertSelective(deliveryOrder);
         Long deliveryOrderId = deliveryOrder.getId();

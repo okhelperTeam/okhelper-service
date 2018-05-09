@@ -1,14 +1,10 @@
 package com.ok.okhelper.shiro;
 
-import com.ok.okhelper.until.PropertiesUtil;
-import com.ok.okhelper.until.RedisOperator;
+import com.ok.okhelper.util.PropertiesUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.subject.SimplePrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Set;

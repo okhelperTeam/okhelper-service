@@ -9,6 +9,7 @@ import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.bo.StorageDetailBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.dto.StorageDetailDto;
 import com.ok.okhelper.pojo.dto.StorageOrderDto;
 import com.ok.okhelper.pojo.po.*;
@@ -16,8 +17,7 @@ import com.ok.okhelper.pojo.vo.StorageOrderVo;
 import com.ok.okhelper.service.StockService;
 import com.ok.okhelper.service.StorageOrderService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.BigDecimalUtil;
-import com.ok.okhelper.until.NumberGenerator;
+import com.ok.okhelper.util.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,7 +70,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 	public void insertStorage(StorageOrderDto storageOrderDto) {
 		log.info("Enter method insertStorage params:" + storageOrderDto);
 		checkStorageOrderDto(storageOrderDto);
-        storageOrderDto.setOrderNumber(NumberGenerator.generatorOrderNumber(12, JWTUtil.getUserId()));
+        storageOrderDto.setOrderNumber(NumberGenerator.generatorOrderNumber(ConstStr.ODERTR_NUM_PREFIX_INSTOCK, JWTUtil.getUserId()));
 		
 		//添加入库单
 		StorageOrder storageOrder = new StorageOrder();

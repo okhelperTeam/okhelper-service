@@ -1,6 +1,5 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,7 +8,7 @@ import java.util.Date;
  * Date: 2018/4/28
  * Description:
  */
-public class DateUntil {
+public class DateUtil {
     /**
      *
      * @param date 当前时间

@@ -18,7 +18,7 @@ import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.service.CategoryService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.NumberGenerator;
+import com.ok.okhelper.util.NumberGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;

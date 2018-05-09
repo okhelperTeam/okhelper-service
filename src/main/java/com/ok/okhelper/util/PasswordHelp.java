@@ -1,4 +1,4 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;

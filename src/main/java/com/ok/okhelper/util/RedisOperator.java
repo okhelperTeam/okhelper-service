@@ -1,4 +1,4 @@
-package com.ok.okhelper.until;
+package com.ok.okhelper.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

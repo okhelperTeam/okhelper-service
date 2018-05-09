@@ -6,7 +6,7 @@ package com.ok.okhelper.config;
  * @date: 2018/4/15
  */
 
-import com.ok.okhelper.until.PropertiesUtil;
+import com.ok.okhelper.util.PropertiesUtil;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

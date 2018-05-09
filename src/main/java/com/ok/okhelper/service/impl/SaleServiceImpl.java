@@ -26,7 +26,7 @@ import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
-import com.ok.okhelper.until.NumberGenerator;
+import com.ok.okhelper.util.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -38,7 +38,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -171,7 +170,7 @@ public class SaleServiceImpl implements SaleService {
 //      saleOrder.setToBePaid(toBePaid);
 
         BeanUtils.copyProperties(placeOrderDto, saleOrder);
-        saleOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(11, seller));
+        saleOrder.setOrderNumber(NumberGenerator.generatorOrderNumber(ConstStr.ODERTR_NUM_PREFIX_SALE, seller));
         saleOrder.setOrderStatus(ConstEnum.SALESTATUS_NOPAYMENT.getCode());
         saleOrder.setStoreId(storeId);
         saleOrder.setSeller(seller);

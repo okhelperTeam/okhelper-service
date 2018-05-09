@@ -4,7 +4,7 @@ import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
-import com.ok.okhelper.until.MyMapper;
+import com.ok.okhelper.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

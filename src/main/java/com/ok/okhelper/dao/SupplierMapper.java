@@ -2,7 +2,7 @@ package com.ok.okhelper.dao;
 
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.po.Supplier;
-import com.ok.okhelper.until.MyMapper;
+import com.ok.okhelper.util.MyMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
