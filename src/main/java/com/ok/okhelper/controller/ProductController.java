@@ -87,7 +87,7 @@ public class ProductController {
 	}
 	
 	@ApiOperation(value = "商品添加")
-	@PutMapping("product")
+	@PostMapping("product")
 	public ServerResponse<Product> addProduct(@Valid ProductDto productDto) {
 		logger.info("Enter method addProduct params:productDto:" + productDto);
 		
@@ -102,7 +102,7 @@ public class ProductController {
 	}
 	
 	@ApiOperation(value = "商品修改")
-	@PostMapping("product")
+	@PutMapping("product")
 	public ServerResponse<Product> updateProduct(ProductDto productDto) {
 		logger.info("Enter method addProduct params:productDto:" + productDto);
 		ServerResponse serverResponse;
