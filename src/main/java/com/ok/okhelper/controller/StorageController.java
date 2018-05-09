@@ -14,6 +14,7 @@ import com.ok.okhelper.service.StorageOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class StorageController {
 	@Autowired
 	private StorageOrderService storageOrderService;
 	
+	@RequiresPermissions("storage_order:add")
 	@ApiOperation(value = "入库操作",notes = "添加商品到仓库")
 	@PostMapping("/storage")
 	@Transactional
@@ -43,7 +45,7 @@ public class StorageController {
 		log.info("Exit method storageIn params:"+ serverResponse);
 		return serverResponse;
 	}
-	
+	@RequiresPermissions("storage_order:view")
 	@ApiOperation(value = "入库单查询",notes = "通过入库单号查询")
 	@GetMapping("/storage/{number}")
 	public ServerResponse<StorageOrderVo> storageOrder(@PathVariable String number){
@@ -56,6 +58,7 @@ public class StorageController {
 		return serverResponse;
 	}
 	
+	@RequiresPermissions("storage_order:view")
 	@ApiOperation(value = "所有入库单",notes = "")
 	@GetMapping("/storage")
 	public ServerResponse<PageModel<StorageOrderVo>> storageOrderList(PageModel pageoModel){

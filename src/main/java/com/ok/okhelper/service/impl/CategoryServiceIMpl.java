@@ -1,17 +1,23 @@
 package com.ok.okhelper.service.impl;
 
 import com.ok.okhelper.dao.CategoryMapper;
+import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
+import com.ok.okhelper.pojo.dto.CategoryDto;
 import com.ok.okhelper.pojo.po.Category;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.service.CategoryService;
 import com.ok.okhelper.shiro.JWTUtil;
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +53,7 @@ public class CategoryServiceIMpl implements CategoryService {
 			throw new AuthenticationException("登陆异常");
 		}
 		
-		List<CategoryVo> categoryVoList = getCategoryItems1(superId, storeId);
+		List<CategoryVo> categoryVoList = getCategoryItems(superId, storeId);
 		
 		logger.info("Exit method getCategoryList() return：" + categoryVoList);
 		return categoryVoList;
@@ -63,13 +69,13 @@ public class CategoryServiceIMpl implements CategoryService {
 	 * @Return java.util.List<com.ok.okhelper.pojo.vo.CategoryVo>
 	 * @Description:递归调用获取子分类
 	 */
-	private  List<CategoryVo> getCategoryItems1(long superId,Long storeId) {
+	public  List<CategoryVo> getCategoryItems(long superId,Long storeId) {
 		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(superId, storeId);
 		if (CollectionUtils.isEmpty(categorieList)) {
 			return null;
 		} else {
 			categorieList.forEach(category -> {
-				List<CategoryVo> categorieSonList = getCategoryItemsNoSelf(category.getId(), storeId);
+				List<CategoryVo> categorieSonList = getCategoryItems(category.getId(), storeId);
 				category.setCategoryVoList(categorieSonList);
 			});
 			return categorieList;
@@ -86,7 +92,7 @@ public class CategoryServiceIMpl implements CategoryService {
 	* @Return java.util.List<com.ok.okhelper.pojo.vo.CategoryVo>  
 	* @Description:获取当前类的所有子类
 	*/
-	public List<CategoryVo> getCategoryItems(long superId, Long storeId) {
+	public List<CategoryVo> getCategoryAllItems(long superId, Long storeId) {
 		
 		logger.info("Enter method getCategoryItems() params："+superId);
 		
@@ -125,8 +131,81 @@ public class CategoryServiceIMpl implements CategoryService {
 		return categorieListTotal;
 		
 	}
-
-	public List<CategoryVo> getCategoryItemsNoSelf(long superId, Long storeId) {
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/9 21:46  
+	* @Params [id]  
+	* @Return void
+	* @Description:删除分类包括子类
+	*/  
+	@Override
+	@Transactional
+	public int deleteCategory(long id) {
+		List<CategoryVo> categorieList = getCategoryAllItems(id, JWTUtil.getStoreId());
+		if(CollectionUtils.isEmpty(categorieList)){
+			throw new IllegalException("分类不存在");
+		}
+		return categoryMapper.setDeleteStatus(categorieList);
+	}
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/9 22:07  
+	* @Params [categoryDto]  
+	* @Return void
+	* @Description:添加分类
+	*/  
+	@Override
+	public void addCategory(CategoryDto categoryDto) {
+		
+		logger.info("Enter method addCategory() params："+categoryDto);
+		if(StringUtils.isBlank(categoryDto.getCategoryName())
+				|| categoryDto.getSuperId() == null
+				){
+			throw new IllegalException("参数不全");
+		}
+		
+		Category c = categoryMapper.selectByPrimaryKey(categoryDto.getSuperId());
+		if( c == null || c.getDeleteStatus() == 0)
+		{
+			throw new IllegalException("父类不存在");
+		}
+		Category category = new Category();
+		BeanUtils.copyProperties(categoryDto,category);
+		category.setStoreId(JWTUtil.getStoreId());
+		category.setOperator(JWTUtil.getUserId());
+		categoryMapper.insertSelective(category);
+		
+		
+		
+		logger.info("Exit method addCategory() return：");
+		
+	}
+	
+	@Override
+	public List<IdAndNameBo> getCategoryIdAndNameList() {
+		List<IdAndNameBo>  idAndNameBos = categoryMapper.selectAllIdAndName();
+		return idAndNameBos;
+	}
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/9 22:41
+	* @Params []  
+	* @Return java.util.List<com.ok.okhelper.pojo.bo.IdAndNameBo>  
+	* @Description:查询所有类名
+	*/  
+	
+	
+	/*
+	 * @Author zhangxin_an
+	 * @Date 2018/4/24 16:56
+	 * @Params [superId, storeId]
+	 * @Return java.util.List<com.ok.okhelper.pojo.vo.CategoryVo>
+	 * @Description:获取当前类的所有子类
+	 */
+	public List<CategoryVo> getCategoryAllItems1(long superId, Long storeId) {
 		
 		logger.info("Enter method getCategoryItems() params："+superId);
 		
@@ -155,11 +234,10 @@ public class CategoryServiceIMpl implements CategoryService {
 			}
 		}
 		
-		logger.info("Enter method getCategoryItems() params："+categorieListTotal);
+		logger.info("Exit method getCategoryItems() return："+categorieListTotal);
 		return categorieListTotal;
 		
 	}
-	
 	
 }
 

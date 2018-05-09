@@ -73,7 +73,7 @@ public class UserController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description:添加员工
      */
-    @RequiresPermissions("addEmployee")
+    @RequiresPermissions("employee:edit")
     @PostMapping("/user/employee")
     @ApiOperation(value = "添加员工", notes = "添加员工并注册")
     @ApiResponses({@ApiResponse(code = 400, message = "所添加员工信息有误")})
@@ -81,7 +81,8 @@ public class UserController {
 
         return userService.addEmployee(userDto);
     }
-
+    
+    @RequiresPermissions("employee:view")
     @GetMapping("user/employee")
     @ApiOperation(value = "获取员工", notes = "店长获取该店所有员工")
     public ServerResponse<PageModel<EmployeeVo>> getEmployeeList(@Valid PageModel pageModel) {
@@ -96,8 +97,8 @@ public class UserController {
     public ServerResponse checkUserName(@ApiParam(value = "用户名",required = true) String userName) {
         return userService.checkUserName(userName);
     }
-
-
+    
+    
     @GetMapping("/user/me")
     @ApiOperation(value = "获取我的信息",notes = "用于检测token是否有效，并补签")
     public ServerResponse<UserVo> getMyUserInfo() {

@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 
 		//获取分类子类
-		List<CategoryVo> categoryList = categoryService.getCategoryItems(categoryId, storeId);
+		List<CategoryVo> categoryList = categoryService.getCategoryAllItems(categoryId, storeId);
 		
 		CategoryVo categoryVo = new CategoryVo();
 		categoryVo.setId(categoryId);

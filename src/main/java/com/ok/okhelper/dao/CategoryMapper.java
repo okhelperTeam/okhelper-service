@@ -1,5 +1,6 @@
 package com.ok.okhelper.dao;
 
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.po.Category;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.util.MyMapper;
@@ -20,6 +21,9 @@ public interface CategoryMapper extends MyMapper<Category> {
 	* @Return java.util.List<java.lang.Long>  
 	* @Description:获取最小子类id
 	*/  
-	List<Long>  getCategoryIdListBySuperId(@Param("superId") Long superId, @Param("storeId") Long storeId);
+//	List<Long>  getCategoryIdListBySuperId(@Param("superId") Long superId, @Param("storeId") Long storeId);
 	
+	int setDeleteStatus(List<CategoryVo> categorieList);
+	
+	List<IdAndNameBo> selectAllIdAndName();
 }
