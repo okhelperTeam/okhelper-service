@@ -1,5 +1,7 @@
 package com.ok.okhelper.service;
 
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
+import com.ok.okhelper.pojo.dto.CategoryDto;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 
 import java.util.List;
@@ -11,5 +13,11 @@ import java.util.List;
 */
 public interface CategoryService {
 	List<CategoryVo> getCategoryList(long supId);
-	List<CategoryVo> getCategoryItems(long superId, Long storeId);
+	List<CategoryVo> getCategoryAllItems(long superId, Long storeId);
+	
+	int deleteCategory(long id);
+	
+	void addCategory(CategoryDto categoryDto);
+	
+	List<IdAndNameBo> getCategoryIdAndNameList();
 }
