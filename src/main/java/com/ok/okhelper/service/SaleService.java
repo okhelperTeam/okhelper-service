@@ -24,8 +24,6 @@ public interface SaleService {
 
     SaleOrderVo getSaleOrderRecordOne(Long id);
 
-    SaleTotalVo getSaleTotalVo(Long storeId,Date startDate,Date endDate);
-
     PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto);
 
     void recordHotSale(List<PlaceOrderItemDto> placeOrderItemDtos);

@@ -1,5 +1,6 @@
 package com.ok.okhelper.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
@@ -10,6 +11,7 @@ import com.ok.okhelper.pojo.bo.CustomerDebtGroupBo;
 import com.ok.okhelper.pojo.bo.CustomerDebtTotalBo;
 import com.ok.okhelper.pojo.constenum.ConstStr;
 import com.ok.okhelper.pojo.po.Product;
+import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.vo.SalesVolumeVo;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.ReportService;
@@ -58,21 +60,33 @@ public class ReportServiceImpl implements ReportService {
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 
+        //启动排序
+        PageHelper.orderBy(pageModel.getOrderBy());
+
         List<CustomerDebtBo> customerDebtBos = saleOrderMapper.getCustomerDebtBo(JWTUtil.getStoreId(), condition);
 
         PageInfo<CustomerDebtBo> pageInfo = new PageInfo<>(customerDebtBos);
 
         PageModel<CustomerDebtBo> dbPageModel = PageModel.convertToPageModel(pageInfo);
 
-        List<CustomerDebtGroupBo> customerDebtGroupBos = saleOrderMapper.getCustomerDebtGroupBo(JWTUtil.getStoreId(), condition);
+//        List<CustomerDebtGroupBo> customerDebtGroupBos = saleOrderMapper.getCustomerDebtGroupBo(JWTUtil.getStoreId(), condition);
 
-        if (CollectionUtils.isNotEmpty(customerDebtGroupBos)) {
+        List<CustomerDebtBo> allCustomerDebtBo = saleOrderMapper.getCustomerDebtBo(JWTUtil.getStoreId(), condition);
+
+
+        if (CollectionUtils.isNotEmpty(allCustomerDebtBo)) {
             CustomerDebtTotalBo customerDebtTotalBo = new CustomerDebtTotalBo();
-            customerDebtTotalBo.setCustomerCount(customerDebtGroupBos.size());
-            BigDecimal totalMoney = customerDebtGroupBos.stream()
-                    .filter(x -> x.getSumToBePaid() != null)
-                    .map(CustomerDebtGroupBo::getSumToBePaid)
+
+            Map<Long, List<CustomerDebtBo>> customerDebtMap = allCustomerDebtBo.stream().collect(Collectors.groupingBy(CustomerDebtBo::getCustomerId));
+
+            BigDecimal totalMoney =allCustomerDebtBo.stream()
+                    .filter(x -> x.getToBePaid() != null)
+                    .map(CustomerDebtBo::getToBePaid)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
+            customerDebtTotalBo.setTotalToBePaid(totalMoney);
+
+            customerDebtTotalBo.setCustomerCount(customerDebtMap.size());
+
             customerDebtTotalBo.setTotalToBePaid(totalMoney);
         }
 
@@ -230,5 +244,20 @@ public class ReportServiceImpl implements ReportService {
 
         salesVolumeVos.removeIf(Objects::isNull);
         return salesVolumeVos;
+    }
+
+    /**
+     * @Author zc
+     * @Date 2018/4/29 上午11:00
+     * @Param [storeId, startDate, endDate]
+     * @Return com.ok.okhelper.pojo.vo.SaleTotalVo
+     * @Description:获取指定时间范围的销售聚合 (去除 已关闭订单)
+     */
+    @Override
+    public SaleTotalVo getSaleTotalVo(Date startDate, Date endDate) {
+        if(startDate.compareTo(endDate)>0){
+            throw new IllegalException("时间参数错误");
+        }
+        return saleOrderMapper.getSaleTotal(JWTUtil.getStoreId(), startDate, endDate);
     }
 }

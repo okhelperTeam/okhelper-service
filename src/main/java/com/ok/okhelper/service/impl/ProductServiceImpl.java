@@ -300,7 +300,8 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		
-		PageInfo<ProductNearDayVo> pageInfo = new PageInfo<>(productNearDayVoList);
+		PageInfo pageInfo = new PageInfo<>(stocksList);
+		pageInfo.setList(productNearDayVoList);
 		logger.info("Exit method getNearDaysProduct params: return:" + pageInfo);
 		return PageModel.convertToPageModel(pageInfo);
 		

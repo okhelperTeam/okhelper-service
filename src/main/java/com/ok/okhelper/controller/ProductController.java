@@ -38,7 +38,7 @@ public class ProductController {
     public ServerResponse<PageModel<ProductsVo>> searchProduct(String condition, @Valid PageModel pageModel) {
 		logger.info("Enter method searchProduct params:productCondition:" + condition + "pageModel:" + pageModel);
 		ServerResponse<PageModel<ProductsVo>> serverResponse;
-			PageModel<ProductsVo> productsVoPageModel = productService.getProductsList(condition, pageModel);
+			PageModel<ProductsVo> productsVoPageModel = productService.getProductsList(condition == null ? null : condition.trim(), pageModel);
 			serverResponse = ServerResponse.createBySuccess(productsVoPageModel);
 		
 		

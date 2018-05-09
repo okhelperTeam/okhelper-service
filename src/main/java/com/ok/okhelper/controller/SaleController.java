@@ -87,15 +87,6 @@ public class SaleController {
         return ServerResponse.createBySuccess(saleOrderRecordOne);
     }
 
-    @GetMapping("/sale/today_total")
-    @ApiOperation(value = "获取当天销售汇总", notes = "查询当天成交笔数和销售总金额")
-    public ServerResponse<SaleTotalVo> getTodaySales() {
-        Long storeId = JWTUtil.getStoreId();
-        SaleTotalVo saleTotalVo =
-                saleService.getSaleTotalVo(storeId, DateUntil.weeHours(new Date(), 0), DateUntil.weeHours(new Date(),1));
-        return ServerResponse.createBySuccess(saleTotalVo);
-    }
-
     @PostMapping("/sale/place_order")
     @ApiOperation(value = "下订单", notes = "只下单不付款")
     public ServerResponse<PlaceOrderVo> placeOrder(@Valid PlaceOrderDto placeOrderDto) {

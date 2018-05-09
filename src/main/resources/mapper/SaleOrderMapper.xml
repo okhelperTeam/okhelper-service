@@ -45,12 +45,12 @@
         </constructor>
     </resultMap>
 
-    <resultMap id="CustomerDebtGroupMap" type="com.ok.okhelper.pojo.bo.CustomerDebtGroupBo">
-        <constructor>
-            <arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="sum_to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-        </constructor>
-    </resultMap>
+    <!--<resultMap id="CustomerDebtGroupMap" type="com.ok.okhelper.pojo.bo.CustomerDebtGroupBo">-->
+        <!--<constructor>-->
+            <!--<arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="sum_to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
+        <!--</constructor>-->
+    <!--</resultMap>-->
 
     <resultMap id="SaleTotalMap" type="com.ok.okhelper.pojo.vo.SaleTotalVo">
         <constructor>
@@ -107,9 +107,9 @@
         customer_score,
         customer_level,
         customer_address
-        FROM sale_order, customer
-        WHERE sale_order.customer_id = customer.id
-        AND sale_order.store_id = #{storeId}
+        FROM sale_order
+        LEFT JOIN customer on sale_order.customer_id = customer.id
+        WHERE sale_order.store_id = #{storeId}
         AND sale_order.order_status = 2
         AND customer.delete_status = 1
         <if test="condition != null and condition != ''">
@@ -117,18 +117,19 @@
         </if>
     </select>
 
-    <select id="getCustomerDebtGroupBo" resultMap="CustomerDebtGroupMap" parameterType="map">
-        SELECT sale_order.customer_id customer_id,SUM(sale_order.to_be_paid) sum_to_be_paid
-        FROM sale_order,customer
-        WHERE sale_order.customer_id=customer.id
-        AND sale_order.store_id=#{storeId}
-        AND sale_order.order_status=2
-        AND customer.delete_status=1
-        <if test="condition != null and condition != ''">
-            AND (customer.customer_name=#{condition} OR customer.customer_phone=#{condition})
-        </if>
-        GROUP BY sale_order.customer_id
-    </select>
+    <!--废弃-->
+    <!--<select id="getCustomerDebtGroupBo" resultMap="CustomerDebtGroupMap" parameterType="map">-->
+        <!--SELECT sale_order.customer_id customer_id,SUM(sale_order.to_be_paid) sum_to_be_paid-->
+        <!--FROM sale_order,customer-->
+        <!--WHERE sale_order.customer_id=customer.id-->
+        <!--AND sale_order.store_id=#{storeId}-->
+        <!--AND sale_order.order_status=2-->
+        <!--AND customer.delete_status=1-->
+        <!--<if test="condition != null and condition != ''">-->
+            <!--AND (customer.customer_name=#{condition} OR customer.customer_phone=#{condition})-->
+        <!--</if>-->
+        <!--GROUP BY sale_order.customer_id-->
+    <!--</select>-->
 
     <select id="getSaleTotal" resultMap="SaleTotalMap" parameterType="map">
         SELECT

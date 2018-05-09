@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerDebtTotalBo {
+    //客户数
     private Integer customerCount;
+
+    //欠款总金额
     private BigDecimal totalToBePaid;
 }

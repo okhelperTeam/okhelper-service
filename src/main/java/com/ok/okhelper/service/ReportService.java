@@ -2,8 +2,10 @@ package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.pojo.bo.CustomerDebtBo;
+import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.vo.SalesVolumeVo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,4 +19,6 @@ public interface ReportService {
     List<SalesVolumeVo> getHotSaleByRedis(String range);
 
     List<SalesVolumeVo> getUnsalableByRedis(String range);
+
+    SaleTotalVo getSaleTotalVo(Date startDate, Date endDate);
 }

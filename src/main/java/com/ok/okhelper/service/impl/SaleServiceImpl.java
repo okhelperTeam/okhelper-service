@@ -103,7 +103,7 @@ public class SaleServiceImpl implements SaleService {
         PageModel<SaleOrderVo> dbPageModel = PageModel.convertToPageModel(pageInfo);
 
         //加入销售聚合汇总
-        SaleTotalVo saleTotalVo = this.getSaleTotalVo(JWTUtil.getStoreId(), saleOrderDto.getStartDate(), saleOrderDto.getEndDate());
+        SaleTotalVo saleTotalVo =saleOrderMapper.getSaleTotal(JWTUtil.getStoreId(), saleOrderDto.getStartDate(), saleOrderDto.getEndDate());
         dbPageModel.setTotalData(saleTotalVo);
 
         return dbPageModel;
@@ -129,21 +129,6 @@ public class SaleServiceImpl implements SaleService {
         }
 
         return saleOrderVo;
-    }
-
-    /**
-     * @Author zc
-     * @Date 2018/4/29 上午11:00
-     * @Param [storeId, startDate, endDate]
-     * @Return com.ok.okhelper.pojo.vo.SaleTotalVo
-     * @Description:获取指定时间范围的销售聚合 (去除 已关闭订单)
-     */
-    @Override
-    public SaleTotalVo getSaleTotalVo(Long storeId, Date startDate, Date endDate) {
-        if(startDate.compareTo(endDate)>0){
-            throw new IllegalException("时间参数错误");
-        }
-        return saleOrderMapper.getSaleTotal(storeId, startDate, endDate);
     }
 
     /**

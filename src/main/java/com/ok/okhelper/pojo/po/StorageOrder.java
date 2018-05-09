@@ -1,10 +1,8 @@
 package com.ok.okhelper.pojo.po;
 
-import com.sun.corba.se.impl.oa.toa.TOA;
-
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "storage_order")
 public class StorageOrder {

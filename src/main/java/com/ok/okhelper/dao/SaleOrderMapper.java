@@ -17,7 +17,7 @@ import java.util.List;
 public interface SaleOrderMapper extends MyMapper<SaleOrder> {
     List<CustomerDebtBo> getCustomerDebtBo(@Param("storeId") Long storeId, @Param("condition") String condition);
 
-    List<CustomerDebtGroupBo> getCustomerDebtGroupBo(@Param("storeId") Long storeId, @Param("condition") String condition);
+//    List<CustomerDebtGroupBo> getCustomerDebtGroupBo(@Param("storeId") Long storeId, @Param("condition") String condition);
 
     SaleTotalVo getSaleTotal(@Param("storeId") Long storeId, @Param("startDate") Date startDate,@Param("endDate") Date endDate);
 
