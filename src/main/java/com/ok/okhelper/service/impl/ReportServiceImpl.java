@@ -53,7 +53,7 @@ public class ReportServiceImpl implements ReportService {
      * @Date 2018/5/6 下午2:53
      * @Param [condition, pageModel]
      * @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.bo.CustomerDebtBo>
-     * @Description:客户欠款查询
+     * @Description:客户对账查询
      */
     @Override
     public PageModel<CustomerDebtBo> getCustomerDebt(String condition, PageModel pageModel) {
@@ -77,10 +77,12 @@ public class ReportServiceImpl implements ReportService {
         if (CollectionUtils.isNotEmpty(allCustomerDebtBo)) {
             CustomerDebtTotalBo customerDebtTotalBo = new CustomerDebtTotalBo();
 
-            Map<Long, List<CustomerDebtBo>> customerDebtMap = allCustomerDebtBo.stream().collect(Collectors.groupingBy(CustomerDebtBo::getCustomerId));
+            Map<Long, List<CustomerDebtBo>> customerDebtMap = allCustomerDebtBo.stream()
+                    .filter(x -> x.getToBePaid() != null && x.getToBePaid().doubleValue() > 0.0)
+                    .collect(Collectors.groupingBy(CustomerDebtBo::getCustomerId));
 
-            BigDecimal totalMoney =allCustomerDebtBo.stream()
-                    .filter(x -> x.getToBePaid() != null)
+            BigDecimal totalMoney = allCustomerDebtBo.stream()
+                    .filter(x -> x.getToBePaid() != null && x.getToBePaid().doubleValue() > 0.0)
                     .map(CustomerDebtBo::getToBePaid)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             customerDebtTotalBo.setTotalToBePaid(totalMoney);
@@ -255,7 +257,7 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public SaleTotalVo getSaleTotalVo(Date startDate, Date endDate) {
-        if(startDate.compareTo(endDate)>0){
+        if (startDate.compareTo(endDate) > 0) {
             throw new IllegalException("时间参数错误");
         }
         return saleOrderMapper.getSaleTotal(JWTUtil.getStoreId(), startDate, endDate);
