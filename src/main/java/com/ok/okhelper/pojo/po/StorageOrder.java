@@ -69,6 +69,20 @@ public class StorageOrder {
         this.totalPrice = totalPrice;
     }
     
+    public StorageOrder(Long id,String orderNumber, Long supplierId, Long stockiner, String remarks, Date createTime, Date updateTime, Long storeId, BigDecimal totalPrice) {
+        this.id = id;
+        this.orderNumber = orderNumber;
+        this.supplierId = supplierId;
+        this.stockiner = stockiner;
+        this.remarks = remarks;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.storeId = storeId;
+        this.totalPrice = totalPrice;
+    }
+    
+    
+    
     public StorageOrder() {
         super();
     }

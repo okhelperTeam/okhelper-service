@@ -19,23 +19,23 @@
     </resultMap>
 
 
-    <resultMap id="StorageOrderVoResultMap" type="com.ok.okhelper.pojo.vo.StorageOrderVo">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <constructor>
-            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <arg column="supplier_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="stockiner" javaType="java.lang.Long" jdbcType="BIGINT"/>
-            <arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-            <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        </constructor>
-    </resultMap>
+    <!--<resultMap id="StorageOrderVoResultMap" type="com.ok.okhelper.pojo.vo.StorageOrderVo">-->
+        <!--&lt;!&ndash;-->
+          <!--WARNING - @mbg.generated-->
+        <!--&ndash;&gt;-->
+        <!--<constructor>-->
+            <!--<idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+            <!--<arg column="supplier_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="stockiner" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+            <!--<arg column="remarks" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+            <!--<arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>-->
+            <!--<arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>-->
+        <!--</constructor>-->
+    <!--</resultMap>-->
     
     
-    <select id="getStorageOrderByOrderNumber" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="getStorageOrderByOrderNumber" resultMap="BaseResultMap" parameterType="string">
         SELECT * FROM storage_order WHERE order_number = #{orderNumber}
     </select>
     
