@@ -7,6 +7,7 @@ import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -34,5 +35,6 @@ public interface ProductMapper extends MyMapper<Product> {
     void updateStatus(Long id);
 
     Integer getSaleStockLock(Long productId);
-
+    
+    List<ProductsVo> getLowCountProductsList(@Param("numbers") Integer numbers, @Param("storeId") Long storeId);
 }

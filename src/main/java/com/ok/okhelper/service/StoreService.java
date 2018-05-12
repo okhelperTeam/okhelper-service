@@ -12,4 +12,5 @@ public interface StoreService {
     Store getStoreInfoById(Long storeId);
 
     Store updateStore(Long store_id, UpdateStoreDto updateStoreDto);
+    
 }

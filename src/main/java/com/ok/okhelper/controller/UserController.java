@@ -123,6 +123,24 @@ public class UserController {
     }
 
 
+    @GetMapping("/user/phoneCode")
+    @ApiOperation(value = "发短信",notes = "给该手机号发短信，10分钟失效")
+    public ServerResponse sendSms(String number){
+        
+        userService.sendMs(number);
+        return ServerResponse.createBySuccess("发送成功");
+    }
+    
+    @PostMapping("/user/phoneLogin")
+    @ApiOperation(value = "短信验证",notes = "短信登陆")
+    public ServerResponse sendSms(String phone,String code){
+        
+        UserVo userVo = userService.verifyPhoneCode(phone,code);
+        
+        return ServerResponse.createBySuccess(userVo);
+    }
+    
+    
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
     //暂时不用

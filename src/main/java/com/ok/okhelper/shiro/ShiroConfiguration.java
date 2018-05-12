@@ -61,6 +61,8 @@ public class ShiroConfiguration {
         filterRuleMap.put("/user/login", "anon");
         filterRuleMap.put("/user/register", "anon");
         filterRuleMap.put("/user/check_username", "anon");
+//        filterRuleMap.put("/user/phone","anon");
+        filterRuleMap.put("/user/phone*","anon");
 
         // 所有请求通过我们自己的JWT Filter
         filterRuleMap.put("/**", "jwt");

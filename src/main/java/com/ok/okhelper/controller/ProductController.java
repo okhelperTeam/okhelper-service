@@ -163,4 +163,16 @@ public class ProductController {
 		return serverResponse;
 	}
 	
+	@RequiresPermissions("goods:view")
+	@ApiOperation(value = "商品库存预警")
+	@GetMapping("product/lowWarning/{numbers}")
+	public ServerResponse<PageModel<ProductNearDayVo>> getLowCountProduct(@PathVariable Integer numbers,@Valid  PageModel pageModel) {
+		logger.info("Enter method getNearDaysProduct params:days:" + numbers);
+		PageModel<ProductsVo> lowCountProducts = productService.getLowCountProduct(numbers,pageModel);
+		ServerResponse serverResponse = ServerResponse.createBySuccess(lowCountProducts);
+		logger.info("Exit method getNearDaysProduct return:" + serverResponse);
+		return serverResponse;
+	}
+	
+	
 }
