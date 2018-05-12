@@ -304,10 +304,26 @@ public class ProductServiceImpl implements ProductService {
         }
 
 
-        PageInfo pageInfo = new PageInfo<>(stocksList);
-        pageInfo.setList(productNearDayVoList);
+        PageInfo pageInfo = new PageInfo<>(productNearDayVoList);
         logger.info("Exit method getNearDaysProduct params: return:" + pageInfo);
         return PageModel.convertToPageModel(pageInfo);
 
+    }
+    
+    @Override
+    public PageModel<ProductsVo> getLowCountProduct(Integer numbers, PageModel pageModel) {
+        //启动分页
+        PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+    
+        //启动排序
+        PageHelper.orderBy(pageModel.getOrderBy());
+        
+        List<ProductsVo> productsVoList = productMapper.getLowCountProductsList(numbers,JWTUtil.getStoreId());
+        
+        PageInfo pageInfo = new PageInfo<>(productsVoList);
+        logger.info("Exit method getLowCountProduct params: return:" + pageInfo);
+        return PageModel.convertToPageModel(pageInfo);
+    
+    
     }
 }

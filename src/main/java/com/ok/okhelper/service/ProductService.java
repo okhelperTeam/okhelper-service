@@ -31,4 +31,8 @@ public interface ProductService {
 	Product updateProduct(ProductDto productDto);
 	
 	PageModel<ProductNearDayVo> getNearDaysProduct(Integer days, PageModel pageModel);
+	
+	PageModel<ProductsVo> getLowCountProduct(Integer numbers, PageModel pageModel);
+	
+	
 }

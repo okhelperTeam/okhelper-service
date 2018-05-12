@@ -110,4 +110,13 @@
         FROM product where delete_status = 1 AND store_id = ${storeId} AND bar_code=#{barCode}
     </select>
 
+    <select id="getLowCountProductsList" resultMap="ProductVoMap">
+        <![CDATA[
+        SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
+        FROM product where delete_status = 1 AND store_id = #{storeId} AND sales_stock <= #{numbers}
+        ]]>
+    </select>
+
+
+
 </mapper>
