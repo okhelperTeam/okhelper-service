@@ -61,15 +61,29 @@ public class StorageController {
 	@RequiresPermissions("storage_order:view")
 	@ApiOperation(value = "所有入库单",notes = "")
 	@GetMapping("/storage")
-	public ServerResponse<PageModel<StorageOrderVo>> storageOrderList(PageModel pageoModel){
+	public ServerResponse<PageModel<StorageOrderVo>> storageOrderList(PageModel pageModel){
 		log.info("Enter method storageOrder params:");
 		
-		PageModel<StorageOrderVo> storageOrderVoList = storageOrderService.getStorageOrderList(pageoModel);
+		PageModel<StorageOrderVo> storageOrderVoList = storageOrderService.getStorageOrderList(pageModel);
 		ServerResponse<PageModel<StorageOrderVo>> serverResponse = ServerResponse.createBySuccess(storageOrderVoList);
 		
 		log.info("Exit method storageIn params:"+ serverResponse);
 		return serverResponse;
 	}
 	
-
+	@RequiresPermissions("storage_order:view")
+	@ApiOperation(value = "查询供应商入库单",notes = "单个供应商的所有历史")
+	@GetMapping("/storage/supplier/{supplierId}")
+	public ServerResponse<PageModel<StorageOrderVo>> getStorageOrderListBySupplierId( @Valid PageModel pageModel,@PathVariable Long supplierId){
+		log.info("Enter method storageOrder params:");
+		
+		PageModel<StorageOrderVo> storageOrderVoList = storageOrderService.getStorageOrderListBySupplierId(pageModel,supplierId);
+		ServerResponse<PageModel<StorageOrderVo>> serverResponse = ServerResponse.createBySuccess(storageOrderVoList);
+		
+		log.info("Exit method storageIn params:"+ serverResponse);
+		return serverResponse;
+	}
+	
+	
+	
 }

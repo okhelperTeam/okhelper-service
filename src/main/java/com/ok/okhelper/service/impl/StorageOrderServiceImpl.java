@@ -266,8 +266,56 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		
 		//前端订单数据
 		List<StorageOrderVo> storageOrderVoList = new ArrayList<>(storageOrderList.size());
-		StorageOrderVo storageOrderVo;
+		//转换数据前段可读
+		changeStorageOrederToVo(storageOrderList, storageOrderVoList);
 		
+		
+		log.info("Exit method getStorageOrderList params:" + storageOrderVoList);
+		PageInfo<StorageOrderVo> pageInfo = new PageInfo<>(storageOrderVoList);
+		log.info("Exit method getProductsListByCategory() return:" + pageInfo);
+		return PageModel.convertToPageModel(pageInfo);
+		
+	}
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/12 9:56  
+	* @Params [pageModel]
+	* @Return com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.vo.StorageOrderVo>  
+	* @Description:供应商订单
+	*/  	
+	@Override
+	public PageModel<StorageOrderVo> getStorageOrderListBySupplierId(PageModel pageModel,Long supplierId) {
+		log.info("Enter method  getStorageOrderListBySupplierId params:" + pageModel+supplierId);
+		//启动分页
+		PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+		
+		
+		//启动排序
+		PageHelper.orderBy(pageModel.getOrderBy());
+		
+		StorageOrder storageOrderEg = new StorageOrder();
+		storageOrderEg.setSupplierId(supplierId);
+		List<StorageOrder> storageOrderList = storageOrderMapper.select(storageOrderEg);
+		
+		if(CollectionUtils.isEmpty(storageOrderList)){
+			throw new NotFoundException("没有该供应商记录");
+		}
+		
+		//前端订单数据
+		List<StorageOrderVo> storageOrderVoList = new ArrayList<>(storageOrderList.size());
+		
+		//转换数据前段可读
+		changeStorageOrederToVo(storageOrderList, storageOrderVoList);
+		
+		
+		log.info("Exit method getStorageOrderList params:" + storageOrderVoList);
+		PageInfo<StorageOrderVo> pageInfo = new PageInfo<>(storageOrderVoList);
+		log.info("Exit method getStorageOrderListBySupplierId() return:" + pageInfo);
+		return PageModel.convertToPageModel(pageInfo);
+	}
+	
+	private void changeStorageOrederToVo(List<StorageOrder> storageOrderList, List<StorageOrderVo> storageOrderVoList) {
+		StorageOrderVo storageOrderVo;
 		for(StorageOrder storageOrder : storageOrderList){
 			storageOrderVo = new StorageOrderVo();
 			
@@ -282,14 +330,6 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 			storageOrderVoList.add(storageOrderVo);
 		
 		}
-		
-		
-		
-		log.info("Exit method getStorageOrderList params:" + storageOrderVoList);
-		PageInfo<StorageOrderVo> pageInfo = new PageInfo<>(storageOrderVoList);
-		log.info("Exit method getProductsListByCategory() return:" + pageInfo);
-		return PageModel.convertToPageModel(pageInfo);
-		
 	}
 	
 	

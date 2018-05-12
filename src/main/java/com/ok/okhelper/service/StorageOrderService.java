@@ -19,4 +19,6 @@ public interface StorageOrderService {
 	StorageOrderVo getStorageOrderByOrderNumber(String orderNumber);
 	
 	PageModel<StorageOrderVo> getStorageOrderList(PageModel pageModel);
+	
+	PageModel<StorageOrderVo> getStorageOrderListBySupplierId(PageModel pageModel, Long supplierId);
 }
