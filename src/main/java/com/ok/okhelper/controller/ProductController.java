@@ -144,5 +144,23 @@ public class ProductController {
 		logger.info("Exit method getNearDaysProduct return:" + serverResponse);
 		return serverResponse;
 	}
+
+
+	@RequiresPermissions("goods:view")
+	@ApiOperation(value = "商品搜索", notes = "通过条形码搜索")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "barCode", value = "商品条码", required = true, paramType = "form"),
+	})
+	@GetMapping("product/bar_code/{barCode}")
+	public ServerResponse<List<ProductsVo>> searchProductBybarCode(@PathVariable String barCode) {
+		logger.info("Enter method searchProduct params:barCode:" + barCode);
+
+		ServerResponse<List<ProductsVo>> serverResponse;
+		List<ProductsVo> productsListBybarCode = productService.getProductsListBybarCode(barCode);
+		serverResponse = ServerResponse.createBySuccess(productsListBybarCode);
+
+		logger.info("Exit method searchProduct params:" + serverResponse);
+		return serverResponse;
+	}
 	
 }

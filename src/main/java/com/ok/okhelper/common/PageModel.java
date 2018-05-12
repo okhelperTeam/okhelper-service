@@ -24,7 +24,7 @@ public class PageModel<T> {
     分页模型
     * */
     @NotNull
-    @AssertTrue(message = "分页参数错误(paging不能为空)")
+//    @AssertTrue(message = "分页参数错误(paging不能为空)")
     @ApiModelProperty(value = "开启分页(必须传true分页才能开启)", required = true)
     private boolean paging = true;
 
@@ -36,7 +36,7 @@ public class PageModel<T> {
 
     //每页多少条
     @NotNull(message = "分页参数错误(limit不能为空)")
-    @Min(1)
+    @Min(0)
     @ApiModelProperty(value = "每页多少条", required = true)
     private Integer limit;
 
@@ -64,6 +64,14 @@ public class PageModel<T> {
     @ApiModelProperty(value = "数据(返回数据不用传)")
     private List<T> results = new ArrayList<>();
 
+
+    public void setPaging(boolean paging) {
+        if(!paging){
+            pageNum=1;
+            limit=0;
+        }
+        this.paging = paging;
+    }
 
     public static <T> PageModel<T> convertToPageModel(PageInfo pageResult) {
         if (pageResult.getTotal() <= 0) {

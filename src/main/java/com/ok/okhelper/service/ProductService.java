@@ -6,6 +6,8 @@ import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.ProductNearDayVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
 
+import java.util.List;
+
 /*
 *Author:zhangxin_an
 *Description:
@@ -17,6 +19,8 @@ public interface ProductService {
 	
 	
 	PageModel<ProductsVo> getProductsListByCategory(Long categoryId, PageModel pageModel);
+
+	List<ProductsVo> getProductsListBybarCode(String barCode);
 	
 	Product getProduct(Long pId);
 

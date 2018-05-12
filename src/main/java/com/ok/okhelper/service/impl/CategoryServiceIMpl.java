@@ -2,6 +2,7 @@ package com.ok.okhelper.service.impl;
 
 import com.ok.okhelper.dao.CategoryMapper;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.CategoryDto;
 import com.ok.okhelper.pojo.po.Category;
@@ -54,6 +55,9 @@ public class CategoryServiceIMpl implements CategoryService {
 		}
 		
 		List<CategoryVo> categoryVoList = getCategoryItems(superId, storeId);
+		if(CollectionUtils.isEmpty(categoryVoList)){
+			throw new NotFoundException("没有相关分类");
+		}
 		
 		logger.info("Exit method getCategoryList() return：" + categoryVoList);
 		return categoryVoList;

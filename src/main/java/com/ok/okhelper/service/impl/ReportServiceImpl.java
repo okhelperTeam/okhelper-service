@@ -60,6 +60,10 @@ public class ReportServiceImpl implements ReportService {
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 
+        if("create_time desc".equals(pageModel.getOrderBy())){
+            pageModel.setOrderBy("sale_order.create_time desc");
+        }
+
         //启动排序
         PageHelper.orderBy(pageModel.getOrderBy());
 
@@ -76,7 +80,6 @@ public class ReportServiceImpl implements ReportService {
 
         if (CollectionUtils.isNotEmpty(allCustomerDebtBo)) {
             CustomerDebtTotalBo customerDebtTotalBo = new CustomerDebtTotalBo();
-
             Map<Long, List<CustomerDebtBo>> customerDebtMap = allCustomerDebtBo.stream()
                     .filter(x -> x.getToBePaid() != null && x.getToBePaid().doubleValue() > 0.0)
                     .collect(Collectors.groupingBy(CustomerDebtBo::getCustomerId));
@@ -90,9 +93,10 @@ public class ReportServiceImpl implements ReportService {
             customerDebtTotalBo.setCustomerCount(customerDebtMap.size());
 
             customerDebtTotalBo.setTotalToBePaid(totalMoney);
-        }
 
-        dbPageModel.setTotalData(dbPageModel);
+            dbPageModel.setTotalData(customerDebtTotalBo);
+            dbPageModel.setOrderBy(pageModel.getOrderBy());
+        }
 
         return dbPageModel;
     }

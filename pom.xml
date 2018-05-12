@@ -148,6 +148,12 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>qcloudsms</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
         <!--热部署-->
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->

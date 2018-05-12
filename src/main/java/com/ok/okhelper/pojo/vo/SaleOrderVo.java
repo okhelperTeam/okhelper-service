@@ -162,6 +162,11 @@ public class SaleOrderVo {
      */
     private Long storeId;
 
+    /**
+     * 产品
+     */
+    private Integer productCount;
+
 
     private List<SaleOrderItemVo> saleOrderItemVos;
 }

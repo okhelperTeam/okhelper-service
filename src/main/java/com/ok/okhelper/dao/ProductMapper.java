@@ -26,6 +26,8 @@ public interface ProductMapper extends MyMapper<Product> {
     * @Description:ͨ�������ѯ��Ʒ
     */  
     List<ProductsVo> getProductsListByCategoryId(List<CategoryVo> categoryListTotal);
+
+    List<ProductsVo> getProductsListBybarCode(@Param("barCode") String barCode,@Param("storeId")Long storeId);
     
     IdAndNameBo getIdAndName(Long id);
     

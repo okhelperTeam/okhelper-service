@@ -74,9 +74,8 @@
             AND delete_status = 1 AND store_id = ${storeId}
             <if test=" condition != null and condition != ''">
                 AND (product_name LIKE '%${condition}%'
-                OR product_title LIKE '%${condition}%'
-                OR article_number LIKE '%${condition}%'
-                OR bar_code LIKE '%${condition}%'
+                OR article_number = #{condition}
+                OR bar_code = #{condition}
                 )
             </if>
 
@@ -104,6 +103,11 @@
 
     <select id="getSaleStockLock" resultType="java.lang.Integer">
         select sales_stock from product where id=#{productId} for update
+    </select>
+
+    <select id="getProductsListBybarCode" resultMap="ProductVoMap" parameterType="map">
+        SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
+        FROM product where delete_status = 1 AND store_id = ${storeId} AND bar_code=#{barCode}
     </select>
 
 </mapper>

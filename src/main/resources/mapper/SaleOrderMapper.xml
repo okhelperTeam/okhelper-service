@@ -39,6 +39,7 @@
             <arg column="customer_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="customer_store_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="customer_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="customer_email" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="customer_score" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="customer_level" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="customer_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -46,16 +47,23 @@
     </resultMap>
 
     <!--<resultMap id="CustomerDebtGroupMap" type="com.ok.okhelper.pojo.bo.CustomerDebtGroupBo">-->
-        <!--<constructor>-->
-            <!--<arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
-            <!--<arg column="sum_to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
-        <!--</constructor>-->
+    <!--<constructor>-->
+    <!--<arg column="customer_id" javaType="java.lang.Long" jdbcType="BIGINT"/>-->
+    <!--<arg column="sum_to_be_paid" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
+    <!--</constructor>-->
     <!--</resultMap>-->
 
     <resultMap id="SaleTotalMap" type="com.ok.okhelper.pojo.vo.SaleTotalVo">
         <constructor>
             <arg column="sale_count" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="total_sales" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="ProductCountMap" type="com.ok.okhelper.pojo.vo.ProductCountMapVo">
+        <constructor>
+            <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="sale_product_num" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         </constructor>
     </resultMap>
 
@@ -93,7 +101,7 @@
         </collection>
     </resultMap>
 
-    <select id="getCustomerDebtBo" resultType="com.ok.okhelper.pojo.bo.CustomerDebtBo" parameterType="map">
+    <select id="getCustomerDebtBo" resultMap="CustomerDebtMap" parameterType="map">
         SELECT
         sale_order.id so_id,
         order_number,
@@ -119,16 +127,16 @@
 
     <!--废弃-->
     <!--<select id="getCustomerDebtGroupBo" resultMap="CustomerDebtGroupMap" parameterType="map">-->
-        <!--SELECT sale_order.customer_id customer_id,SUM(sale_order.to_be_paid) sum_to_be_paid-->
-        <!--FROM sale_order,customer-->
-        <!--WHERE sale_order.customer_id=customer.id-->
-        <!--AND sale_order.store_id=#{storeId}-->
-        <!--AND sale_order.order_status=2-->
-        <!--AND customer.delete_status=1-->
-        <!--<if test="condition != null and condition != ''">-->
-            <!--AND (customer.customer_name=#{condition} OR customer.customer_phone=#{condition})-->
-        <!--</if>-->
-        <!--GROUP BY sale_order.customer_id-->
+    <!--SELECT sale_order.customer_id customer_id,SUM(sale_order.to_be_paid) sum_to_be_paid-->
+    <!--FROM sale_order,customer-->
+    <!--WHERE sale_order.customer_id=customer.id-->
+    <!--AND sale_order.store_id=#{storeId}-->
+    <!--AND sale_order.order_status=2-->
+    <!--AND customer.delete_status=1-->
+    <!--<if test="condition != null and condition != ''">-->
+    <!--AND (customer.customer_name=#{condition} OR customer.customer_phone=#{condition})-->
+    <!--</if>-->
+    <!--GROUP BY sale_order.customer_id-->
     <!--</select>-->
 
     <select id="getSaleTotal" resultMap="SaleTotalMap" parameterType="map">
@@ -139,6 +147,18 @@
         WHERE create_time BETWEEN #{startDate} AND #{endDate}
               AND store_id = #{storeId}
               AND order_status != 5
+    </select>
+
+    <select id="getSaleTotalProductCount" resultMap="ProductCountMap" parameterType="map">
+        select product_id,count(product_id) sale_product_num
+        from sale_order_detail
+        WHERE sale_order_id in
+              (SELECT id
+               FROM sale_order
+               WHERE create_time BETWEEN #{startDate} AND #{endDate}
+                     AND store_id = #{storeId}
+                     AND order_status != 5)
+        GROUP BY product_id
     </select>
 
     <select id="getSaleOrderVo" resultMap="SaleOrderMap" parameterType="map">
@@ -184,7 +204,7 @@
             AND sale_order.stockouter=#{saleOrderDto.stockouter}
         </if>
         <if test="saleOrderDto.orderStatus != null">
-            AND sale_order.order_status=#{orderStatus}
+            AND sale_order.order_status=#{saleOrderDto.orderStatus}
         </if>
         <if test="saleOrderDto.logisticsStatus != null">
             AND sale_order.logistics_status=#{saleOrderDto.logisticsStatus}
@@ -196,4 +216,6 @@
             AND sale_order.id = '#{saleOrderDto.id}'
         </if>
     </select>
+
+
 </mapper>

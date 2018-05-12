@@ -20,6 +20,7 @@ import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.po.SaleOrderDetail;
 import com.ok.okhelper.pojo.vo.PlaceOrderVo;
+import com.ok.okhelper.pojo.vo.ProductCountMapVo;
 import com.ok.okhelper.pojo.vo.SaleOrderVo;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.service.OtherService;
@@ -34,6 +35,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -93,17 +95,36 @@ public class SaleServiceImpl implements SaleService {
         //启动分页
         PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
 
+        if("create_time desc".equals(pageModel.getOrderBy())){
+            pageModel.setOrderBy("sale_order.create_time desc");
+        }
+
         //启动排序
         PageHelper.orderBy(pageModel.getOrderBy());
 
         List<SaleOrderVo> saleOrderVos = saleOrderMapper.getSaleOrderVo(JWTUtil.getStoreId(), saleOrderDto);
+
+
+        if(CollectionUtils.isNotEmpty(saleOrderVos)){
+            saleOrderVos.forEach(x->{
+                x.setProductCount(x.getSaleOrderItemVos()!=null?x.getSaleOrderItemVos().size():0);
+            });
+        }
 
         PageInfo<SaleOrderVo> pageInfo = new PageInfo<>(saleOrderVos);
         PageModel<SaleOrderVo> dbPageModel = PageModel.convertToPageModel(pageInfo);
 
         //加入销售聚合汇总
         SaleTotalVo saleTotalVo =saleOrderMapper.getSaleTotal(JWTUtil.getStoreId(), saleOrderDto.getStartDate(), saleOrderDto.getEndDate());
+        List<ProductCountMapVo> saleTotalProductCounts = saleOrderMapper.getSaleTotalProductCount(JWTUtil.getStoreId(), saleOrderDto.getStartDate(), saleOrderDto.getEndDate());
+        if(CollectionUtils.isNotEmpty(saleTotalProductCounts)){
+            saleTotalVo.setProductCountMap(saleTotalProductCounts);
+            saleTotalVo.setTotalProductCount(saleTotalProductCounts.size());
+            int sum = saleTotalProductCounts.stream().mapToInt(ProductCountMapVo::getSalesProductNum).sum();
+            saleTotalVo.setTotalSalesProductNumber(sum);
+        }
         dbPageModel.setTotalData(saleTotalVo);
+        dbPageModel.setOrderBy(pageModel.getOrderBy());
 
         return dbPageModel;
     }

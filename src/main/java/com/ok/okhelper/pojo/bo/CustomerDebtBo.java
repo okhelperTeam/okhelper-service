@@ -2,6 +2,7 @@ package com.ok.okhelper.pojo.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import java.math.BigDecimal;
@@ -14,7 +15,9 @@ import java.util.Date;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerDebtBo {
+
     private Long saleOrderId;
 
     private String saleOrderNumber;

@@ -37,21 +37,18 @@ public class ReportController {
     private ReportService reportService;
 
 
-    @ApiOperation(value = "热销商品", notes = "获取销量前十的商品")
-    @GetMapping("/report/hot_sale")
+    @ApiOperation(value = "热/滞销商品")
+    @GetMapping("/report/hot_cold_sale")
     public ServerResponse<List<SalesVolumeVo>> getHotProduct(
-            @ApiParam(value = "查询范围(今天->today 三天内->threeDays 一周内->week 一个月->month)") @RequestParam(required = true) String range) {
-        List<SalesVolumeVo> hotSaleByRedis = reportService.getHotSaleByRedis(range);
+            @ApiParam(value = "查询范围(今天->today 三天内->threeDays 一周内->week 一个月->month)") @RequestParam(required = true) String range,
+            @ApiParam(value = "true为热销；false为滞销") @RequestParam(required = true) Boolean isHot) {
+        List<SalesVolumeVo> hotSaleByRedis=null;
+        if(isHot){
+            hotSaleByRedis=reportService.getHotSaleByRedis(range);
+        }else {
+            hotSaleByRedis=reportService.getUnsalableByRedis(range);
+        }
         return ServerResponse.createBySuccess(hotSaleByRedis);
-    }
-
-
-    @ApiOperation(value = "滞销商品", notes = "获取销量后十的商品")
-    @GetMapping("/report/unsalable")
-    public ServerResponse<List<SalesVolumeVo>> getUnsalable(
-            @ApiParam(value = "查询范围(今天->today 三天内->threeDays 一周内->week 近30天->month)") @RequestParam(required = true) String range) {
-        List<SalesVolumeVo> unsalableByRedis = reportService.getUnsalableByRedis(range);
-        return ServerResponse.createBySuccess(unsalableByRedis);
     }
 
 
