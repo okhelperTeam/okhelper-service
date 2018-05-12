@@ -123,6 +123,10 @@ public class UserServiceImpl implements UserService {
 
 
     private UserVo getUser(User user) {
+        if(user == null){
+            throw new IllegalException("用户不存在");
+        }
+        
         //传值给前端封装类
         UserVo userVo = new UserVo();
         Long userId = user.getId();
@@ -437,6 +441,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void sendMs(String number) {
+        if(StringUtils.isBlank(number)){
+            throw new IllegalException("手机号为空");
+        }
         String code = SMSUtil.createRandomVcode();
         SMSUtil.sendSMSCode(number,code);
         redisOperator.set("code"+number,code,10*60);
@@ -458,12 +465,15 @@ public class UserServiceImpl implements UserService {
         }
         String redisCode = redisOperator.get("code"+phone);
         if(StringUtils.isBlank(redisCode)){
-            throw new IllegalException("验证码错误或超时");
+            throw new IllegalException("验证码超时");
         }
         UserVo userVo = null;
         if( code.equals(redisCode)){
             User user = findUserByUserNme(phone);
+            redisOperator.del("code"+phone);
             userVo = getUser(user);
+        }else {
+            throw new IllegalException("验证码错误");
         }
         
         
