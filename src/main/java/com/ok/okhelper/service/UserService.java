@@ -65,4 +65,8 @@ public interface UserService {
 
 
     UserVo getUserInfo(Long id);
+	
+	void sendMs(String number);
+    
+    UserVo verifyPhoneCode(String phone, String code);
 }

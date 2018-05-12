@@ -23,6 +23,8 @@ import com.ok.okhelper.service.PermissionService;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.util.PasswordHelp;
+import com.ok.okhelper.util.RedisOperator;
+import com.ok.okhelper.util.SMSUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +66,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Lazy
     private PermissionService permissionService;
+    
+    @Autowired
+    private RedisOperator redisOperator;
 
 
     @Override
@@ -428,12 +433,41 @@ public class UserServiceImpl implements UserService {
 
         return userVo;
     }
-
+    
+    @Override
+    @Transactional
+    public void sendMs(String number) {
+        String code = SMSUtil.createRandomVcode();
+        SMSUtil.sendSMSCode(number,code);
+        redisOperator.set("code"+number,code,10*60);
+    }
+    
     public static void main(String[] args) {
         Date date1=new Date();
 
         Date date2=DateUtils.addHours(new Date(), 1);
 
         System.out.println(date2.after(date1));
+    }
+    
+    @Override
+    public UserVo verifyPhoneCode(String phone, String code) {
+        if(StringUtils.isBlank(phone)
+                || StringUtils.isBlank(code)){
+            throw new IllegalException("手机号或者验证码为空");
+        }
+        String redisCode = redisOperator.get("code"+phone);
+        if(StringUtils.isBlank(redisCode)){
+            throw new IllegalException("验证码错误或超时");
+        }
+        UserVo userVo = null;
+        if( code.equals(redisCode)){
+            User user = findUserByUserNme(phone);
+            userVo = getUser(user);
+        }
+        
+        
+        
+        return userVo;
     }
 }
