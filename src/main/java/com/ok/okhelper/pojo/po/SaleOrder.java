@@ -415,7 +415,7 @@ public class SaleOrder {
     /**
      * 设置付款时间
      *
-     * @param payTime 付款时间
+     * @param payTime 最后一次付款时间
      */
     public void setPayTime(Date payTime) {
         this.payTime = payTime;

@@ -47,7 +47,7 @@ public class SaleController {
         PageModel<SaleOrderVo> saleOrderRecords;
         if (StringUtils.isBlank(saleOrderDto.getRange())) {
             if (saleOrderDto.getStartDate() == null || saleOrderDto.getEndDate() == null) {
-                throw new IllegalException("参数错误");
+                throw new IllegalException("时间参数错误");
             }
         } else {
             saleOrderDto.setEndDate(DateUtil.weeHours(new Date(),1));
@@ -123,10 +123,10 @@ public class SaleController {
     }
 
     @PostMapping("/sale/payment/{id:\\d+}")
-    @ApiOperation(value = "付款", notes = "支付接口，包括还款，未来扩展为支付宝接口")
+    @ApiOperation(value = "付款", notes = "支付接口，包括还款，支持支付宝条码支付")
     public ServerResponse payment(@ApiParam(value = "销售单Id") @PathVariable Long id, PaymentDto paymentDto) {
         saleService.payment(id, paymentDto);
-        return ServerResponse.createBySuccessMessage("订单支付成功");
+        return ServerResponse.createBySuccessMessage("支付成功");
     }
 
 }

@@ -27,10 +27,12 @@ import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.service.ProductService;
 import com.ok.okhelper.service.SaleService;
 import com.ok.okhelper.shiro.JWTUtil;
+import com.ok.okhelper.util.AliPayUtil;
 import com.ok.okhelper.util.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.BeanUtils;
@@ -73,6 +75,9 @@ public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private CustomerMapper customerMapper;
+
+    @Autowired
+    private AliPayUtil aliPayUtil;
 
     /**
      * 库存不足
@@ -139,11 +144,14 @@ public class SaleServiceImpl implements SaleService {
     public SaleOrderVo getSaleOrderRecordOne(Long id){
         SaleOrderDto saleOrderDto=new SaleOrderDto();
         saleOrderDto.setId(id);
-        SaleOrderVo saleOrderVo = saleOrderMapper.getSaleOrderVo(JWTUtil.getStoreId(), saleOrderDto).get(0);
+        List<SaleOrderVo> saleOrderVos = saleOrderMapper.getSaleOrderVo(JWTUtil.getStoreId(), saleOrderDto);
 
-        if (saleOrderVo==null) {
+        if (CollectionUtils.isEmpty(saleOrderVos)||saleOrderVos.get(0)==null) {
             throw new NotFoundException("资源不存在");
         }
+
+        SaleOrderVo saleOrderVo=saleOrderVos.get(0);
+
         if (ObjectUtils.notEqual(saleOrderVo.getStoreId(), JWTUtil.getStoreId())) {
             throw new AuthorizationException("资源不在你当前商铺查看范围");
         }
@@ -405,6 +413,22 @@ public class SaleServiceImpl implements SaleService {
             throw new IllegalException("订单已支付全款，不要再支付了");
         }
 
+        //支付宝扣款
+        if(String.valueOf(ConstEnum.PAYTYPE_ALIPAY.getCode()).equals(paymentDto.getPayType())){
+            if(StringUtils.isBlank(paymentDto.getAliPayAuthCode())){
+                throw new IllegalException("支付宝付款码不能为空");
+            }
+            String payNumber //我们的支付流水号
+                    = NumberGenerator.generatorPayMentOrderNumber(saleOrderId, paymentDto.getTradeType(), paymentDto.getPayType());
+            if(ConstEnum.TRADETYPE_FIRST.getCode()==paymentDto.getTradeType()){
+                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),paymentDto.getDiscountPrice().toString(),"OK帮下单支付-"+saleOrder.getOrderNumber());
+            }else if(ConstEnum.TRADETYPE_REPAYMENT.getCode()==paymentDto.getTradeType()){
+                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),paymentDto.getDiscountPrice().toString(),"OK帮订单补款-"+saleOrder.getOrderNumber());
+            }
+        }
+
+
+        //更新订单信息
         BigDecimal realPay = saleOrder.getRealPay().add(paymentDto.getRealPay());
         BigDecimal discountPrice = saleOrder.getDiscountPrice().add(paymentDto.getDiscountPrice());
 
@@ -417,6 +441,7 @@ public class SaleServiceImpl implements SaleService {
         saleOrder.setDiscountPrice(discountPrice);
         saleOrder.setPayTime(new Date());
 
+        //判断物流状态决定是否完成订单
         if (toBePaid.doubleValue() > 0.0) {
             saleOrder.setOrderStatus(ConstEnum.SALESTATUS_DEBT.getCode());
         } else {
@@ -443,7 +468,7 @@ public class SaleServiceImpl implements SaleService {
 
         int i = saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
         if (i <= 0) {
-            throw new IllegalException("订单支付失败");
+            throw new IllegalException("支付失败");
         }
 
 

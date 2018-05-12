@@ -3,6 +3,7 @@ package com.ok.okhelper.pojo.dto;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
 import lombok.Data;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
@@ -19,11 +20,11 @@ public class SaleOrderDto {
 
     //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "开始时间")
-    private Date startDate;
+    private Date startDate=new Date(0);
 
     //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "结束时间")
-    private Date endDate;
+    private Date endDate=new Date();
 
     @ApiModelProperty(value = "查询范围(当指定这个值时startDate&endDate失效)&&(今天->today 昨天->yesterday 三天内->threeDays 一周内->week 近30天->month)")
     private String range = "";

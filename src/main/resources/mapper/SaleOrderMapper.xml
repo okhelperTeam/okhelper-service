@@ -216,7 +216,7 @@
             AND sale_order.pay_type like '%${saleOrderDto.payType}%'
         </if>
         <if test="saleOrderDto.id != null">
-            AND sale_order.id = '#{saleOrderDto.id}'
+            AND sale_order.id = #{saleOrderDto.id}
         </if>
     </select>
 

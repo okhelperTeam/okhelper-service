@@ -7,6 +7,7 @@ import org.json.JSONException;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.IOException;
+import java.util.Objects;
 
 /*
 * @Author zhangxin_an 
@@ -16,11 +17,13 @@ import java.io.IOException;
 @Slf4j
 public class SMSUtil {
 
+    private static int APPID= Integer.parseInt(Objects.requireNonNull(PropertiesUtil.getProperty("sms.appid")));
+
+    private static String APPKEY=PropertiesUtil.getProperty("sms.appkey");
+
     public static void sendSMSCode(String phoneNumber,String captcha) {
         try {
-            int appid = 1400090958;
-            String appkey = "f6e7eb8b0ccd4b4206300002d4691a64";
-            SmsSingleSender ssender = new SmsSingleSender(appid, appkey);
+            SmsSingleSender ssender = new SmsSingleSender(APPID, APPKEY);
             SmsSingleSenderResult result = ssender.send(0, "86", phoneNumber,
                     "尊敬的OK帮用户，你本次的验证码为："+captcha+"，10分钟内有效请尽快完成验证。", "", "");
             System.out.print(result);

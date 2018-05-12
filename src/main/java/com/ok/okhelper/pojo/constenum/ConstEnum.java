@@ -27,7 +27,11 @@ public enum ConstEnum {
 	PAYTYPE_CASH("现金交易",1),
 	PAYTYPE_ALIPAY("支付宝",2),
 	PAYTYPE_WEICHAT("微信",3),
-	PAYTYPE_POS("刷卡交易",4);
+	PAYTYPE_POS("刷卡交易",4),
+
+	TRADETYPE_FIRST("订单首次支付",1),
+
+	TRADETYPE_REPAYMENT("订单还款支付",2);
 
 
 	// 成员变量

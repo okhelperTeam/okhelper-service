@@ -1,7 +1,9 @@
 package com.ok.okhelper.util;
 
+import com.alipay.api.AlipayApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -13,6 +15,8 @@ import java.io.File;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = COSUtil.class)
 public class COSUtilTest {
+
+
 
     @Test
     public void tsetUpload() {
@@ -28,4 +32,5 @@ public class COSUtilTest {
     public void testFulshB(){
 //        COSUtil.flushBucket();
     }
+
 }
