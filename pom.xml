@@ -154,6 +154,13 @@
             <version>1.0.2</version>
         </dependency>
 
+        <!--支付宝-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
         <!--热部署-->
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->

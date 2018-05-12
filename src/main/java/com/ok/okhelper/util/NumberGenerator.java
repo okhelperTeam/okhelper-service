@@ -21,7 +21,7 @@ public class NumberGenerator {
     /**
      * @Author zc  
      * @Date 2018/4/28 下午10:53
-     * @Param [orderType, userId]  orderType ST 销售单  IT 入库单  OT 出库单
+     * @Param [orderType, userId]  orderType ST 销售单  IT 入库单  OT 出库单  PY 支付流水号
      * @Return java.lang.String
      * @Description: orderType两位 +yyMMddHHmmss + userId后四位 + random 4位
      */

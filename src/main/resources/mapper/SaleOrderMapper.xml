@@ -191,6 +191,9 @@
         LEFT JOIN customer on sale_order.customer_id = customer.id
         where sale_order.create_time BETWEEN #{saleOrderDto.startDate} AND #{saleOrderDto.endDate}
         AND sale_order.store_id = #{storeId}
+        <if test="saleOrderDto.customerId != null and saleOrderDto.customerId != ''">
+            AND customer.id=#{saleOrderDto.customerId}
+        </if>
         <if test="saleOrderDto.customerName != null and saleOrderDto.customerName != ''">
             AND customer.customer_name=#{saleOrderDto.customerName}
         </if>

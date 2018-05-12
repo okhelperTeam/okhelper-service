@@ -21,4 +21,6 @@ public interface ConstStr {
     String ODERTR_NUM_PREFIX_SALE="ST";
     String ODERTR_NUM_PREFIX_INSTOCK="IT";
     String ODERTR_NUM_PREFIX_OUTSTOCK="OT";
+    String ODERTR_NUM_PREFIX_PAYMENT="PY";
+
 }

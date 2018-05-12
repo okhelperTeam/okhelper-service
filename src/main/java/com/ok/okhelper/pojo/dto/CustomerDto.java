@@ -71,15 +71,4 @@ public class CustomerDto {
      * 备注
      */
     private String remarks;
-
-    /**
-     * 操作者
-     */
-    private Long operator;
-
-    /**
-     * 所属商店Id
-     */
-    @Column(name = "store_id")
-    private Long storeId;
 }
