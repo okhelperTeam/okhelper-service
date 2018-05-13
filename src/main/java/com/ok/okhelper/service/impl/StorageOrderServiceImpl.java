@@ -71,7 +71,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		log.info("Enter method insertStorage params:" + storageOrderDto);
 		checkStorageOrderDto(storageOrderDto);
         storageOrderDto.setOrderNumber(NumberGenerator.generatorOrderNumber(ConstStr.ODERTR_NUM_PREFIX_INSTOCK, JWTUtil.getUserId()));
-		
+		storageOrderDto.setStockiner(JWTUtil.getUserId());
 		//添加入库单
 		StorageOrder storageOrder = new StorageOrder();
 		BeanUtils.copyProperties(storageOrderDto, storageOrder);

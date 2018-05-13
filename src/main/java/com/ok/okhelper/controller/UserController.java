@@ -15,6 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -60,6 +61,7 @@ public class UserController {
     @PostMapping("/user/register")
     @ApiOperation(value = "店长注册", notes = "")
     @ApiResponses({@ApiResponse(code = 400, message = "注册信息有误")})
+    @Transactional
     public ServerResponse register(@Valid UserAndStoreDto userAndStoreDto) {
         userService.userRegister(userAndStoreDto);
 

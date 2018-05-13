@@ -89,7 +89,6 @@ public class UserAndStoreDto {
 	/**
 	 * 店铺地址
 	 */
-	@NotNull(message = "store_address不能为null")
 	@ApiModelProperty(value = "店铺地址")
 	private String storeAddress;
 	

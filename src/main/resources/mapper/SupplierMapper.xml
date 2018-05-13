@@ -32,7 +32,7 @@
   </select>
   <select id="getSupplierByStoreId" parameterType="long" resultMap="BaseResultMap"  >
     SELECT *
-    FROM  supplier WHERE store_id = #{storeId}
+    FROM  supplier WHERE store_id = #{storeId} and delete_status = 1
   </select>
 
 
