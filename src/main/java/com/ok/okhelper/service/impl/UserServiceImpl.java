@@ -37,8 +37,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.support.HttpRequestHandlerServlet;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -157,7 +159,6 @@ public class UserServiceImpl implements UserService {
      * @Description:店长注册
      */
     @Override
-    @Transactional
     public void userRegister(UserAndStoreDto userAndStoreDto) {
 //        logger.info("Enter method userRegister" + userAndStoreDto);
         if (StringUtils.isBlank(userAndStoreDto.getUserName())
@@ -193,7 +194,7 @@ public class UserServiceImpl implements UserService {
             roleMapper.insertUserRole(userId, roleId);
 
         } catch (Exception e) {
-            throw new RuntimeException("注册失败");
+            throw new HttpMessageNotReadableException("注册失败");
         }
 
 
