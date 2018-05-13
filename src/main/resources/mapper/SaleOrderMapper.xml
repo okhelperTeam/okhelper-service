@@ -212,12 +212,12 @@
         <if test="saleOrderDto.logisticsStatus != null">
             AND sale_order.logistics_status=#{saleOrderDto.logisticsStatus}
         </if>
-        <if test="saleOrderDto.payType != null and saleOrderDto.payType != ''">
-            AND sale_order.pay_type like '%${saleOrderDto.payType}%'
-        </if>
         <if test="saleOrderDto.id != null">
             AND sale_order.id = #{saleOrderDto.id}
         </if>
+        <!--<if test="saleOrderDto.payType != null and saleOrderDto.payType != ''">-->
+            <!--AND sale_order.pay_type like '%${saleOrderDto.payType}%'-->
+        <!--</if>-->
     </select>
 
 

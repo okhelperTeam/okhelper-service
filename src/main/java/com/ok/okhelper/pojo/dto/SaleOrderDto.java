@@ -50,8 +50,8 @@ public class SaleOrderDto {
     @ApiModelProperty(value = "物流状态 （1-未发货 2-已发货 3-确认收货）")
     private Integer logisticsStatus;
 
-    @ApiModelProperty(value = "付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  混合数字拼接) LIKE模糊查询")
-    private String payType;
+//    @ApiModelProperty(value = "付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡  json格式 例如{'1':'0.00','2':'0.00'}  ) LIKE模糊查询")
+//    private String payType;
 
     @ApiModelProperty(hidden = true)
     private Long id;
