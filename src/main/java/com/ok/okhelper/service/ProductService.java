@@ -20,7 +20,7 @@ public interface ProductService {
 	
 	PageModel<ProductsVo> getProductsListByCategory(Long categoryId, PageModel pageModel);
 
-	List<ProductsVo> getProductsListBybarCode(String barCode);
+	ProductsVo getProductsListBybarCode(String barCode);
 	
 	Product getProduct(Long pId);
 

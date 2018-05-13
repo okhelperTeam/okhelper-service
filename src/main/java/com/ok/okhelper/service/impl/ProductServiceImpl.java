@@ -128,14 +128,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductsVo> getProductsListBybarCode(String barCode) {
-        List<ProductsVo> productsListBybarCode = productMapper.getProductsListBybarCode(barCode, JWTUtil.getStoreId());
+    public ProductsVo getProductsListBybarCode(String barCode) {
+        Product product=new Product();
+        product.setStoreId(JWTUtil.getStoreId());
+        product.setBarCode(barCode);
+        Product dbproduct = productMapper.selectOne(product);
 
-        if(CollectionUtils.isEmpty(productsListBybarCode)){
+        if(dbproduct==null){
             throw new NotFoundException("没有找到相关商品");
         }
 
-        return productsListBybarCode;
+        ProductsVo productsVo=new ProductsVo();
+        BeanUtils.copyProperties(dbproduct,productsVo);
+
+        return productsVo;
     }
 
     /*
