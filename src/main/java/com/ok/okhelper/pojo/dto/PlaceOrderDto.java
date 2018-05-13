@@ -45,12 +45,12 @@ public class PlaceOrderDto {
 //    @ApiModelProperty(value = "实付金额",required = true)
 //    private BigDecimal realPay;
 //
-//    /**
-//     * 优惠金额
-//     */
-//    @Column(name = "discount_price")
-//    @ApiModelProperty(value = "优惠金额")
-//    private BigDecimal discountPrice;
+    /**
+     * 优惠金额
+     */
+    @Column(name = "discount_price")
+    @ApiModelProperty(value = "优惠金额")
+    private BigDecimal discountPrice;
 //
 //    /**
 //     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)

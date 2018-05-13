@@ -1,5 +1,6 @@
 package com.ok.okhelper.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
@@ -43,6 +44,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -171,11 +173,11 @@ public class SaleServiceImpl implements SaleService {
     public PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
-//        //判断金额正确性
-//        BigDecimal amountPayable = placeOrderDto.getSumPrice().subtract(placeOrderDto.getDiscountPrice());
-//        if (placeOrderDto.getDiscountPrice().compareTo(placeOrderDto.getSumPrice()) > 0) {
-//            throw new IllegalException("优惠金额不能大于订单总金额");
-//        }
+        //判断金额正确性
+        BigDecimal amountPayable = placeOrderDto.getSumPrice().subtract(placeOrderDto.getDiscountPrice());
+        if (placeOrderDto.getDiscountPrice().compareTo(placeOrderDto.getSumPrice()) > 0) {
+            throw new IllegalException("优惠金额不能大于订单总金额");
+        }
 //
 //        if (placeOrderDto.getRealPay().compareTo(amountPayable) > 0) {
 //            throw new IllegalException("实付金额不能大于应付金额");
@@ -413,26 +415,30 @@ public class SaleServiceImpl implements SaleService {
             throw new IllegalException("订单已支付全款，不要再支付了");
         }
 
+        //生成支付流水号(我们自己的)
+        String payNumber
+                = NumberGenerator.generatorPayMentOrderNumber(saleOrderId, paymentDto.getTradeType(), paymentDto.getPayType());
+
         //支付宝扣款
         if(String.valueOf(ConstEnum.PAYTYPE_ALIPAY.getCode()).equals(paymentDto.getPayType())){
             if(StringUtils.isBlank(paymentDto.getAliPayAuthCode())){
                 throw new IllegalException("支付宝付款码不能为空");
             }
-            String payNumber //我们的支付流水号
-                    = NumberGenerator.generatorPayMentOrderNumber(saleOrderId, paymentDto.getTradeType(), paymentDto.getPayType());
             if(ConstEnum.TRADETYPE_FIRST.getCode()==paymentDto.getTradeType()){
-                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),paymentDto.getDiscountPrice().toString(),"OK帮下单支付-"+saleOrder.getOrderNumber());
+                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),"0.00","OK帮下单支付-"+saleOrder.getOrderNumber());
             }else if(ConstEnum.TRADETYPE_REPAYMENT.getCode()==paymentDto.getTradeType()){
-                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),paymentDto.getDiscountPrice().toString(),"OK帮订单补款-"+saleOrder.getOrderNumber());
+                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),"0.00","OK帮订单还款-"+saleOrder.getOrderNumber());
             }
         }
 
 
         //更新订单信息
-        BigDecimal realPay = saleOrder.getRealPay().add(paymentDto.getRealPay());
-        BigDecimal discountPrice = saleOrder.getDiscountPrice().add(paymentDto.getDiscountPrice());
 
-        //欠款金额=订单总价-(历史优惠金额+这次优惠金额)-(历史已经付款金额+这次实付金额)
+        //(历史已经付款金额+这次实付金额)
+        BigDecimal realPay = saleOrder.getRealPay().add(paymentDto.getRealPay());
+        //优惠金额
+        BigDecimal discountPrice = saleOrder.getDiscountPrice();
+        //欠款金额=订单总价-(优惠金额)-(历史已经付款金额+这次实付金额)
         BigDecimal toBePaid
                 = saleOrder.getSumPrice().subtract(discountPrice).subtract(realPay);
 
@@ -451,26 +457,31 @@ public class SaleServiceImpl implements SaleService {
             }
         }
 
-        //拼接支付方式
-        Set<String> payTypeSet = new HashSet<>();
-        if (paymentDto.getPayType() != null) {
-            String[] newPayType = paymentDto.getPayType().split(",");
-            payTypeSet.addAll(Arrays.asList(newPayType));
-        }
-        if (saleOrder.getPayType() != null) {
-            String[] oldPayType = saleOrder.getPayType().split(",");
-            payTypeSet.addAll(Arrays.asList(oldPayType));
+        //统计支付方式,金额
+        try {
+            ObjectMapper objectMapper=new ObjectMapper();
+            Map<String,String> map = objectMapper.readValue(saleOrder.getPayType(), Map.class);
+            String dbpayMentTypePrice = map.get(paymentDto.getPayType());
+            if(dbpayMentTypePrice==null){
+                throw new IllegalException("payType参数错误");
+            }
+            //数据库中该支付方式金额
+            BigDecimal dbpayMentTypePriceDecimal=new BigDecimal(dbpayMentTypePrice);
+            BigDecimal newpayMentTypePriceDecimal = dbpayMentTypePriceDecimal.add(paymentDto.getRealPay());
+            map.put(paymentDto.getPayType(),newpayMentTypePriceDecimal.toString());
+            String newPayType = objectMapper.writeValueAsString(map);
+            saleOrder.setPayType(newPayType);
+        } catch (IOException e) {
+           log.error("异常：{}",e.getMessage());
+           throw new IllegalException("系统异常，支付失败");
         }
 
-        String[] strings = payTypeSet.toArray(new String[payTypeSet.size()]);
-        String payType = String.join(",", strings);
-        saleOrder.setPayType(payType);
 
+        //更新数据库
         int i = saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
         if (i <= 0) {
             throw new IllegalException("支付失败");
         }
-
 
     }
 

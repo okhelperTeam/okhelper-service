@@ -61,13 +61,13 @@ public class AliPayUtil {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
             log.error("支付宝错误码：{}，错误信息：{}",e.getErrCode(),e.getErrMsg());
-            throw new IllegalException("支付失败,请重新支付");
+            throw new IllegalException("支付宝支付失败,请重新支付");
         }
 
         log.info("支付宝支付响应信息：{}", response.getCode());
 
         if (!"10000".equals(response.getCode())) {
-            throw new IllegalException("支付失败,请重新支付");
+            throw new IllegalException("支付宝支付失败,请重新支付");
         }
     }
 

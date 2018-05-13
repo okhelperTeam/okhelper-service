@@ -17,8 +17,8 @@ public class PaymentDto {
     @NotNull
     private BigDecimal realPay = BigDecimal.ZERO;
 
-    @ApiModelProperty("本次优惠金额是本次")
-    private BigDecimal discountPrice = BigDecimal.ZERO;
+//    @ApiModelProperty("本次优惠金额是本次")
+//    private BigDecimal discountPrice = BigDecimal.ZERO;
 
     @ApiModelProperty("交易类型(1-首次支付  2-还款支付  组合收款算一次) 默认为 1")
     private Integer tradeType=1;
