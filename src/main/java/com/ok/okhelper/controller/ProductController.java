@@ -166,7 +166,7 @@ public class ProductController {
 	@RequiresPermissions("goods:view")
 	@ApiOperation(value = "商品库存预警")
 	@GetMapping("product/lowWarning/{numbers}")
-	public ServerResponse<PageModel<ProductNearDayVo>> getLowCountProduct(@PathVariable Integer numbers, @Valid PageModel pageModel) {
+	public ServerResponse<PageModel<ProductStockVo>> getLowCountProduct(@PathVariable Integer numbers, @Valid PageModel pageModel) {
 		logger.info("Enter method getNearDaysProduct params:days:" + numbers);
 		PageModel<ProductStockVo> lowCountProducts = productService.getLowCountProduct(numbers, pageModel);
 		ServerResponse serverResponse = ServerResponse.createBySuccess(lowCountProducts);
@@ -177,7 +177,7 @@ public class ProductController {
 	@RequiresPermissions("stock:view")
 	@ApiOperation(value = "单商品各批次库存")
 	@GetMapping("product/stockWithBatch/{pid}")
-	public ServerResponse<PageModel<ProductNearDayVo>> getstockWithBatch(@PathVariable(required = true) Long pid) {
+	public ServerResponse<PageModel<StockByBatchVo>> getstockWithBatch(@PathVariable(required = true) Long pid) {
 		logger.info("Enter method getstockWithBatch params:pid:" + pid);
 		List<StockByBatchVo> stockByBatchVos = productService.getstockWithBatch(pid);
 		ServerResponse serverResponse = ServerResponse.createBySuccess(stockByBatchVos);
