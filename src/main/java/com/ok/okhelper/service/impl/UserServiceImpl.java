@@ -440,10 +440,16 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    @Transactional
     public void sendMs(String number) {
         if(StringUtils.isBlank(number)){
             throw new IllegalException("手机号为空");
+        }
+        User user = findUserByUserNme(number);
+        if(user==null){
+            throw new IllegalException("无此用户");
+        }
+        if(ConstEnum.STATUSENUM_UNAVAILABLE.getCode()==user.getDeleteStatus()){
+            throw new IllegalException("当前用户不可用请联系客服");
         }
         String code = SMSUtil.createRandomVcode();
         SMSUtil.sendSMSCode(number,code);

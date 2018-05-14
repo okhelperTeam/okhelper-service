@@ -1,5 +1,8 @@
 package com.ok.okhelper.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.*;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
@@ -12,6 +15,7 @@ import com.ok.okhelper.service.OtherService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.util.NumberGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,5 +158,24 @@ public class DeliveryServiceImpl implements DeliveryService {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    @Override
+    public PageModel<SaleOrder> getUnSendOrder(PageModel pageModel) {
+        //启动分页
+        PageHelper.startPage(pageModel.getPageNum(), pageModel.getLimit());
+
+        //启动排序
+        PageHelper.orderBy(pageModel.getOrderBy());
+
+        List<SaleOrder> unSendOrder = saleOrderMapper.getUnSendOrder(JWTUtil.getStoreId());
+
+        if(CollectionUtils.isEmpty(unSendOrder)){
+            throw new NotFoundException("没有未发货订单");
+        }
+
+        PageInfo pageInfo=new PageInfo();
+
+        return null;
     }
 }

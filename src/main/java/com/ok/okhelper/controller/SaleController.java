@@ -97,16 +97,6 @@ public class SaleController {
         return ServerResponse.createBySuccess(placeOrderVo);
     }
 
-    @PostMapping("/sale/deliver_goods/{id:\\d+}")
-    @ApiOperation(value = "发货/出库")
-    public ServerResponse deliverGoods(@ApiParam(value = "销售单Id") @PathVariable Long id, DeliveryDto deliveryDto) {
-        deliveryDto.setSaleOrderId(id);
-        Long deliveryId = deliveryService.deliverGoods(deliveryDto);
-        if (deliveryId != null) {
-            deliveryService.sendEmail(id);
-        }
-        return ServerResponse.createBySuccessMessage("发货成功");
-    }
 
     @PostMapping("/sale/confirm_receipt/{id:\\d+}")
     @ApiOperation(value = "确认收货")

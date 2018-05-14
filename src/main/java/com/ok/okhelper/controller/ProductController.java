@@ -125,11 +125,11 @@ public class ProductController {
 	@RequiresPermissions("goods:view")
 	@ApiOperation(value = "查询单个商品")
 	@GetMapping("product/{id:\\d+}")
-	public ServerResponse getProduct(@PathVariable Long id) {
+	public ServerResponse<Product> getProduct(@PathVariable Long id) {
 		logger.info("Enter method getProduct params:id:" + id);
 		Product products = productService.getProduct(id);
 		
-		ServerResponse serverResponse = ServerResponse.createBySuccess(products);
+		ServerResponse<Product> serverResponse = ServerResponse.createBySuccess(products);
 		logger.info("Exit method getProduct params:" + serverResponse);
 		return serverResponse;
 	}
