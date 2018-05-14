@@ -7,6 +7,7 @@ import com.ok.okhelper.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -32,6 +33,8 @@ public interface UserMapper extends MyMapper<User> {
     IdAndNameBo getIdAndName(Long id);
     
 	List<UserBo> getEmployeeList(Long storeId);
+	
+	int checkPassword(String password);
 
 //	int register(UserDto userDto);
 }

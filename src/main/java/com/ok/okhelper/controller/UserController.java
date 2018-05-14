@@ -5,6 +5,7 @@ import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.dto.UserUpdateDto;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
@@ -100,6 +101,12 @@ public class UserController {
         return userService.checkUserName(userName);
     }
     
+    @GetMapping("user/checkPassword")
+    @ApiOperation(value = "检查密码")
+    @ApiResponses({@ApiResponse(code = 409, message = "密码错误")})
+    public ServerResponse checkPassword(@ApiParam(value = "旧密码",required = true) String password) {
+        return userService.checkPassword(password);
+    }
     
     @GetMapping("/user/me")
     @ApiOperation(value = "获取我的信息",notes = "用于检测token是否有效，并补签")
@@ -142,6 +149,13 @@ public class UserController {
         return ServerResponse.createBySuccess(userVo);
     }
     
+    @ApiOperation(value = "修改个人信息")
+    @PutMapping("/user/myInfo")
+    @RequiresPermissions("employee:edit")
+    public ServerResponse updateMyInfo(UserUpdateDto userDto){
+        userService.updateMyInfo(userDto);
+        return ServerResponse.createBySuccess("修改成功");
+    }
     
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
 

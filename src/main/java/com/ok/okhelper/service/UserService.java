@@ -5,6 +5,7 @@ import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.dto.UserUpdateDto;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
@@ -40,6 +41,8 @@ public interface UserService {
     void userRegister(UserAndStoreDto userAndStoreDto);
 
     ServerResponse checkUserName(String userName);
+    
+    ServerResponse checkPassword(String userName);
 
     ServerResponse getUserListByStoreId(String token);
 
@@ -69,4 +72,6 @@ public interface UserService {
 	void sendMs(String number);
     
     UserVo verifyPhoneCode(String phone, String code);
+	
+	void updateMyInfo(UserUpdateDto userDto);
 }

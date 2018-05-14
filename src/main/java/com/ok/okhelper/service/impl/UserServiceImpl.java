@@ -14,6 +14,7 @@ import com.ok.okhelper.pojo.bo.UserBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.dto.UserUpdateDto;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.po.User;
@@ -41,6 +42,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
+import sun.security.util.Password;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -214,6 +216,21 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createBySuccess();
         }
         throw new ConflictException("用户名重复");
+    }
+    
+    @Override
+    public ServerResponse checkPassword(String password) {
+        
+        if (StringUtils.isBlank(password)) {
+            throw new IllegalException("密码为空");
+        }
+        
+        String dbPassword = userMapper.getPassWordByUserId(JWTUtil.getUserId());
+        String saltPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(),password);
+        if ( dbPassword.equals(saltPassword)) {
+            return ServerResponse.createBySuccess();
+        }
+        throw new ConflictException("旧密码错误");
     }
 
     /*
@@ -486,5 +503,44 @@ public class UserServiceImpl implements UserService {
         
         
         return userVo;
+    }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/5/14 13:25  
+    * @Params [userDto]  
+    * @Return void  
+    * @Description:修改个人信息
+    */  
+    @Override
+    public void updateMyInfo(UserUpdateDto userDto) {
+        Long id = JWTUtil.getUserId();
+        
+        if(id == null){
+            throw new IllegalException("登陆错误");
+        }
+        String newPassword = userDto.getUserPassword();
+        
+        if(!StringUtils.isBlank(newPassword)){
+            newPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(),newPassword);
+        }
+        
+        User user = new User();
+        user.setUpdateTime(new Date());
+        BeanUtils.copyProperties(userDto,user);
+        user.setUserPassword(newPassword);
+        user.setId(id);
+        try {
+            userMapper.updateByPrimaryKeySelective(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw  new IllegalException("修改失败"+e.getMessage());
+        }
+        
+        
+        
+        
+        
+        
     }
 }
