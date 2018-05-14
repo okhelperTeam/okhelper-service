@@ -5,6 +5,7 @@ import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.dto.UserUpdateDto;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
@@ -145,7 +146,7 @@ public class UserController {
     @ApiOperation(value = "修改个人信息")
     @PutMapping("/user/myInfo")
     @RequiresPermissions("employee:edit")
-    public ServerResponse updateMyInfo(UserDto userDto){
+    public ServerResponse updateMyInfo(UserUpdateDto userDto){
         userService.updateMyInfo(userDto);
         return ServerResponse.createBySuccess("修改成功");
     }

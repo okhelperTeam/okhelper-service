@@ -14,6 +14,7 @@ import com.ok.okhelper.pojo.bo.UserBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
+import com.ok.okhelper.pojo.dto.UserUpdateDto;
 import com.ok.okhelper.pojo.po.Role;
 import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.po.User;
@@ -41,6 +42,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
+import sun.security.util.Password;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -490,19 +492,22 @@ public class UserServiceImpl implements UserService {
     * @Description:修改个人信息
     */  
     @Override
-    public void updateMyInfo(UserDto userDto) {
+    public void updateMyInfo(UserUpdateDto userDto) {
         Long id = JWTUtil.getUserId();
         
         if(id == null){
             throw new IllegalException("登陆错误");
         }
-        String newPassword = userDto.getUserPassword()；
+        String newPassword = userDto.getUserPassword();
+        
         if(!StringUtils.isBlank(newPassword)){
-            
+            newPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(),newPassword);
         }
+        
         User user = new User();
         user.setUpdateTime(new Date());
         BeanUtils.copyProperties(userDto,user);
+        user.setUserPassword(newPassword);
         user.setId(id);
         try {
             userMapper.updateByPrimaryKeySelective(user);
