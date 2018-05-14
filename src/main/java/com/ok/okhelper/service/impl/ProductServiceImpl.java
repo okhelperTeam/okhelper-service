@@ -262,6 +262,9 @@ public class ProductServiceImpl implements ProductService {
 		BeanUtils.copyProperties(productDto, product);
 		
 		String[] subImg = productDto.getSubImgs();
+		if(subImg == null){
+			return product;
+		}
 		String img = String.join(",", subImg);
 		product.setSubImgs(img);
 		

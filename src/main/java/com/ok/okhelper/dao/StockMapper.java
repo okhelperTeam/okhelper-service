@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface StockMapper extends MyMapper<Stock> {
-	List<StockBo> getNearDaysProduct(Integer days, Long storeId);
+	List<StockBo> getNearDaysProduct(@Param("days") Integer days, @Param("storeId") Long storeId);
 	
 	List<ProductStockBo> getLowCountProductsList(@Param("numbers") Integer numbers, @Param("storeId") Long storeId);
 	
