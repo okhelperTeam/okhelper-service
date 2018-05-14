@@ -152,12 +152,12 @@ public class ProductController {
 			@ApiImplicitParam(name = "barCode", value = "商品条码", required = true, paramType = "form"),
 	})
 	@GetMapping("product/bar_code/{barCode}")
-	public ServerResponse<List<ProductsVo>> searchProductBybarCode(@PathVariable String barCode) {
+	public ServerResponse<ProductsVo> searchProductBybarCode(@PathVariable String barCode) {
 		logger.info("Enter method searchProduct params:barCode:" + barCode);
 
-		ServerResponse<List<ProductsVo>> serverResponse;
-		List<ProductsVo> productsListBybarCode = productService.getProductsListBybarCode(barCode);
-		serverResponse = ServerResponse.createBySuccess(productsListBybarCode);
+		ServerResponse<ProductsVo> serverResponse;
+		ProductsVo productsBybarCode = productService.getProductsListBybarCode(barCode);
+		serverResponse = ServerResponse.createBySuccess(productsBybarCode);
 
 		logger.info("Exit method searchProduct params:" + serverResponse);
 		return serverResponse;
