@@ -41,6 +41,8 @@ public interface UserService {
     void userRegister(UserAndStoreDto userAndStoreDto);
 
     ServerResponse checkUserName(String userName);
+    
+    ServerResponse checkPassword(String userName);
 
     ServerResponse getUserListByStoreId(String token);
 

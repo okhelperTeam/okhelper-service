@@ -217,6 +217,21 @@ public class UserServiceImpl implements UserService {
         }
         throw new ConflictException("用户名重复");
     }
+    
+    @Override
+    public ServerResponse checkPassword(String password) {
+        
+        if (StringUtils.isBlank(password)) {
+            throw new IllegalException("密码为空");
+        }
+        
+        String dbPassword = userMapper.getPassWordByUserId(JWTUtil.getUserId());
+        String saltPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(),password);
+        if ( dbPassword.equals(saltPassword)) {
+            return ServerResponse.createBySuccess();
+        }
+        throw new ConflictException("旧密码错误");
+    }
 
     /*
      * @Author zhangxin_an

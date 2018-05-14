@@ -101,6 +101,12 @@ public class UserController {
         return userService.checkUserName(userName);
     }
     
+    @GetMapping("user/checkPassword")
+    @ApiOperation(value = "检查密码")
+    @ApiResponses({@ApiResponse(code = 409, message = "密码错误")})
+    public ServerResponse checkPassword(@ApiParam(value = "旧密码",required = true) String password) {
+        return userService.checkPassword(password);
+    }
     
     @GetMapping("/user/me")
     @ApiOperation(value = "获取我的信息",notes = "用于检测token是否有效，并补签")
