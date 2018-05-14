@@ -4,7 +4,9 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.ProductNearDayVo;
+import com.ok.okhelper.pojo.vo.ProductStockVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
+import com.ok.okhelper.pojo.vo.StockByBatchVo;
 
 import java.util.List;
 
@@ -32,7 +34,8 @@ public interface ProductService {
 	
 	PageModel<ProductNearDayVo> getNearDaysProduct(Integer days, PageModel pageModel);
 	
-	PageModel<ProductsVo> getLowCountProduct(Integer numbers, PageModel pageModel);
+	PageModel<ProductStockVo> getLowCountProduct(Integer numbers, PageModel pageModel);
 	
 	
+	List<StockByBatchVo> getstockWithBatch(Long pid);
 }

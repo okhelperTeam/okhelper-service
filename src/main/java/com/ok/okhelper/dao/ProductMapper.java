@@ -3,6 +3,7 @@ package com.ok.okhelper.dao;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.po.Product;
 import com.ok.okhelper.pojo.vo.CategoryVo;
+import com.ok.okhelper.pojo.vo.ProductStockVo;
 import com.ok.okhelper.pojo.vo.ProductsVo;
 import com.ok.okhelper.util.MyMapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,5 +37,5 @@ public interface ProductMapper extends MyMapper<Product> {
 
     Integer getSaleStockLock(Long productId);
     
-    List<ProductsVo> getLowCountProductsList(@Param("numbers") Integer numbers, @Param("storeId") Long storeId);
+    ProductStockVo getProductStockVoByPK(Long productId);
 }

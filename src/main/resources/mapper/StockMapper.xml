@@ -34,11 +34,43 @@
         </constructor>
     </resultMap>
 
-    <select id="getNearDaysProduct" parameterType="int" resultMap="StockBoResultMap" >
+
+
+    <resultMap id="ProductStockBoResultMap" type="com.ok.okhelper.pojo.bo.ProductStockBo">
+        <!--
+          WARNING - 商品对应库存
+        -->
+        <constructor>
+            <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="total_stock" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        </constructor>
+    </resultMap>
+
+
+
+    <select id="getNearDaysProduct" parameterType="int" resultMap="StockBoResultMap">
         <![CDATA[
+
+
        SELECT id,warehouse_id,product_id,product_date,shelf_life,stock_count ,shelf_life - (datediff(NOW(), product_date)) as overday
-        FROM stock WHERE shelf_life - (datediff(NOW(), product_date)) <=  #{days}
-       ]]>
+        FROM stock WHERE shelf_life - (datediff(NOW(), product_date)) <=  #{days} and store_id = #{storeId}
+
+
+        ]]>
+    </select>
+    <select id="getLowCountProductsList" resultMap="ProductStockBoResultMap">
+        <![CDATA[
+
+
+          select product_id,sum(stock_count) as total_stock from stock where  store_id = #{storeId} group by product_id
+          having  total_stock <= #{numbers}
+
+        ]]>
+    </select>
+    <select id="getStockBoByPid" resultMap="StockBoResultMap">
+        SELECT id,warehouse_id,product_id,product_date,shelf_life,stock_count ,shelf_life - (datediff(NOW(), product_date)) as overday
+        FROM stock WHERE product_id = #{pid}
+
     </select>
 
 </mapper>

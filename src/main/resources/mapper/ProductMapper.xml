@@ -50,6 +50,19 @@
         </constructor>
     </resultMap>
 
+
+    <resultMap id="ProductStockVoMap" type="com.ok.okhelper.pojo.vo.ProductStockVo">
+        <!--
+          查询单个商品库存
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="product_title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="main_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+             </constructor>
+    </resultMap>
+
     <select id="getIdAndName" parameterType="java.lang.Long" resultMap="IdAndNameMap">
         select id,product_name from product WHERE id = #{id};
     </select>
@@ -117,6 +130,11 @@
         ]]>
     </select>
 
+
+    <select id="getProductStockVoByPK" resultMap="ProductStockVoMap" parameterType="java.lang.Long" >
+        select id,product_name,product_title,main_img from product
+        where delete_status = 1 and id = #{productId}
+    </select>
 
 
 </mapper>

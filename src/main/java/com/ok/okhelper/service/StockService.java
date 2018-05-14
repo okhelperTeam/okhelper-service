@@ -1,6 +1,9 @@
 package com.ok.okhelper.service;
 
+import com.ok.okhelper.pojo.bo.StockBo;
 import com.ok.okhelper.pojo.po.Stock;
+
+import java.util.List;
 
 /*
 *Author:zhangxin_an
@@ -10,4 +13,6 @@ import com.ok.okhelper.pojo.po.Stock;
 public interface StockService {
 	
 	Stock updateOrAddStockNumber(Stock stock,int addNumber);
+	
+	List<StockBo> getStockBoByPid(Long pid);
 }
