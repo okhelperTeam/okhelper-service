@@ -481,4 +481,40 @@ public class UserServiceImpl implements UserService {
         
         return userVo;
     }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/5/14 13:25  
+    * @Params [userDto]  
+    * @Return void  
+    * @Description:修改个人信息
+    */  
+    @Override
+    public void updateMyInfo(UserDto userDto) {
+        Long id = JWTUtil.getUserId();
+        
+        if(id == null){
+            throw new IllegalException("登陆错误");
+        }
+        String newPassword = userDto.getUserPassword()；
+        if(!StringUtils.isBlank(newPassword)){
+            
+        }
+        User user = new User();
+        user.setUpdateTime(new Date());
+        BeanUtils.copyProperties(userDto,user);
+        user.setId(id);
+        try {
+            userMapper.updateByPrimaryKeySelective(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw  new IllegalException("修改失败"+e.getMessage());
+        }
+        
+        
+        
+        
+        
+        
+    }
 }

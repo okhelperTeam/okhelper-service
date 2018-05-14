@@ -69,4 +69,6 @@ public interface UserService {
 	void sendMs(String number);
     
     UserVo verifyPhoneCode(String phone, String code);
+	
+	void updateMyInfo(UserDto userDto);
 }

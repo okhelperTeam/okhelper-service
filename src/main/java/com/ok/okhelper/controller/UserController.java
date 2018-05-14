@@ -142,6 +142,13 @@ public class UserController {
         return ServerResponse.createBySuccess(userVo);
     }
     
+    @ApiOperation(value = "修改个人信息")
+    @PutMapping("/user/myInfo")
+    @RequiresPermissions("employee:edit")
+    public ServerResponse updateMyInfo(UserDto userDto){
+        userService.updateMyInfo(userDto);
+        return ServerResponse.createBySuccess("修改成功");
+    }
     
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
 

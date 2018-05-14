@@ -19,6 +19,11 @@ import java.util.Date;
 @Data
 public class UserDto {
     
+    /**
+     * 用户Id
+     */
+    @ApiModelProperty(value = "用户Id")
+    private Long id;
     
     
     /**
@@ -84,6 +89,7 @@ public class UserDto {
     /**
      * 生日
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "生日")
     private Date userBirthday;
     
