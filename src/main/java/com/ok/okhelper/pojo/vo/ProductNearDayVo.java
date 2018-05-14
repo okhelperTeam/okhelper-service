@@ -60,4 +60,9 @@ public class ProductNearDayVo {
 	 * 主图
 	 */
 	private String mainImg;
+	
+	/*
+	 *剩余过期天数
+	 */
+	private Integer overDay;
 }

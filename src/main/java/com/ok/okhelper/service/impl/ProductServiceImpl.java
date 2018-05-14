@@ -9,6 +9,7 @@ import com.ok.okhelper.dao.WarehouseMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
+import com.ok.okhelper.pojo.bo.StockBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.ProductDto;
 import com.ok.okhelper.pojo.po.Product;
@@ -284,7 +285,7 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.orderBy(pageModel.getOrderBy());
 
         //临期商品
-        List<Stock> stocksList = stockMapper.getNearDaysProduct(days);
+        List<StockBo> stocksList = stockMapper.getNearDaysProduct(days);
 
         if (CollectionUtils.isEmpty(stocksList)) {
             return null;
@@ -293,7 +294,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductNearDayVo> productNearDayVoList = new ArrayList<>(stocksList.size());
         ProductNearDayVo productNearDayVo;
 
-        for (Stock stock : stocksList) {
+        for (StockBo stock : stocksList) {
 
             productNearDayVo = new ProductNearDayVo();
             //获取仓库名
@@ -304,7 +305,7 @@ public class ProductServiceImpl implements ProductService {
             productNearDayVo.setShelfLife(stock.getShelfLife());
             productNearDayVo.setWarehouse(warehouseMapperIdAndName);
             productNearDayVo.setStockCount(stock.getStockCount());
-
+            productNearDayVo.setOverDay(stock.getOverDay());
 
             productNearDayVoList.add(productNearDayVo);
         }

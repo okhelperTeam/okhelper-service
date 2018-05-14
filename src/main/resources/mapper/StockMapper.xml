@@ -19,10 +19,26 @@
             <arg column="store_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
         </constructor>
     </resultMap>
+    <resultMap id="StockBoResultMap" type="com.ok.okhelper.pojo.bo.StockBo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <constructor>
+            <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="warehouse_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="product_id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="product_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="shelf_life" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="stock_count" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <arg column="overDay" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
 
-
-    <select id="getNearDaysProduct" parameterType="int" resultMap="BaseResultMap" >
-        SELECT * FROM stock WHERE shelf_life - (datediff(NOW(), product_date)) BETWEEN 0 and  #{days}
+    <select id="getNearDaysProduct" parameterType="int" resultMap="StockBoResultMap" >
+        <![CDATA[
+       SELECT id,warehouse_id,product_id,product_date,shelf_life,stock_count ,shelf_life - (datediff(NOW(), product_date)) as overday
+        FROM stock WHERE shelf_life - (datediff(NOW(), product_date)) <=  #{days}
+       ]]>
     </select>
 
 </mapper>

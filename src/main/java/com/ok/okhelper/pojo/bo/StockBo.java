@@ -11,6 +11,8 @@ import java.util.Date;
 */
 @Data
 public class StockBo {
+	
+	private Long id;
 	/**
 	 * 仓库Id
 	 */
@@ -30,4 +32,38 @@ public class StockBo {
 	 * 保质期
 	 */
 	private Integer shelfLife;
+	
+	
+	/**
+	 * 库存量
+	 */
+	private Long stockCount;
+	
+	/*
+	*剩余过期天数
+	 */
+	private Integer overDay;
+	
+	public StockBo(Long id, Long warehouseId, Long productId, Date productDate, Integer shelfLife, Long stockCount) {
+		this.id = id;
+		this.warehouseId = warehouseId;
+		this.productId = productId;
+		this.productDate = productDate;
+		this.shelfLife = shelfLife;
+		this.stockCount = stockCount;
+	}
+	
+	public StockBo(Long id, Long warehouseId, Long productId, Date productDate, Integer shelfLife, Long stockCount, Integer overDay) {
+		this.id = id;
+		this.warehouseId = warehouseId;
+		this.productId = productId;
+		this.productDate = productDate;
+		this.shelfLife = shelfLife;
+		this.stockCount = stockCount;
+		this.overDay = overDay;
+	}
+	
+	public StockBo(){
+	
+	}
 }
