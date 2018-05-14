@@ -46,11 +46,11 @@ public class PlaceOrderVo {
     @Column(name = "sum_price")
     private BigDecimal sumPrice;
 
-    /**
-     * 实付款
-     */
-    @Column(name = "real_pay")
-    private BigDecimal realPay;
+//    /**
+//     * 实付款
+//     */
+//    @Column(name = "real_pay")
+//    private BigDecimal realPay;
 
     /**
      * 优惠金额
@@ -58,17 +58,17 @@ public class PlaceOrderVo {
     @Column(name = "discount_price")
     private BigDecimal discountPrice;
 
-    /**
-     * 待支付金额 （欠款金额）
-     */
-    @Column(name = "to_be_paid")
-    private BigDecimal toBePaid;
+//    /**
+//     * 待支付金额 （欠款金额）
+//     */
+//    @Column(name = "to_be_paid")
+//    private BigDecimal toBePaid;
 
-    /**
-     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
-     */
-    @Column(name = "pay_type")
-    private String payType;
+//    /**
+//     * 付款方式  (1-现金, 2-支付宝，3-微信，4-刷卡)
+//     */
+//    @Column(name = "pay_type")
+//    private String payType;
 
     /**
      * 订单状态（1-未付款，2-未付全款，3-已付款，4-交易成功，5-订单关闭）
@@ -87,17 +87,17 @@ public class PlaceOrderVo {
      */
     private String remarks;
 
-    /**
-     * 创建日期(下单时间)
-     */
-    @Column(name = "create_time")
-    private Date createTime;
+//    /**
+//     * 创建日期(下单时间)
+//     */
+//    @Column(name = "create_time")
+//    private Date createTime;
 
-    /**
-     * 付款时间
-     */
-    @Column(name = "pay_time")
-    private Date payTime;
+//    /**
+//     * 付款时间
+//     */
+//    @Column(name = "pay_time")
+//    private Date payTime;
 
     /**
      * 商店Id

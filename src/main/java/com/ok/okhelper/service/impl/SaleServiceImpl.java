@@ -38,7 +38,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -46,7 +45,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -166,7 +167,7 @@ public class SaleServiceImpl implements SaleService {
      * @Date 2018/4/29 上午11:00
      * @Param [storeId, seller, placeOrderDto]
      * @Return java.lang.String  返回订单vo
-     * @Description:下单并付款
+     * @Description:下单
      */
     @Override
     @Transactional
@@ -236,7 +237,8 @@ public class SaleServiceImpl implements SaleService {
     public void assembleSaleOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
             SaleOrderDetail saleOrderDetail = new SaleOrderDetail();
-            Product product = productService.getProduct(saleOrderDetail.getProductId());
+            Product product = productService.getProduct(placeOrderItemDto.getProductId());
+            saleOrderDetail.setProductId(product.getId());
             saleOrderDetail.setMainImg(product.getMainImg());
             saleOrderDetail.setProductName(product.getProductName());
             saleOrderDetail.setProductTitle(product.getProductTitle());
@@ -419,15 +421,17 @@ public class SaleServiceImpl implements SaleService {
         String payNumber
                 = NumberGenerator.generatorPayMentOrderNumber(saleOrderId, paymentDto.getTradeType(), paymentDto.getPayType());
 
+        String aliPayTradeNumber=null;
+
         //支付宝扣款
         if(String.valueOf(ConstEnum.PAYTYPE_ALIPAY.getCode()).equals(paymentDto.getPayType())){
             if(StringUtils.isBlank(paymentDto.getAliPayAuthCode())){
                 throw new IllegalException("支付宝付款码不能为空");
             }
             if(ConstEnum.TRADETYPE_FIRST.getCode()==paymentDto.getTradeType()){
-                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),"0.00","OK帮下单支付-"+saleOrder.getOrderNumber());
+                aliPayTradeNumber=aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),"0.00","OK帮下单支付-"+saleOrder.getOrderNumber());
             }else if(ConstEnum.TRADETYPE_REPAYMENT.getCode()==paymentDto.getTradeType()){
-                aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),"0.00","OK帮订单还款-"+saleOrder.getOrderNumber());
+                aliPayTradeNumber=aliPayUtil.alipay(payNumber,paymentDto.getAliPayAuthCode(),paymentDto.getRealPay().toString(),"0.00","OK帮订单还款-"+saleOrder.getOrderNumber());
             }
         }
 
@@ -473,6 +477,8 @@ public class SaleServiceImpl implements SaleService {
             saleOrder.setPayType(newPayType);
         } catch (IOException e) {
            log.error("异常：{}",e.getMessage());
+           //支付宝退款
+           aliPayUtil.refund(saleOrderId.toString(),aliPayTradeNumber,realPay.toString());
            throw new IllegalException("系统异常，支付失败");
         }
 
@@ -480,6 +486,8 @@ public class SaleServiceImpl implements SaleService {
         //更新数据库
         int i = saleOrderMapper.updateByPrimaryKeySelective(saleOrder);
         if (i <= 0) {
+            //支付宝退款
+            aliPayUtil.refund(saleOrderId.toString(),aliPayTradeNumber,realPay.toString());
             throw new IllegalException("支付失败");
         }
 

@@ -4,7 +4,9 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePayRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.ok.okhelper.exception.IllegalException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -41,7 +43,7 @@ public class AliPayUtil {
      * total_amount	    订单金额
      * timeout_express	交易超时时间
      */
-    public void alipay(String pyOrderNum, String auth_code, String total_amount, String discountable_amount,String subject) {
+    public String alipay(String pyOrderNum, String auth_code, String total_amount, String discountable_amount, String subject) {
         // 支付宝当面付2.0服务
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipaydev.com/gateway.do", APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, "RSA2"); //获得初始化的AlipayClient
         AlipayTradePayRequest request = new AlipayTradePayRequest(); //创建API对应的request类
@@ -60,7 +62,7 @@ public class AliPayUtil {
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            log.error("支付宝错误码：{}，错误信息：{}",e.getErrCode(),e.getErrMsg());
+            log.error("支付宝错误码：{}，错误信息：{}", e.getErrCode(), e.getErrMsg());
             throw new IllegalException("支付宝支付失败,请重新支付");
         }
 
@@ -68,6 +70,32 @@ public class AliPayUtil {
 
         if (!"10000".equals(response.getCode())) {
             throw new IllegalException("支付宝支付失败,请重新支付");
+        } else {
+            return response.getTradeNo();
+        }
+
+    }
+
+
+    //退款
+    public void refund(String pyOrderNum,String aliPayTradeNumber,String refundAmount) {
+        AlipayClient alipayClient = new DefaultAlipayClient
+                ("https://openapi.alipaydev.com/gateway.do", APP_ID, APP_PRIVATE_KEY, "json", CHARSET, ALIPAY_PUBLIC_KEY, "RSA2"); //获得初始化的AlipayClient
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest(); //创建退款API对应的request类
+
+        JSONObject data = new JSONObject();
+        data.put("out_trade_no", pyOrderNum);
+        data.put("trade_no", aliPayTradeNumber);
+        data.put("refund_amount", refundAmount);
+
+        request.setBizContent(data.toString()); //设置业务参数
+
+        AlipayTradeRefundResponse response = null;//通过alipayClient调用API，获得对应的response类
+        try {
+            response = alipayClient.execute(request);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            log.error("支付宝退款失败"+e.getErrCode());
         }
     }
 

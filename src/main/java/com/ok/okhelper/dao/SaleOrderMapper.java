@@ -24,4 +24,6 @@ public interface SaleOrderMapper extends MyMapper<SaleOrder> {
     List<SaleOrderVo> getSaleOrderVo(@Param("storeId") Long storeId, @Param("saleOrderDto")SaleOrderDto saleOrderDto);
 
     List<ProductCountMapVo> getSaleTotalProductCount(@Param("storeId") Long storeId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    List<SaleOrder> getUnSendOrder(Long storeId);
 }
