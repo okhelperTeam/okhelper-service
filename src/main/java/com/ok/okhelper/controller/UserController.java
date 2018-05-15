@@ -95,7 +95,7 @@ public class UserController {
     
     @RequiresPermissions("employee:edit")
     @DeleteMapping("user/employee/{id}")
-    @ApiOperation(value = "删除员工", notes = "删除该员工")
+    @ApiOperation(value = "删除员工", notes = "数据库完全删除该员工")
     public ServerResponse deleteEmployee(@PathVariable Long id) {
         userService.deleteEmployee(id);
         return ServerResponse.createBySuccess("删除成功");
