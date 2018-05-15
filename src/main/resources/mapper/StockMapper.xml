@@ -48,7 +48,7 @@
 
 
 
-    <select id="getNearDaysProduct" parameterType="int" resultMap="StockBoResultMap">
+    <select id="getNearDaysProduct" parameterType="map" resultMap="StockBoResultMap">
         <![CDATA[
 
 
