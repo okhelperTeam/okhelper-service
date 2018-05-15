@@ -76,4 +76,6 @@ public interface UserService {
 	void updateMyInfo(UserUpdateDto userDto);
     
     void deleteEmployee(Long id);
+	
+	void changeEmplyeeStatus(Long userId, Integer status);
 }

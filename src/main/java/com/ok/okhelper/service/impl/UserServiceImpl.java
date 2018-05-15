@@ -576,4 +576,39 @@ public class UserServiceImpl implements UserService {
         }
         logger.info("Exit method deleteEmployee()");
     }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/5/15 10:51  
+    * @Params [userId, status]  
+    * @Return void
+    * @Description:修改员工状态
+    */  
+    @Override
+    public void changeEmplyeeStatus(Long userId, Integer status) {
+    
+        logger.info("Enter method changeEmplyeeStatus() params [id]"+userId+"[status]"+status);
+        if(userId == null ){
+            throw new IllegalException("员工不存在");
+            
+        }
+        
+        if(status == null){
+            status = 1;
+        }
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user == null){
+            throw new IllegalException("员工不存在");
+        }
+        if (ObjectUtils.notEqual(user.getStoreId(), JWTUtil.getStoreId())) {
+            throw new AuthorizationException("资源不在你当前商铺查看范围");
+        }
+        user.setDeleteStatus(status);
+        try {
+            userMapper.updateByPrimaryKeySelective(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new IllegalException("资源不存在");
+        }
+    }
 }

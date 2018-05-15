@@ -159,11 +159,19 @@ public class UserController {
     
     @ApiOperation(value = "修改个人信息")
     @PutMapping("/user/myInfo")
-    @RequiresPermissions("employee:edit")
     public ServerResponse updateMyInfo(UserUpdateDto userDto){
         userService.updateMyInfo(userDto);
         return ServerResponse.createBySuccess("修改成功");
     }
+    
+    @ApiOperation(value = "修改员工状态")
+    @GetMapping("/employee/status")
+    @RequiresPermissions("employee:edit")
+    public ServerResponse changeEmplyeeStatus(Long userId,Integer status){
+        userService.changeEmplyeeStatus(userId,status);
+        return ServerResponse.createBySuccess("修改成功");
+    }
+    
     
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
