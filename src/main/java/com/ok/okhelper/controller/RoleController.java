@@ -3,11 +3,14 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.dto.RoleDto;
+import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.vo.RolePermissionVo;
 import com.ok.okhelper.service.RoleService;
+import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
@@ -29,6 +32,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * @Author zc
@@ -69,6 +75,22 @@ public class RoleController {
     public ServerResponse<List<RolePermissionVo>> getRoleList(@PathVariable Long roleId) {
         List<RolePermissionVo> roleList = roleService.getRoleListByStore(JWTUtil.getStoreId());
         return ServerResponse.createBySuccess(roleList);
+    }
+
+
+    /**
+     * @Author zc
+     * @Date 2018/4/18 上午10:59
+     * @Param [userAndRoleDto]
+     * @Return com.ok.okhelper.common.ServerResponse
+     * @Description: 变更角色 (给员工赋角色)
+     */
+    @PutMapping("/role/change_role/{id:\\d+}")
+    @ApiOperation(value = "变更角色")
+    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long id,
+                                             UserAndRoleDto userAndRoleDto) {
+        System.out.println(userAndRoleDto.getRoles().toString());
+        return userService.changeRole(id, userAndRoleDto.getRoles());
     }
 
 }
