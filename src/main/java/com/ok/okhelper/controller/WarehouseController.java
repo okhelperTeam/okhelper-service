@@ -8,6 +8,7 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.WarehouseDTO;
 import com.ok.okhelper.pojo.vo.WarehouseVo;
 import com.ok.okhelper.service.WareHouseService;
@@ -34,7 +35,7 @@ public class WarehouseController {
 	WareHouseService wareHouseService;
 	
 	@RequiresPermissions("warehouse:view")
-	@ApiOperation(value = "查询所有仓库",notes = "查询当前店铺所有仓库")
+	@ApiOperation(value = "查询所有仓库",notes = "查询当前店铺所有仓库，包含为启用")
 	@GetMapping("/warehouse")
 	public ServerResponse<PageModel<WarehouseVo>> getWarehouseList(@Valid PageModel pageModel){
 		logger.info("Enter method getWarehouseList()");
@@ -44,7 +45,17 @@ public class WarehouseController {
 		return ServerResponse.createBySuccess(warehouseVoList);
 		
 	}
-	
+	@RequiresPermissions("warehouse:view")
+	@ApiOperation(value = "查询所有可用仓库",notes = "查询当前店铺所有仓库，包含为启用")
+	@GetMapping("/usableWarehouse")
+	public ServerResponse<List<IdAndNameBo>> getWarehouseNameList(){
+		logger.info("Enter method getWarehouseNameList()");
+		
+		List<IdAndNameBo> warehouseNameList = wareHouseService.getWarehouseNameList();
+		
+		return ServerResponse.createBySuccess(warehouseNameList);
+		
+	}
 	
 	@RequiresPermissions("warehouse:view")
 	@ApiOperation(value = "查询仓库",notes = "查询具体仓库")

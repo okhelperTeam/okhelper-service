@@ -110,6 +110,7 @@ public class SupplierServiceImpl implements SupplierService {
 		Supplier supplier = new Supplier();
 		BeanUtils.copyProperties(supplierDto,supplier);
 		supplier.setOperator(JWTUtil.getUserId());
+		supplier.setStoreId(JWTUtil.getStoreId());
 		ServerResponse serverResponse;
 		try {
 			
@@ -144,6 +145,10 @@ public class SupplierServiceImpl implements SupplierService {
 		try {
 			
 			Supplier supplier = supplierMapper.selectByPrimaryKey(supplierId);
+			if (ObjectUtils.notEqual(supplier.getStoreId(), JWTUtil.getStoreId())) {
+				throw new AuthorizationException("资源不在你当前商铺查看范围");
+			}
+			
 			supplier.setOperator(JWTUtil.getUserId());
 			supplier.setDeleteStatus(ConstEnum.STATUSENUM_UNAVAILABLE.getCode());
 			supplierMapper.updateByPrimaryKeySelective(supplier);

@@ -45,6 +45,10 @@
         select id,warehouse_name from warehouse WHERE id = #{id};
     </select>
 
+    <select id="getWarehouseNameList"  resultMap="IdAndNameMap">
+        select id,warehouse_name from warehouse where delete_status = 1 and store_id = #{storeId};
+    </select>
+
 
     <select id="getWarehouseByStoreId" parameterType="long" resultMap="WarehouseVoMap"  >
       SELECT id,warehouse_name,description,store_keeper,operator,create_time,delete_status

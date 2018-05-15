@@ -78,10 +78,10 @@ public class CategoryControler {
 	
 	@RequiresPermissions("category:view")
 	@ApiOperation(value = "当前分类查询")
-	@GetMapping("/categorys/{cId}")
-	public ServerResponse<Category> getAllCategory(@PathVariable Long  cId){
+	@GetMapping("/categoryself/{id:\\d+}")
+	public ServerResponse<Category> getCategoryById(@PathVariable Long  id){
 		logger.info("Enter method getAllCategory() params：");
-		Category category = categoryService.getCategoryById(cId);
+		Category category = categoryService.getCategoryById(id);
 		
 		logger.info("Exit method getAllCategory() return："+category);
 		return ServerResponse.createBySuccess(category);

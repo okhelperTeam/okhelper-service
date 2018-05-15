@@ -15,6 +15,8 @@ public interface WarehouseMapper extends MyMapper<Warehouse> {
 	
 	IdAndNameBo getIdAndName(Long id);
 	
+	List<IdAndNameBo> getWarehouseNameList(Long storeId);
+	
 //	Warehouse getUserWarehouse(Long id);
 
 }

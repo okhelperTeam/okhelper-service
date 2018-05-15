@@ -166,7 +166,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		Product product = productMapper.selectByPrimaryKey(pId);
 		
-		if (product == null || product.getDeleteStatus() == 0) {
+		if (product == null || product.getDeleteStatus() == 0 || !product.getStoreId().equals(JWTUtil.getStoreId())) {
 			throw new NotFoundException("查询不存在");
 		}
 		
@@ -189,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
 			throw new IllegalException("参数为空");
 		}
 		
-		productMapper.updateStatus(pId);
+		productMapper.updateStatus(pId,JWTUtil.getStoreId());
 		
 		logger.info("Exit method deleteProduct(long pId) return:");
 	}
@@ -218,7 +218,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		product.setStoreId(JWTUtil.getStoreId());
-		
+		product.setOperator(JWTUtil.getUserId());
 		productMapper.insertSelective(product);
 		
 		product = productMapper.selectByPrimaryKey(product.getId());

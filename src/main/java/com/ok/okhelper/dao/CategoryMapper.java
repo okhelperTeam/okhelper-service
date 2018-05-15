@@ -23,7 +23,7 @@ public interface CategoryMapper extends MyMapper<Category> {
 	*/  
 //	List<Long>  getCategoryIdListBySuperId(@Param("superId") Long superId, @Param("storeId") Long storeId);
 	
-	int setDeleteStatus(List<CategoryVo> categorieList);
+	int setDeleteStatus(long id);
 	
-	List<IdAndNameBo> selectAllIdAndName();
+	List<IdAndNameBo> selectAllIdAndName(Long storeId);
 }

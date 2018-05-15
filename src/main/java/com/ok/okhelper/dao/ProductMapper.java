@@ -33,7 +33,7 @@ public interface ProductMapper extends MyMapper<Product> {
     
     IdAndNameBo getIdAndName(Long id);
     
-    void updateStatus(Long id);
+    void updateStatus(@Param("pId") Long pId, @Param("storeId") Long storeId);
 
     Integer getSaleStockLock(Long productId);
     

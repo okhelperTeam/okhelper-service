@@ -1,11 +1,13 @@
 package com.ok.okhelper.service.impl;
 
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.dao.WarehouseMapper;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.WarehouseDTO;
 import com.ok.okhelper.pojo.po.Supplier;
 import com.ok.okhelper.pojo.po.Warehouse;
@@ -14,6 +16,7 @@ import com.ok.okhelper.service.WareHouseService;
 import com.ok.okhelper.shiro.JWTUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -69,6 +72,10 @@ public class WarehouseServiceImpl implements WareHouseService {
 			throw new IllegalException("未找到当前仓库");
 			
 		}
+		if (ObjectUtils.notEqual(warehouse.getStoreId(), JWTUtil.getStoreId())) {
+			throw new AuthorizationException("资源不在你当前商铺查看范围");
+		}
+		
 		WarehouseVo warehouseVo = new WarehouseVo();
 		BeanUtils.copyProperties(warehouse,warehouseVo);
 		
@@ -96,6 +103,7 @@ public class WarehouseServiceImpl implements WareHouseService {
 		Warehouse warehouse = new Warehouse();
 		BeanUtils.copyProperties(warehouseDTO,warehouse);
 		warehouse.setOperator(JWTUtil.getUserId());
+		warehouse.setStoreId(JWTUtil.getStoreId());
 		ServerResponse serverResponse = null;
 		try {
 			int i = warehouseMapper.updateByPrimaryKeySelective(warehouse);
@@ -125,6 +133,10 @@ public class WarehouseServiceImpl implements WareHouseService {
 		}
 		ServerResponse serverResponse;
 		try {
+			Long storeId = warehouseMapper.selectByPrimaryKey(whId).getStoreId();
+			if (ObjectUtils.notEqual(storeId, JWTUtil.getStoreId())) {
+				throw new AuthorizationException("资源不在你当前商铺查看范围");
+			}
 			int i = warehouseMapper.deleteByPrimaryKey(whId);
 			serverResponse = ServerResponse.createBySuccess("删除成功",i);
 			
@@ -168,5 +180,21 @@ public class WarehouseServiceImpl implements WareHouseService {
 		
 		logger.info("Exit method addWarehouse(WarehouseDTO warehouseDTO) return:"+ serverResponse);
 		return serverResponse;
+	}
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/15 10:15  
+	* @Params []  
+	* @Return java.util.List<com.ok.okhelper.pojo.bo.IdAndNameBo>  
+	* @Description:查询所有可用仓库
+	*/  
+	@Override
+	public List<IdAndNameBo> getWarehouseNameList() {
+		logger.info("Enter method getWarehouseNameList");
+		List<IdAndNameBo> warehouseName = warehouseMapper.getWarehouseNameList(JWTUtil.getStoreId());
+		
+		logger.info("Wxit method getWarehouseNameList return "+warehouseName);
+		return warehouseName;
 	}
 }

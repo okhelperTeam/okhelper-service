@@ -2,7 +2,9 @@ package com.ok.okhelper.pojo.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /*
@@ -20,6 +22,7 @@ public class ProductDto {
 	 * 商品名
 	 */
 	@ApiModelProperty(value = "商品名",required = true)
+	@NotNull(message = "商品名为空")
 	private String productName;
 	
 	/**
@@ -38,6 +41,7 @@ public class ProductDto {
 	 * 类别Id
 	 */
 	@ApiModelProperty(value = "类别Id",required = true)
+	@NotNull(message = "商品类别为空")
 	private Long categoryId;
 	
 	/**
@@ -56,6 +60,7 @@ public class ProductDto {
 	 * 零售价
 	 */
 	@ApiModelProperty(value = "商品零售价",required = true)
+	@NotNull(message = "零售价为空")
 	private BigDecimal retailPrice;
 	
 	/**

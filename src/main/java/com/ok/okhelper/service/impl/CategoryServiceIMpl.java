@@ -146,11 +146,16 @@ public class CategoryServiceIMpl implements CategoryService {
 	@Override
 	@Transactional
 	public int deleteCategory(long id) {
-		List<CategoryVo> categorieList = getCategoryAllItems(id, JWTUtil.getStoreId());
-		if(CollectionUtils.isEmpty(categorieList)){
-			throw new IllegalException("分类不存在");
+		List<CategoryVo> categorieList = categoryMapper.getCategoryListBySuperId(id, JWTUtil.getStoreId());
+		if(!CollectionUtils.isEmpty(categorieList)){
+			throw new IllegalException("存在子类不能删除");
 		}
-		return categoryMapper.setDeleteStatus(categorieList);
+		try {
+			categoryMapper.setDeleteStatus(id);
+		}catch (Exception e){
+			throw  new IllegalException("分类不存在或已被删除");
+		}
+		return 1;
 	}
 	
 	/*
@@ -189,7 +194,9 @@ public class CategoryServiceIMpl implements CategoryService {
 	
 	@Override
 	public List<IdAndNameBo> getCategoryIdAndNameList() {
-		List<IdAndNameBo>  idAndNameBos = categoryMapper.selectAllIdAndName();
+		
+		
+		List<IdAndNameBo>  idAndNameBos = categoryMapper.selectAllIdAndName(JWTUtil.getStoreId());
 		return idAndNameBos;
 	}
 	
@@ -218,7 +225,9 @@ public class CategoryServiceIMpl implements CategoryService {
 			
 		}
 		Category category = categoryMapper.selectByPrimaryKey(cId);
-		
+		if( !category.getStoreId().equals(JWTUtil.getStoreId())){
+			throw new IllegalException("分类不存在");
+		}
 		return category;
 	}
 	

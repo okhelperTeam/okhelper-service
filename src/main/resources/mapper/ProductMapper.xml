@@ -97,10 +97,10 @@
     </select>
 
 
-    <update id="updateStatus" parameterType="long">
+    <update id="updateStatus" parameterType="map">
         UPDATE product
         SET delete_status = 0
-        WHERE id = #{id}
+        WHERE id = #{pId} and store_id = #{storeId}
     </update>
 
     <select id="getProductsListByCategoryId" resultMap="ProductVoMap" >

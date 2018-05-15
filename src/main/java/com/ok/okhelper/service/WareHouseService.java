@@ -2,6 +2,7 @@ package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.WarehouseDTO;
 import com.ok.okhelper.pojo.po.Warehouse;
 import com.ok.okhelper.pojo.vo.WarehouseVo;
@@ -27,6 +28,5 @@ public interface WareHouseService {
 	ServerResponse addWarehouse(WarehouseDTO warehouseDTO);
 	
 	
-	
-
+	List<IdAndNameBo> getWarehouseNameList();
 }

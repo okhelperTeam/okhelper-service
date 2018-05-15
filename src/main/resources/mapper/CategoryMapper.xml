@@ -52,15 +52,11 @@
     <update id="setDeleteStatus" >
         update category
         set delete_status = 0
-        where id in
-        <foreach collection="list" item="c" index="index"
-                 open="(" close=")" separator=",">
-            #{c.id}
-        </foreach>
+        where id  = #{id}
     </update>
 
-    <select id="selectAllIdAndName" resultMap="IdAndNameMap">
-        SELECT id,category_name FROM category where delete_status = 1
+    <select id="selectAllIdAndName" parameterType="long" resultMap="IdAndNameMap">
+        SELECT id,category_name FROM category where delete_status = 1 and store_id = #{storeId}
     </select>
     
 </mapper>
