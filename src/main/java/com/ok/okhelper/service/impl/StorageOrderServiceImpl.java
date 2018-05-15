@@ -257,8 +257,10 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		//启动排序
 		PageHelper.orderBy(pageModel.getOrderBy());
 		
+		StorageOrder storageOrder = new StorageOrder();
+		storageOrder.setStoreId(JWTUtil.getStoreId());
 		
-		List<StorageOrder> storageOrderList = storageOrderMapper.selectAll();
+		List<StorageOrder> storageOrderList = storageOrderMapper.select(storageOrder);
 		
 		if(CollectionUtils.isEmpty(storageOrderList)){
 			throw new NotFoundException("没有入货单");
