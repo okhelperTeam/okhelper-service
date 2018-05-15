@@ -2,6 +2,7 @@ package com.ok.okhelper.service;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
@@ -53,7 +54,7 @@ public interface UserService {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description:
      */
-    ServerResponse addEmployee(UserDto userDto);
+    ServerResponse<IdAndNameBo> addEmployee(UserDto userDto);
 
     ServerResponse changeRole(Long employeeId, List<Long> roles);
 

@@ -2,10 +2,12 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.dto.UserUpdateDto;
+import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
@@ -80,7 +82,7 @@ public class UserController {
     @PostMapping("/user/employee")
     @ApiOperation(value = "添加员工", notes = "添加员工并注册")
     @ApiResponses({@ApiResponse(code = 400, message = "所添加员工信息有误")})
-    public ServerResponse addEmployee(@Valid UserDto userDto) {
+    public ServerResponse<IdAndNameBo> addEmployee(@Valid UserDto userDto) {
 
         return userService.addEmployee(userDto);
     }

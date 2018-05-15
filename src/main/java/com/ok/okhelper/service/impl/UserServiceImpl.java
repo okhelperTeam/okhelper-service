@@ -9,6 +9,7 @@ import com.ok.okhelper.dao.StoreMapper;
 import com.ok.okhelper.dao.UserMapper;
 import com.ok.okhelper.exception.ConflictException;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.bo.RoleBo;
 import com.ok.okhelper.pojo.bo.UserBo;
 import com.ok.okhelper.pojo.constenum.ConstEnum;
@@ -284,7 +285,7 @@ public class UserServiceImpl implements UserService {
      * @Description:增加员工
      */
     @Override
-    public ServerResponse addEmployee(UserDto userDto) {
+    public ServerResponse<IdAndNameBo> addEmployee(UserDto userDto) {
 
         logger.info("Enter method addEmployee" + userDto);
 
@@ -314,11 +315,11 @@ public class UserServiceImpl implements UserService {
 
             userMapper.insertSelective(user);
         } catch (Exception e) {
-            throw new IllegalException("注册失败");
+            throw new IllegalException("添加失败");
         }
 
-
-        ServerResponse serverResponse = ServerResponse.createBySuccess("添加成功");
+        IdAndNameBo idAndNameBo = new IdAndNameBo(user.getId(),user.getUserName());
+        ServerResponse serverResponse = ServerResponse.createBySuccess("添加成功",idAndNameBo);
 
         logger.info("Exit method addEmployee" + serverResponse);
 
