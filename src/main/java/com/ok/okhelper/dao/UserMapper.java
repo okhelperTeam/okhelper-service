@@ -28,13 +28,13 @@ public interface UserMapper extends MyMapper<User> {
     int deleteAllRoleFromUser(Long userId);
 
     int insertRoleToUser(@Param("user_id") Long user_id, @Param("role_id") Long role_id, @Param("operator") Long operator);
-    
-    
+
+
     IdAndNameBo getIdAndName(Long id);
-    
-	List<UserBo> getEmployeeList(@Param("storeId") Long storeId, @Param("deleteStatus") Integer deleteStatus);
-	
-	int checkPassword(String password);
+
+    List<UserBo> getEmployeeList(@Param("storeId") Long storeId, @Param("deleteStatus") Integer deleteStatus);
+
+//	int checkPassword(String password);
 
 //	int register(UserDto userDto);
 }
