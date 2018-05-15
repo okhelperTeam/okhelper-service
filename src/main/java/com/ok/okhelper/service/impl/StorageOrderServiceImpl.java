@@ -297,6 +297,7 @@ public class StorageOrderServiceImpl implements StorageOrderService {
 		
 		StorageOrder storageOrderEg = new StorageOrder();
 		storageOrderEg.setSupplierId(supplierId);
+		storageOrderEg.setStoreId(JWTUtil.getStoreId());
 		List<StorageOrder> storageOrderList = storageOrderMapper.select(storageOrderEg);
 		
 		if(CollectionUtils.isEmpty(storageOrderList)){
