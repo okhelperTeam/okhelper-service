@@ -2,6 +2,7 @@ package com.ok.okhelper.service;
 
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.CategoryDto;
+import com.ok.okhelper.pojo.po.Category;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface CategoryService {
 	void addCategory(CategoryDto categoryDto);
 	
 	List<IdAndNameBo> getCategoryIdAndNameList();
+	
+	Category getCategoryById(Long cId);
 }

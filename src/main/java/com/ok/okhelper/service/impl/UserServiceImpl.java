@@ -371,7 +371,7 @@ public class UserServiceImpl implements UserService {
      * @Description:获取员工
      */
     @Override
-    public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel) {
+    public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel,Integer deleteStatus) {
 
         logger.info("Enter method getEmployeeList()");
         //启动分页
@@ -382,11 +382,16 @@ public class UserServiceImpl implements UserService {
         Long storeId = JWTUtil.getStoreId();
         Long bossId = JWTUtil.getUserId();
 
+        
         if (null == storeId || null == bossId) {
             throw new UnauthenticatedException("登陆异常");
         }
+        
+        if(deleteStatus == null){
+            deleteStatus = 1;
+        }
 
-        List<UserBo> userBos = userMapper.getEmployeeList(storeId);
+        List<UserBo> userBos = userMapper.getEmployeeList(storeId,deleteStatus);
 
         if (CollectionUtils.isEmpty(userBos)) {
             return null;
@@ -542,5 +547,33 @@ public class UserServiceImpl implements UserService {
         
         
         
+    }
+    
+    /*
+    * @Author zhangxin_an 
+    * @Date 2018/5/15 8:48
+    * @Params [id]  
+    * @Return void  
+    * @Description:删除员工
+    */  
+    @Override
+    public void deleteEmployee(Long id) {
+    
+        logger.info("Enter method deleteEmployee() params"+id);
+        
+        if( id == null){
+            throw new IllegalException("参数为空");
+        }
+        User user = userMapper.selectByPrimaryKey(id);
+        if( user.getStoreId() != JWTUtil.getStoreId()){
+        	throw new IllegalException("员工不存在");
+        }
+        try {
+            userMapper.deleteByPrimaryKey(id);
+        }
+        catch (Exception e){
+            throw new IllegalException("删除出错，员工不存在或已被删除");
+        }
+        logger.info("Exit method deleteEmployee()");
     }
 }

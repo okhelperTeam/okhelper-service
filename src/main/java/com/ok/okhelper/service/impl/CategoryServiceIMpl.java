@@ -170,11 +170,11 @@ public class CategoryServiceIMpl implements CategoryService {
 			throw new IllegalException("参数不全");
 		}
 		
-		Category c = categoryMapper.selectByPrimaryKey(categoryDto.getSuperId());
-		if( c == null || c.getDeleteStatus() == 0)
-		{
-			throw new IllegalException("父类不存在");
-		}
+//		Category c = categoryMapper.selectByPrimaryKey(categoryDto.getSuperId());
+////		if( c == null || c.getDeleteStatus() == 0)
+////		{
+////			throw new IllegalException("父类不存在");
+////		}
 		Category category = new Category();
 		BeanUtils.copyProperties(categoryDto,category);
 		category.setStoreId(JWTUtil.getStoreId());
@@ -199,8 +199,28 @@ public class CategoryServiceIMpl implements CategoryService {
 	* @Params []  
 	* @Return java.util.List<com.ok.okhelper.pojo.bo.IdAndNameBo>  
 	* @Description:查询所有类名
-	*/  
+	*/
 	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/15 8:32
+	* @Params [cId]  
+	* @Return com.ok.okhelper.pojo.po.Category  
+	* @Description:查询单个分类
+	*/  
+	@Override
+	public Category getCategoryById(Long cId) {
+		
+		logger.info("Enter method getCategoryById() params："+cId);
+		
+		if( cId == null){
+			throw new IllegalException("参数错误");
+			
+		}
+		Category category = categoryMapper.selectByPrimaryKey(cId);
+		
+		return category;
+	}
 	
 	/*
 	 * @Author zhangxin_an

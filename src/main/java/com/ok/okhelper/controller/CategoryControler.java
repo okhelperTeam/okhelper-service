@@ -9,6 +9,7 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.CategoryDto;
+import com.ok.okhelper.pojo.po.Category;
 import com.ok.okhelper.pojo.vo.CategoryVo;
 import com.ok.okhelper.service.CategoryService;
 import com.ok.okhelper.service.SaleService;
@@ -73,6 +74,17 @@ public class CategoryControler {
 		categoryService.addCategory(categoryDto);
 		logger.info("Exit method getAllCategory() return：");
 		return ServerResponse.createBySuccess("添加成功");
+	}
+	
+	@RequiresPermissions("category:view")
+	@ApiOperation(value = "当前分类查询")
+	@GetMapping("/categorys/{cId}")
+	public ServerResponse<Category> getAllCategory(@PathVariable Long  cId){
+		logger.info("Enter method getAllCategory() params：");
+		Category category = categoryService.getCategoryById(cId);
+		
+		logger.info("Exit method getAllCategory() return："+category);
+		return ServerResponse.createBySuccess(category);
 	}
 	
 	

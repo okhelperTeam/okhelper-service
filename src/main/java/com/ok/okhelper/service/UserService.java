@@ -64,7 +64,7 @@ public interface UserService {
      * @Return java.util.List<com.ok.okhelper.pojo.vo.EmployeeVo>
      * @Description:获取员工
      */
-    PageModel<EmployeeVo> getEmployeeList(PageModel pageModel);
+    PageModel<EmployeeVo> getEmployeeList(PageModel pageModel,Integer deleteStatus);
 
 
     UserVo getUserInfo(Long id);
@@ -74,4 +74,6 @@ public interface UserService {
     UserVo verifyPhoneCode(String phone, String code);
 	
 	void updateMyInfo(UserUpdateDto userDto);
+    
+    void deleteEmployee(Long id);
 }

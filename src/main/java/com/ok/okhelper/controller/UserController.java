@@ -88,9 +88,17 @@ public class UserController {
     @RequiresPermissions("employee:view")
     @GetMapping("user/employee")
     @ApiOperation(value = "获取员工", notes = "店长获取该店所有员工")
-    public ServerResponse<PageModel<EmployeeVo>> getEmployeeList(@Valid PageModel pageModel) {
-        PageModel<EmployeeVo> employeeVoList = userService.getEmployeeList(pageModel);
+    public ServerResponse<PageModel<EmployeeVo>> getEmployeeList(@Valid PageModel pageModel,Integer deleteStatus) {
+        PageModel<EmployeeVo> employeeVoList = userService.getEmployeeList(pageModel,deleteStatus);
         return ServerResponse.createBySuccess(employeeVoList);
+    }
+    
+    @RequiresPermissions("employee:edit")
+    @DeleteMapping("user/employee/{id}")
+    @ApiOperation(value = "删除员工", notes = "删除该员工")
+    public ServerResponse deleteEmployee(@PathVariable Long id) {
+        userService.deleteEmployee(id);
+        return ServerResponse.createBySuccess("删除成功");
     }
 
 

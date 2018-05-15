@@ -103,8 +103,9 @@
     
     
     
-    <select id="getEmployeeList" parameterType="long" resultMap="UserBoMap" >
+    <select id="getEmployeeList" parameterType="map" resultMap="UserBoMap" >
       SELECT id,user_name,user_nick,user_avatar,user_sex,user_phone,delete_status from user WHERE store_id = #{storeId}
+      and delete_status = #{deleteStatus}
     </select>
 
 

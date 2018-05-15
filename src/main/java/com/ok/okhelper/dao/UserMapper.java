@@ -32,7 +32,7 @@ public interface UserMapper extends MyMapper<User> {
     
     IdAndNameBo getIdAndName(Long id);
     
-	List<UserBo> getEmployeeList(Long storeId);
+	List<UserBo> getEmployeeList(@Param("storeId") Long storeId, @Param("deleteStatus") Integer deleteStatus);
 	
 	int checkPassword(String password);
 
