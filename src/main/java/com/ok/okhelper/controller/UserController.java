@@ -3,11 +3,9 @@ package com.ok.okhelper.controller;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
-import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.dto.UserUpdateDto;
-import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
@@ -124,23 +122,6 @@ public class UserController {
         UserVo userInfo = userService.getUserInfo(JWTUtil.getUserId());
         return ServerResponse.createBySuccess(userInfo);
     }
-
-
-    /**
-     * @Author zc
-     * @Date 2018/4/18 上午10:59
-     * @Param [userAndRoleDto]
-     * @Return com.ok.okhelper.common.ServerResponse
-     * @Description: 变更角色
-     */
-    @PutMapping("/user/role/{id:\\d+}")
-    @ApiOperation(value = "变更角色")
-    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long id,
-                                             UserAndRoleDto userAndRoleDto) {
-        System.out.println(userAndRoleDto.getRoles().toString());
-        return userService.changeRole(id, userAndRoleDto.getRoles());
-    }
-
 
     @GetMapping("/user/phoneCode")
     @ApiOperation(value = "发短信",notes = "给该手机号发短信，10分钟失效")
