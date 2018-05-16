@@ -108,7 +108,7 @@ public class SaleController {
     @PostMapping("/sale/close_order/{id:\\d+}")
     @ApiOperation(value = "关闭订单")
     public ServerResponse closeOrder(@ApiParam(value = "销售单Id") @PathVariable Long id) {
-        saleService.closeOrder(id);
+        saleService.closeOrder(id,false);
         return ServerResponse.createBySuccessMessage("订单关闭成功");
     }
 

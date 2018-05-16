@@ -45,7 +45,7 @@
         from user
         where id in (SELECT user_id
                      from user_role
-                     where user_role.role_id = #{roleId}) And storeId = #{storeId}
+                     where user_role.role_id = #{roleId}) And store_id = #{storeId}
     </select>
 
 

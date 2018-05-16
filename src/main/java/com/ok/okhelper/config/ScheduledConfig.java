@@ -1,12 +1,17 @@
 package com.ok.okhelper.config;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ThreadContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Author: zc
@@ -16,6 +21,8 @@ import java.util.concurrent.Executors;
 @Configuration
 public class ScheduledConfig implements SchedulingConfigurer {
 
+
+
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
         scheduledTaskRegistrar.setScheduler(setTaskExecutors());
@@ -23,6 +30,8 @@ public class ScheduledConfig implements SchedulingConfigurer {
 
     @Bean(destroyMethod = "shutdown")
     public Executor setTaskExecutors() {
-        return Executors.newScheduledThreadPool(3); // 3个线程来处理。
+        // 5个线程来处理。
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        return scheduledExecutorService;
     }
 }

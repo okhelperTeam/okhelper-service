@@ -36,6 +36,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.util.ThreadContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -341,14 +342,15 @@ public class SaleServiceImpl implements SaleService {
      * @Description:关闭订单
      */
     @Transactional
-    public void closeOrder(Long saleOrderId) {
+    public void closeOrder(Long saleOrderId,boolean isTask) {
         SaleOrder saleOrder = saleOrderMapper.selectByPrimaryKey(saleOrderId);
         if (saleOrder == null) {
             throw new NotFoundException("订单不存在");
         }
-        if (ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
+        if (!isTask&&ObjectUtils.notEqual(saleOrder.getStoreId(), JWTUtil.getStoreId())) {
             throw new AuthorizationException("资源不在你当前商铺查看范围");
         }
+        ThreadContext.unbindSubject();
         if (ConstEnum.SALESTATUS_CLOSE.getCode() == saleOrder.getOrderStatus()) {
             throw new IllegalException("订单已关闭");
         }

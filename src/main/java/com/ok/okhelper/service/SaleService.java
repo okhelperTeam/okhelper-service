@@ -32,7 +32,7 @@ public interface SaleService {
 
     void confirmReceipt(Long saleOrderId);
 
-    void closeOrder(Long saleOrderId);
+    void closeOrder(Long saleOrderId,boolean isTsk);
 
     void payment(Long saleOrderId, PaymentDto paymentDto);
 }
