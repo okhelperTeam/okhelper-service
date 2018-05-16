@@ -1,16 +1,22 @@
 package com.ok.okhelper.task;
 
 import com.ok.okhelper.controller.ReportController;
+import com.ok.okhelper.dao.SaleOrderMapper;
 import com.ok.okhelper.dao.StoreMapper;
+import com.ok.okhelper.pojo.constenum.ConstEnum;
 import com.ok.okhelper.pojo.constenum.ConstStr;
+import com.ok.okhelper.pojo.po.SaleOrder;
 import com.ok.okhelper.pojo.po.Store;
+import com.ok.okhelper.service.SaleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
@@ -28,28 +34,28 @@ public class Jobs {
     private StoreMapper storeMapper;
 
     @Autowired
+    private SaleOrderMapper saleOrderMapper;
+
+    @Autowired
+    private SaleService saleService;
+
+    @Autowired
     private StringRedisTemplate redisTemplate;
 
-    //FIXME 废弃换成下单时判断
-    //每天凌晨跑
-//    @Scheduled(cron = "0 0 0 * * ?")
-//    public void HotSaleHandler() {
-//        log.info("HotSaleHandler定时任务开启");
-//        List<Store> stores = storeMapper.selectAll();
-//        stores.forEach(store -> {
-//            String zkey_yesterday = ConstStr.HOT_SALE + ":" + store.getId() + ":" + DateFormatUtils.format(DateUtils.addDays(new Date(), -1), "yyyyMMdd");
-//            String zkey = ConstStr.HOT_SALE + ":" + store.getId() + ":" + DateFormatUtils.format(new Date(), "yyyyMMdd");
-//
-//            //初始化新的一天
-//            redisTemplate.opsForZSet().add(zkey, String.valueOf((long) 0), 0);
-//            redisTemplate.expire(zkey, 31, TimeUnit.DAYS);
-//            redisTemplate.opsForZSet().remove(zkey, "0");
-//            log.info("初始化今天热销缓存{}", zkey);
 
-    //清除前一天商品只留销量前十
-//            redisTemplate.opsForZSet().removeRange(zkey_yesterday,0,-11);
-//            log.info("清除昨天热销缓存{}",zkey_yesterday);
-//        });
+    //定时关单(2小时前的)
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void HotSaleHandler() {
+        log.info("定时关单开始");
+        Example example = new Example(SaleOrder.class);
+        example.createCriteria()
+                .andLessThanOrEqualTo("createTime", DateUtils.addHours(new Date(), -2))
+                .andEqualTo("orderStatus", ConstEnum.SALESTATUS_NOPAYMENT.getCode());
 
-//    }
+        List<SaleOrder> saleOrders = saleOrderMapper.selectByExample(example);
+        if (CollectionUtils.isNotEmpty(saleOrders)) {
+            saleOrders.forEach(x -> saleService.closeOrder(x.getId()));
+        }
+
+    }
 }

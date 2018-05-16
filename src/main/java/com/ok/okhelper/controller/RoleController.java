@@ -2,6 +2,7 @@ package com.ok.okhelper.controller;
 
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
+import com.ok.okhelper.pojo.dto.RoleAndPermissionDto;
 import com.ok.okhelper.pojo.dto.RoleDto;
 import com.ok.okhelper.pojo.dto.UserAndRoleDto;
 import com.ok.okhelper.pojo.vo.RolePermissionVo;
@@ -11,12 +12,14 @@ import com.ok.okhelper.shiro.JWTUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,13 +31,14 @@ import java.util.List;
  */
 @Api(tags = "角色模块")
 @RestController
+@Slf4j
 public class RoleController {
 
     @Autowired
     private RoleService roleService;
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     /**
      * @Author zc
@@ -89,8 +93,25 @@ public class RoleController {
     @ApiOperation(value = "变更角色")
     public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long id,
                                              UserAndRoleDto userAndRoleDto) {
-        System.out.println(userAndRoleDto.getRoles().toString());
-        return userService.changeRole(id, userAndRoleDto.getRoles());
+        log.info("角色变更：用户Id：{} ----> 角色列表：{}======> 操作者Id：{}",id,userAndRoleDto.getRoles().toString(),JWTUtil.getUserId());
+        return roleService.changeRole(id, userAndRoleDto.getRoles());
+    }
+
+
+    /**
+     * @Author zc
+     * @Date 2018/4/18 上午10:59
+     * @Param [userAndRoleDto]
+     * @Return com.ok.okhelper.common.ServerResponse
+     * @Description: FIXME 变更权限 (给员工赋角色)   通用角色无权修改，二期再说
+     */
+    @PutMapping("/role/change_permission/{id:\\d+}")
+    @ApiOperation(value = "变更权限",notes = "给角色重新赋权")
+    @ApiIgnore
+    public ServerResponse changeRoleFromUser(@ApiParam(value = "角色ID", required = true) @PathVariable Long id,
+                                             RoleAndPermissionDto roleAndPermissionDto) {
+        log.info("角色变更：角色Id：{} ----> 权限列表：{}======> 操作者Id：{}",id,roleAndPermissionDto.getPermissions().toString(),JWTUtil.getUserId());
+        return roleService.changePermission(id,roleAndPermissionDto.getPermissions());
     }
 
 }

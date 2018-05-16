@@ -38,8 +38,16 @@
         where role.id in (SELECT role_id
                           from user_role
                           where user_id = #{userId})
-
     </select>
+
+    <select id="findUserCountByRoleId" parameterType="map" resultType="java.lang.Integer">
+        select count(*)
+        from user
+        where id in (SELECT user_id
+                     from user_role
+                     where user_role.role_id = #{roleId}) And storeId = #{storeId}
+    </select>
+
 
     <select id="findRolePermissionByRoleId" parameterType="java.lang.Long" resultMap="rolePermissionMap">
         SELECT
@@ -63,7 +71,7 @@
     </select>
 
     <insert id="insertUserRole" parameterType="map">
-        insert into user_role (user_id, role_id) values (#{user_id}, #{role_id})
+        insert into user_role (user_id, role_id) values (#{userId}, #{roleId})
     </insert>
     <insert id="insertRolePermission" parameterType="map">
         INSERT INTO `role_permission`

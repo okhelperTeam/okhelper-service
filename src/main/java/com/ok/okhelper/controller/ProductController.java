@@ -36,7 +36,7 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
-	@RequiresPermissions("goods:view")
+	@RequiresPermissions("product:view")
 	@ApiOperation(value = "商品搜索", notes = "指定查询条件搜索")
 	@GetMapping("product/search")
 	public ServerResponse<PageModel<ProductsVo>> searchProduct(String condition, @Valid PageModel pageModel) {
@@ -57,7 +57,7 @@ public class ProductController {
 	 * @Return com.ok.okhelper.common.ServerResponse<com.ok.okhelper.common.PageModel<com.ok.okhelper.pojo.vo.ProductsVo>>
 	 * @Description:分类选择商品
 	 */
-	@RequiresPermissions("goods:view")
+	@RequiresPermissions("product:view")
 	@ApiOperation(value = "商品搜索", notes = "通过分类搜索")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "categoryId", value = "分类Id", required = true, paramType = "form"),
@@ -76,7 +76,7 @@ public class ProductController {
 		return serverResponse;
 	}
 	
-	@RequiresPermissions("goods:edit")
+	@RequiresPermissions("product:edit")
 	@ApiOperation(value = "商品删除")
 	@DeleteMapping("product/{id:\\d+}")
 	public ServerResponse deleteProduct(@PathVariable Long id) {
@@ -91,7 +91,7 @@ public class ProductController {
 		return serverResponse;
 	}
 	
-	@RequiresPermissions("goods:edit")
+	@RequiresPermissions("product:edit")
 	@ApiOperation(value = "商品添加")
 	@PostMapping("product")
 	public ServerResponse<Product> addProduct(@Valid ProductDto productDto) {
@@ -107,7 +107,7 @@ public class ProductController {
 		return serverResponse;
 	}
 	
-	@RequiresPermissions("goods:edit")
+	@RequiresPermissions("product:edit")
 	@ApiOperation(value = "商品修改")
 	@PutMapping("product")
 	public ServerResponse<Product> updateProduct(ProductDto productDto) {
@@ -122,7 +122,7 @@ public class ProductController {
 	}
 	
 	
-	@RequiresPermissions("goods:view")
+	@RequiresPermissions("product:view")
 	@ApiOperation(value = "查询单个商品")
 	@GetMapping("product/{id:\\d+}")
 	public ServerResponse<Product> getProduct(@PathVariable Long id) {
@@ -134,7 +134,7 @@ public class ProductController {
 		return serverResponse;
 	}
 	
-	@RequiresPermissions("goods:view")
+	@RequiresPermissions("product:view")
 	@ApiOperation(value = "查询临期商品")
 	@GetMapping("product/nearDay/{days}")
 	public ServerResponse<PageModel<ProductNearDayVo>> getNearDaysProduct(@PathVariable Integer days, @Valid PageModel pageModel) {
@@ -146,7 +146,7 @@ public class ProductController {
 	}
 	
 	
-	@RequiresPermissions("goods:view")
+	@RequiresPermissions("product:view")
 	@ApiOperation(value = "商品搜索", notes = "通过条形码搜索")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "barCode", value = "商品条码", required = true, paramType = "form"),
@@ -163,7 +163,7 @@ public class ProductController {
 		return serverResponse;
 	}
 	
-	@RequiresPermissions("goods:view")
+	@RequiresPermissions("product:view")
 	@ApiOperation(value = "商品库存预警")
 	@GetMapping("product/lowWarning/{numbers}")
 	public ServerResponse<PageModel<ProductStockVo>> getLowCountProduct(@PathVariable Integer numbers, @Valid PageModel pageModel) {

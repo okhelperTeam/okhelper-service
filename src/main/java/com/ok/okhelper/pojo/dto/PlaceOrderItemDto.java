@@ -37,4 +37,7 @@ public class PlaceOrderItemDto {
     @Column(name = "sale_price")
     @ApiModelProperty(value = "下单时单价",required = true)
     private BigDecimal salePrice;
+
+
+    private String productName;
 }

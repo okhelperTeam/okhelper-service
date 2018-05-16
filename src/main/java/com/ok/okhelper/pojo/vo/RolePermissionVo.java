@@ -21,7 +21,7 @@ import java.util.List;
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RolePermissionVo {
     /**
-     * 主键
+     * 主键  角色id
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SELECT LAST_INSERT_ID()")
@@ -48,4 +48,10 @@ public class RolePermissionVo {
      * 权限列表
      */
     private List<PermissionVo> permissions;
+
+
+    /**
+     * 拥有人数
+     */
+    private Integer userCount;
 }

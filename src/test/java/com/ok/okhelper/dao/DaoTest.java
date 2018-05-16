@@ -30,8 +30,10 @@ public class DaoTest {
 
     @Test
     public void insetRolePermission() {
-        for (int i = 1; i <= 34; i++) {
-            Long k = (long) i;
+        int[] permissions={35,36};
+        for (Integer per:permissions) {
+            Long k = (long) per;
+            roleMapper.insertRolePermission((long) 1, k);
             roleMapper.insertRolePermission((long) 2, k);
         }
     }

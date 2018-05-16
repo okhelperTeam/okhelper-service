@@ -1,6 +1,7 @@
 package com.ok.okhelper.service;
 
 
+import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.pojo.dto.RoleDto;
 import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.Role;
@@ -20,4 +21,8 @@ public interface RoleService {
     List<RolePermissionVo> getRoleListByStore(Long storeId);
 
     void clearRoleListCache(Long store_id);
+
+    ServerResponse changeRole(Long employeeId, List<Long> roles);
+
+    ServerResponse changePermission(Long roleId, List<Long> permissions);
 }

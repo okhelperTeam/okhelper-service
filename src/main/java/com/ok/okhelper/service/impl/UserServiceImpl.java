@@ -69,10 +69,6 @@ public class UserServiceImpl implements UserService {
     private StoreMapper storeMapper;
 
     @Autowired
-    @Lazy
-    private PermissionService permissionService;
-
-    @Autowired
     private RedisOperator redisOperator;
 
 
@@ -326,43 +322,6 @@ public class UserServiceImpl implements UserService {
         return serverResponse;
     }
 
-
-    /**
-     * @Author zc
-     * @Date 2018/4/18 下午2:09
-     * @Param [userAndRoleDto]
-     * @Return com.ok.okhelper.common.ServerResponse
-     * @Description: 变更用户角色
-     */
-    @Transactional
-    public ServerResponse changeRole(Long employeeId, List<Long> roles) {
-
-        //当前操作者的storeId
-        Long storeId = JWTUtil.getStoreId();
-
-        User employee = userMapper.selectByPrimaryKey(employeeId);
-
-        if (null == employee) {
-            throw new IllegalException("无此用户");
-        }
-
-        if (ObjectUtils.notEqual(employee.getStoreId(), storeId)) {
-            throw new AuthorizationException("无权修改");
-        }
-
-        userMapper.deleteAllRoleFromUser(employeeId);
-
-        if (CollectionUtils.isNotEmpty(roles)) {
-            roles.forEach(roleId -> {
-                userMapper.insertRoleToUser(employeeId, roleId, JWTUtil.getUserId());
-            });
-        }
-
-        //更新用户权限缓存
-        permissionService.updatePermissionCacheByUserId(employeeId);
-
-        return ServerResponse.createBySuccessMessage("权限变更成功");
-    }
 
     /*
      * @Author zhangxin_an

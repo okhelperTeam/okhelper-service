@@ -113,7 +113,7 @@ public class SaleController {
     }
 
     @PostMapping("/sale/payment/{id:\\d+}")
-    @ApiOperation(value = "付款", notes = "支付接口，包括还款，支持支付宝条码支付")
+    @ApiOperation(value = "支付", notes = "支付接口，包括还款，支持支付宝条码支付")
     public ServerResponse payment(@ApiParam(value = "销售单Id") @PathVariable Long id, PaymentDto paymentDto) {
         saleService.payment(id, paymentDto);
         return ServerResponse.createBySuccessMessage("支付成功");

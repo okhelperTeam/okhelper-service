@@ -56,8 +56,6 @@ public interface UserService {
      */
     ServerResponse<IdAndNameBo> addEmployee(UserDto userDto);
 
-    ServerResponse changeRole(Long employeeId, List<Long> roles);
-
     /*
      * @Author zhangxin_an
      * @Date 2018/4/19 17:38

@@ -227,6 +227,7 @@ public class SaleServiceImpl implements SaleService {
             saleOrderDetail.setSaleOrderId(saleOrderId);
             saleOrderDetail.setSaleCount(placeOrderItemDto.getSaleCount());
             saleOrderDetail.setSalePrice(placeOrderItemDto.getSalePrice());
+            placeOrderItemDto.setProductName(product.getProductName());
             try{
                 int i = saleOrderDetailMapper.insertSelective(saleOrderDetail);
                 if(i<=0){
