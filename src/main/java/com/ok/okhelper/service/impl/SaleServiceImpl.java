@@ -174,29 +174,6 @@ public class SaleServiceImpl implements SaleService {
     public PlaceOrderVo placeOrder(Long storeId, Long seller, PlaceOrderDto placeOrderDto) {
         List<PlaceOrderItemDto> placeOrderItemDtos = placeOrderDto.getPlaceOrderItemDtos();
 
-        //判断金额正确性
-        BigDecimal amountPayable = placeOrderDto.getSumPrice().subtract(placeOrderDto.getDiscountPrice());
-        if (placeOrderDto.getDiscountPrice().compareTo(placeOrderDto.getSumPrice()) > 0) {
-            throw new IllegalException("优惠金额不能大于订单总金额");
-        }
-//
-//        if (placeOrderDto.getRealPay().compareTo(amountPayable) > 0) {
-//            throw new IllegalException("实付金额不能大于应付金额");
-//        }
-//
-//        //计算欠款金额
-//        //欠款金额=订单总价-优惠金额-实付金额
-//        BigDecimal toBePaid
-//                = placeOrderDto.getSumPrice() != null ? placeOrderDto.getSumPrice() : BigDecimal.ZERO
-//                .subtract(placeOrderDto.getDiscountPrice() != null ? placeOrderDto.getDiscountPrice() : BigDecimal.ZERO)
-//                .subtract(placeOrderDto.getRealPay() != null ? placeOrderDto.getRealPay() : BigDecimal.ZERO);
-//
-//        if (toBePaid.doubleValue() > 0.0) {
-//            placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_DEBT.getCode());
-//        } else {
-//            placeOrderDto.setOrderStatus(ConstEnum.SALESTATUS_PAID.getCode());
-//        }
-
         //加入销售订单
         SaleOrder saleOrder = new SaleOrder();
 //      saleOrder.setToBePaid(toBePaid);
@@ -216,6 +193,8 @@ public class SaleServiceImpl implements SaleService {
             assembleSaleOrderDetail(placeOrderItemDtos, saleOrder.getId());
             //减商品库存
             otherService.checkAndCutStock(placeOrderItemDtos);
+        }else {
+            throw new IllegalException("请添加商品");
         }
 
 
@@ -236,6 +215,9 @@ public class SaleServiceImpl implements SaleService {
      */
     public void assembleSaleOrderDetail(List<PlaceOrderItemDto> placeOrderItemDtos, Long saleOrderId) {
         placeOrderItemDtos.forEach(placeOrderItemDto -> {
+            if(!ObjectUtils.allNotNull(placeOrderItemDto.getProductId(),placeOrderItemDto.getSaleCount(),placeOrderItemDto.getSalePrice())){
+                throw new IllegalException("订单子项参数错误");
+            }
             SaleOrderDetail saleOrderDetail = new SaleOrderDetail();
             Product product = productService.getProduct(placeOrderItemDto.getProductId());
             saleOrderDetail.setProductId(product.getId());
@@ -245,7 +227,16 @@ public class SaleServiceImpl implements SaleService {
             saleOrderDetail.setSaleOrderId(saleOrderId);
             saleOrderDetail.setSaleCount(placeOrderItemDto.getSaleCount());
             saleOrderDetail.setSalePrice(placeOrderItemDto.getSalePrice());
-            saleOrderDetailMapper.insertSelective(saleOrderDetail);
+            try{
+                int i = saleOrderDetailMapper.insertSelective(saleOrderDetail);
+                if(i<=0){
+                    throw new IllegalException("下单失败:订单子项插入失败");
+                }
+            }catch (Exception e){
+                throw new IllegalException("下单失败:订单子项插入失败");
+            }
+
+
         });
     }
 
@@ -440,15 +431,12 @@ public class SaleServiceImpl implements SaleService {
 
         //(历史已经付款金额+这次实付金额)
         BigDecimal realPay = saleOrder.getRealPay().add(paymentDto.getRealPay());
-        //优惠金额
-        BigDecimal discountPrice = saleOrder.getDiscountPrice();
-        //欠款金额=订单总价-(优惠金额)-(历史已经付款金额+这次实付金额)
+        //欠款金额=应付金额-(历史已经付款金额+这次实付金额)
         BigDecimal toBePaid
-                = saleOrder.getSumPrice().subtract(discountPrice).subtract(realPay);
+                = saleOrder.getSumPrice().subtract(realPay);
 
         saleOrder.setRealPay(realPay);
         saleOrder.setToBePaid(toBePaid);
-        saleOrder.setDiscountPrice(discountPrice);
         saleOrder.setPayTime(new Date());
 
         //判断物流状态决定是否完成订单
@@ -490,6 +478,8 @@ public class SaleServiceImpl implements SaleService {
             aliPayUtil.refund(saleOrderId.toString(),aliPayTradeNumber,realPay.toString());
             throw new IllegalException("支付失败");
         }
+
+
 
     }
 

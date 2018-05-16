@@ -89,7 +89,7 @@ public class UserDto {
     /**
      * 生日
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "生日")
     private Date userBirthday;
     

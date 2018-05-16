@@ -68,7 +68,7 @@ public class OtherServiceImpl implements OtherService {
      * @Date 2018/5/2 下午4:49
      * @Param [deliveryDto]
      * @Return void
-     * @Description:校验发货单 //FIXME 放到这里是为了关闭事务提高运行销量
+     * @Description:校验发货单 //FIXME 放到这里是为了关闭事务提高运行效率
      */
     @Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
     public void checkDelivery(DeliveryDto deliveryDto) {

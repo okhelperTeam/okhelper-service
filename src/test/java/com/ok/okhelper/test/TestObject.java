@@ -13,6 +13,6 @@ public class TestObject {
 		User u = new User();
 		System.out.println(ObjectUtils.allNotNull(u));
 //		u.setUserAvatar("z");
-//		System.out.println(ObjectUtils.anyNotNull(u));
+		System.out.println(ObjectUtils.anyNotNull(u));
 	}
 }

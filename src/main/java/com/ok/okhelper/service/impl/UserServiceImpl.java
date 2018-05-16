@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Lazy
     private PermissionService permissionService;
-    
+
     @Autowired
     private RedisOperator redisOperator;
 
@@ -128,10 +128,10 @@ public class UserServiceImpl implements UserService {
 
 
     private UserVo getUser(User user) {
-        if(user == null){
+        if (user == null) {
             throw new IllegalException("用户不存在");
         }
-        
+
         //传值给前端封装类
         UserVo userVo = new UserVo();
         Long userId = user.getId();
@@ -218,17 +218,17 @@ public class UserServiceImpl implements UserService {
         }
         throw new ConflictException("用户名重复");
     }
-    
+
     @Override
     public ServerResponse checkPassword(String password) {
-        
+
         if (StringUtils.isBlank(password)) {
             throw new IllegalException("密码为空");
         }
-        
+
         String dbPassword = userMapper.getPassWordByUserId(JWTUtil.getUserId());
-        String saltPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(),password);
-        if ( dbPassword.equals(saltPassword)) {
+        String saltPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(), password);
+        if (dbPassword.equals(saltPassword)) {
             return ServerResponse.createBySuccess();
         }
         throw new ConflictException("旧密码错误");
@@ -318,8 +318,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalException("添加失败");
         }
 
-        IdAndNameBo idAndNameBo = new IdAndNameBo(user.getId(),user.getUserName());
-        ServerResponse serverResponse = ServerResponse.createBySuccess("添加成功",idAndNameBo);
+        IdAndNameBo idAndNameBo = new IdAndNameBo(user.getId(), user.getUserName());
+        ServerResponse serverResponse = ServerResponse.createBySuccess("添加成功", idAndNameBo);
 
         logger.info("Exit method addEmployee" + serverResponse);
 
@@ -372,7 +372,7 @@ public class UserServiceImpl implements UserService {
      * @Description:获取员工
      */
     @Override
-    public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel,Integer deleteStatus) {
+    public PageModel<EmployeeVo> getEmployeeList(PageModel pageModel, Integer deleteStatus) {
 
         logger.info("Enter method getEmployeeList()");
         //启动分页
@@ -383,16 +383,16 @@ public class UserServiceImpl implements UserService {
         Long storeId = JWTUtil.getStoreId();
         Long bossId = JWTUtil.getUserId();
 
-        
+
         if (null == storeId || null == bossId) {
             throw new UnauthenticatedException("登陆异常");
         }
-        
-        if(deleteStatus == null){
+
+        if (deleteStatus == null) {
             deleteStatus = 1;
         }
 
-        List<UserBo> userBos = userMapper.getEmployeeList(storeId,deleteStatus);
+        List<UserBo> userBos = userMapper.getEmployeeList(storeId, deleteStatus);
 
         if (CollectionUtils.isEmpty(userBos)) {
             return null;
@@ -423,7 +423,8 @@ public class UserServiceImpl implements UserService {
         });
 
 
-        PageInfo<EmployeeVo> pageInfo = new PageInfo<>(employeeVoList);
+        PageInfo pageInfo = new PageInfo<>(userBos);
+        pageInfo.setList(employeeVoList);
 
         logger.info("Exit method getEmployeeList()" + pageInfo);
 
@@ -454,151 +455,145 @@ public class UserServiceImpl implements UserService {
         String secret = PasswordHelp.passwordSalt(user.getUserName(), user.getUserPassword());
 
         //如果一小时内过期，补签Token
-        if(expiresAt!=null&&date.after(expiresAt)){
+        if (expiresAt != null && date.after(expiresAt)) {
             String token = JWTUtil.sign(user.getId(), user.getUserName(), secret, user.getStoreId());
             userVo.setToken(secret);
         }
 
         return userVo;
     }
-    
+
     @Override
     public void sendMs(String number) {
-        if(StringUtils.isBlank(number)){
+        if (StringUtils.isBlank(number)) {
             throw new IllegalException("手机号为空");
         }
         User user = findUserByUserNme(number);
-        if(user==null){
+        if (user == null) {
             throw new IllegalException("无此用户");
         }
-        if(ConstEnum.STATUSENUM_UNAVAILABLE.getCode()==user.getDeleteStatus()){
+        if (ConstEnum.STATUSENUM_UNAVAILABLE.getCode() == user.getDeleteStatus()) {
             throw new IllegalException("当前用户不可用请联系客服");
         }
         String code = SMSUtil.createRandomVcode();
-        SMSUtil.sendSMSCode(number,code);
-        redisOperator.set("code"+number,code,10*60);
+        SMSUtil.sendSMSCode(number, code);
+        redisOperator.set("code" + number, code, 10 * 60);
     }
-    
-    public static void main(String[] args) {
-        Date date1=new Date();
 
-        Date date2=DateUtils.addHours(new Date(), 1);
+    public static void main(String[] args) {
+        Date date1 = new Date();
+
+        Date date2 = DateUtils.addHours(new Date(), 1);
 
         System.out.println(date2.after(date1));
     }
-    
+
     @Override
     public UserVo verifyPhoneCode(String phone, String code) {
-        if(StringUtils.isBlank(phone)
-                || StringUtils.isBlank(code)){
+        if (StringUtils.isBlank(phone)
+                || StringUtils.isBlank(code)) {
             throw new IllegalException("手机号或者验证码为空");
         }
-        String redisCode = redisOperator.get("code"+phone);
-        if(StringUtils.isBlank(redisCode)){
+        String redisCode = redisOperator.get("code" + phone);
+        if (StringUtils.isBlank(redisCode)) {
             throw new IllegalException("验证码超时");
         }
         UserVo userVo = null;
-        if( code.equals(redisCode)){
+        if (code.equals(redisCode)) {
             User user = findUserByUserNme(phone);
-            redisOperator.del("code"+phone);
+            redisOperator.del("code" + phone);
             userVo = getUser(user);
-        }else {
+        } else {
             throw new IllegalException("验证码错误");
         }
-        
-        
-        
+
+
         return userVo;
     }
-    
+
     /*
-    * @Author zhangxin_an 
-    * @Date 2018/5/14 13:25  
-    * @Params [userDto]  
-    * @Return void  
-    * @Description:修改个人信息
-    */  
+     * @Author zhangxin_an
+     * @Date 2018/5/14 13:25
+     * @Params [userDto]
+     * @Return void
+     * @Description:修改个人信息
+     */
     @Override
     public void updateMyInfo(UserUpdateDto userDto) {
         Long id = JWTUtil.getUserId();
-        
-        if(id == null){
+
+        if (id == null) {
             throw new IllegalException("登陆错误");
         }
         String newPassword = userDto.getUserPassword();
-        
-        if(!StringUtils.isBlank(newPassword)){
-            newPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(),newPassword);
+
+        if (!StringUtils.isBlank(newPassword)) {
+            newPassword = PasswordHelp.passwordSalt(JWTUtil.getUsername(), newPassword);
         }
-        
+
         User user = new User();
         user.setUpdateTime(new Date());
-        BeanUtils.copyProperties(userDto,user);
+        BeanUtils.copyProperties(userDto, user);
         user.setUserPassword(newPassword);
         user.setId(id);
         try {
             userMapper.updateByPrimaryKeySelective(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            throw  new IllegalException("修改失败"+e.getMessage());
+            throw new IllegalException("修改失败" + e.getMessage());
         }
-        
-        
-        
-        
-        
-        
+
+
     }
-    
+
     /*
-    * @Author zhangxin_an 
-    * @Date 2018/5/15 8:48
-    * @Params [id]  
-    * @Return void  
-    * @Description:删除员工
-    */  
+     * @Author zhangxin_an
+     * @Date 2018/5/15 8:48
+     * @Params [id]
+     * @Return void
+     * @Description:删除员工
+     */
     @Override
     public void deleteEmployee(Long id) {
-    
-        logger.info("Enter method deleteEmployee() params"+id);
-        
-        if( id == null){
+
+        logger.info("Enter method deleteEmployee() params" + id);
+
+        if (id == null) {
             throw new IllegalException("参数为空");
         }
         User user = userMapper.selectByPrimaryKey(id);
-        if( user.getStoreId() != JWTUtil.getStoreId()){
-        	throw new IllegalException("员工不存在");
+        if (user.getStoreId() != JWTUtil.getStoreId()) {
+            throw new IllegalException("员工不存在");
         }
         try {
             userMapper.deleteByPrimaryKey(id);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalException("删除出错，员工不存在或已被删除");
         }
         logger.info("Exit method deleteEmployee()");
     }
-    
+
     /*
-    * @Author zhangxin_an 
-    * @Date 2018/5/15 10:51  
-    * @Params [userId, status]  
-    * @Return void
-    * @Description:修改员工状态
-    */  
+     * @Author zhangxin_an
+     * @Date 2018/5/15 10:51
+     * @Params [userId, status]
+     * @Return void
+     * @Description:修改员工状态
+     */
     @Override
     public void changeEmplyeeStatus(Long userId, Integer status) {
-    
-        logger.info("Enter method changeEmplyeeStatus() params [id]"+userId+"[status]"+status);
-        if(userId == null ){
+
+        logger.info("Enter method changeEmplyeeStatus() params [id]" + userId + "[status]" + status);
+        if (userId == null) {
             throw new IllegalException("员工不存在");
-            
+
         }
-        
-        if(status == null){
+
+        if (status == null) {
             status = 1;
         }
         User user = userMapper.selectByPrimaryKey(userId);
-        if(user == null){
+        if (user == null) {
             throw new IllegalException("员工不存在");
         }
         if (ObjectUtils.notEqual(user.getStoreId(), JWTUtil.getStoreId())) {
@@ -607,7 +602,7 @@ public class UserServiceImpl implements UserService {
         user.setDeleteStatus(status);
         try {
             userMapper.updateByPrimaryKeySelective(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalException("资源不存在");
         }
