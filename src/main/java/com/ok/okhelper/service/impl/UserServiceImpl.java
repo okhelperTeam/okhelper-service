@@ -566,4 +566,27 @@ public class UserServiceImpl implements UserService {
             throw new IllegalException("资源不存在");
         }
     }
+	
+	/*
+	* @Author zhangxin_an 
+	* @Date 2018/5/17 19:50  
+	* @Params [userName]  
+	* @Return com.ok.okhelper.pojo.po.User
+	* @Description:用户名获取用户信息
+	*/  
+	@Override
+	public User getUserInfoByUserName(String userName) {
+		if(StringUtils.isBlank(userName)){
+			throw new IllegalException("用户名为空");
+		}
+		User user = new User();
+		user.setUserName(userName);
+		user.setStoreId(JWTUtil.getStoreId());
+		User user1 = userMapper.selectOne(user);
+		if(user1 == null){
+			throw new IllegalException("用户不存在");
+		}
+		
+		return user1;
+	}
 }

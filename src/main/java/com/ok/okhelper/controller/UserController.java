@@ -6,6 +6,7 @@ import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.dto.UserUpdateDto;
+import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
 import com.ok.okhelper.service.UserService;
@@ -122,6 +123,15 @@ public class UserController {
         UserVo userInfo = userService.getUserInfo(JWTUtil.getUserId());
         return ServerResponse.createBySuccess(userInfo);
     }
+    
+    @GetMapping("/user/employeeInfo/{userName}")
+    @ApiOperation(value = "用户名获取用户",notes = "根据用户名查询用户")
+    public ServerResponse<User> getUserInfoByUserName(@PathVariable String userName) {
+        User userInfo = userService.getUserInfoByUserName(userName);
+        return ServerResponse.createBySuccess(userInfo);
+    }
+    
+    
 
     @GetMapping("/user/phoneCode")
     @ApiOperation(value = "发短信",notes = "给该手机号发短信，10分钟失效")
@@ -154,6 +164,8 @@ public class UserController {
         userService.changeEmplyeeStatus(userId,status);
         return ServerResponse.createBySuccess("修改成功");
     }
+    
+    
     
     
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
