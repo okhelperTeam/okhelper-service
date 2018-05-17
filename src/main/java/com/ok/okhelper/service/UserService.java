@@ -77,4 +77,6 @@ public interface UserService {
     void deleteEmployee(Long id);
 	
 	void changeEmplyeeStatus(Long userId, Integer status);
+    
+    User getUserInfoByUserName(String userName);
 }
