@@ -31,7 +31,6 @@ public class StorageOrderDto {
 	 * 入库员
 	 */
 	@ApiModelProperty(value = "入库员Id")
-	@NotNull
 	private Long stockiner;
 	
 	/**

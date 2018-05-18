@@ -89,12 +89,12 @@ public class RoleController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description: 变更角色 (给员工赋角色)
      */
-    @PutMapping("/role/change_role/{id:\\d+}")
+    @PutMapping("/role/change_role/{userName}")
     @ApiOperation(value = "变更角色")
-    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable Long id,
+    public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable String userName,
                                              UserAndRoleDto userAndRoleDto) {
-        log.info("角色变更：用户Id：{} ----> 角色列表：{}======> 操作者Id：{}",id,userAndRoleDto.getRoles().toString(),JWTUtil.getUserId());
-        return roleService.changeRole(id, userAndRoleDto.getRoles());
+        log.info("角色变更：用户userName：{} ----> 角色列表：{}======> 操作者Id：{}",userName,userAndRoleDto.getRoles().toString(),JWTUtil.getUserId());
+        return roleService.changeRole(userName, userAndRoleDto.getRoles());
     }
 
 

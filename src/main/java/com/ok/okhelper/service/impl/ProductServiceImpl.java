@@ -124,7 +124,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		
 		//遍历获取每一个分类对应的商品
-		List<ProductsVo> productsVos = productMapper.getProductsListByCategoryId(categoryList);
+		List<ProductsVo> productsVos = productMapper.getProductsListByCategoryId(JWTUtil.getStoreId(),categoryList);
 		
 		
 		PageInfo<ProductsVo> pageInfo = new PageInfo<>(productsVos);

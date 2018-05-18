@@ -81,12 +81,14 @@ public class RoleServiceImpl implements RoleService {
      * @Description: 变更用户角色
      */
     @Transactional
-    public ServerResponse changeRole(Long employeeId, List<Long> roles) {
+    public ServerResponse changeRole(String employeeUserName, List<Long> roles) {
 
         //当前操作者的storeId
         Long storeId = JWTUtil.getStoreId();
 
-        User employee = userMapper.selectByPrimaryKey(employeeId);
+        User user=new User();
+        user.setUserName(employeeUserName);
+        User employee = userMapper.selectOne(user);
 
         if (null == employee) {
             throw new IllegalException("无此用户");
@@ -96,16 +98,18 @@ public class RoleServiceImpl implements RoleService {
             throw new AuthorizationException("无权修改");
         }
 
-        userMapper.deleteAllRoleFromUser(employeeId);
+        userMapper.deleteAllRoleFromUser(employee.getId());
 
         if (CollectionUtils.isNotEmpty(roles)) {
             roles.forEach(roleId -> {
-                userMapper.insertRoleToUser(employeeId, roleId, JWTUtil.getUserId());
+                if(roleId!=1&&roleId!=2){
+                    userMapper.insertRoleToUser(employee.getId(), roleId, JWTUtil.getUserId());
+                }
             });
         }
 
         //更新用户权限缓存
-        permissionService.updatePermissionCacheByUserId(employeeId);
+        permissionService.updatePermissionCacheByUserId(employee.getId());
 
         return ServerResponse.createBySuccessMessage("权限变更成功");
     }

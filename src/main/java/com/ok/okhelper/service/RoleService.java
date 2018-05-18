@@ -22,7 +22,7 @@ public interface RoleService {
 
     void clearRoleListCache(Long store_id);
 
-    ServerResponse changeRole(Long employeeId, List<Long> roles);
+    ServerResponse changeRole(String employeeUserName, List<Long> roles);
 
     ServerResponse changePermission(Long roleId, List<Long> permissions);
 }

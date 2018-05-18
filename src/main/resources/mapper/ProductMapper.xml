@@ -60,11 +60,15 @@
             <arg column="product_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="product_title" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="main_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
-             </constructor>
+        </constructor>
     </resultMap>
 
     <select id="getIdAndName" parameterType="java.lang.Long" resultMap="IdAndNameMap">
-        select id,product_name from product WHERE id = #{id};
+        select
+            id,
+            product_name
+        from product
+        WHERE id = #{id};
     </select>
 
 
@@ -80,7 +84,7 @@
         where sales_stock >= #{salesCount} AND id = #{productId} AND delete_status = 1
     </update>
 
-    <select id="getProductsList" resultMap="ProductVoMap" >
+    <select id="getProductsList" resultMap="ProductVoMap">
         SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
         FROM product
         <where>
@@ -103,36 +107,62 @@
         WHERE id = #{pId} and store_id = #{storeId}
     </update>
 
-    <select id="getProductsListByCategoryId" resultMap="ProductVoMap" >
-    SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
-    FROM product WHERE category_id in
-        <foreach collection="list" item="c" index="index"
+    <select id="getProductsListByCategoryId" resultMap="ProductVoMap" parameterType="map">
+        SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
+        FROM product WHERE category_id in
+        <foreach collection="categoryListTotal" item="c" index="index"
                  open="(" close=")" separator=",">
             #{c.id}
         </foreach>
-         AND delete_status = 1
+        AND store_id=#{storeId}
+        AND delete_status = 1
 
     </select>
 
     <select id="getSaleStockLock" resultType="java.lang.Integer">
-        select sales_stock from product where id=#{productId} for update
+        select sales_stock
+        from product
+        where id = #{productId} for update
     </select>
 
     <select id="getProductsListBybarCode" resultMap="ProductVoMap" parameterType="map">
-        SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
-        FROM product where delete_status = 1 AND store_id = ${storeId} AND bar_code=#{barCode}
+        SELECT
+            id,
+            product_name,
+            product_title,
+            sales_stock,
+            retail_price,
+            main_img,
+            create_time,
+            update_time
+        FROM product
+        where delete_status = 1 AND store_id = ${storeId} AND bar_code = #{barCode}
     </select>
 
     <select id="getLowCountProductsList" resultMap="ProductVoMap">
         <![CDATA[
-        SELECT id,product_name,product_title,sales_stock,retail_price,main_img,create_time,update_time
-        FROM product where delete_status = 1 AND store_id = #{storeId} AND sales_stock <= #{numbers}
+        SELECT
+            id,
+            product_name,
+            product_title,
+            sales_stock,
+            retail_price,
+            main_img,
+            create_time,
+            update_time
+        FROM product
+        where delete_status = 1 AND store_id = #{storeId} AND sales_stock <= #{numbers}
         ]]>
     </select>
 
 
-    <select id="getProductStockVoByPK" resultMap="ProductStockVoMap" parameterType="java.lang.Long" >
-        select id,product_name,product_title,main_img from product
+    <select id="getProductStockVoByPK" resultMap="ProductStockVoMap" parameterType="java.lang.Long">
+        select
+            id,
+            product_name,
+            product_title,
+            main_img
+        from product
         where delete_status = 1 and id = #{productId}
     </select>
 

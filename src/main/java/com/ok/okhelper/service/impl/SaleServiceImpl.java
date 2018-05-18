@@ -410,7 +410,7 @@ public class SaleServiceImpl implements SaleService {
         if (ConstEnum.SALESTATUS_PAID.getCode() == saleOrder.getOrderStatus()) {
             throw new IllegalException("订单已支付全款，不要再支付了");
         }
-        if (saleOrder.getToBePaid().subtract(paymentDto.getRealPay()).doubleValue()<0.0) {
+        if (saleOrder.getSumPrice().subtract(saleOrder.getRealPay()).subtract(paymentDto.getRealPay()).doubleValue()<0.0) {
             throw new IllegalException("实付金额不能大于应付金额");
         }
 
