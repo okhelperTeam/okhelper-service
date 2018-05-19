@@ -37,8 +37,6 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-//    @Autowired
-//    private UserService userService;
 
     /**
      * @Author zc
@@ -47,9 +45,9 @@ public class RoleController {
      * @Return com.ok.okhelper.common.ServerResponse<java.lang.String>
      * @Description:创建角色
      */
+    @RequiresPermissions("role:edit")
     @PostMapping("/role")
     @ResponseStatus(value = HttpStatus.CREATED)
-    @RequiresPermissions("role:view")
     @ApiOperation(value = "添加角色", code = 201)
     public ServerResponse<String> postRole(@Valid RoleDto roleDto) {
         Subject subject = SecurityUtils.getSubject();
@@ -74,6 +72,7 @@ public class RoleController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description:获取当前商店角色列表
      */
+    @RequiresPermissions("role:view")
     @GetMapping("/role")
     @ApiOperation(value = "获取角色权限列表", notes = "获取当前店铺所有角色，不含店长")
     public ServerResponse<List<RolePermissionVo>> getRoleList() {
@@ -89,6 +88,7 @@ public class RoleController {
      * @Return com.ok.okhelper.common.ServerResponse
      * @Description: 变更角色 (给员工赋角色)
      */
+    @RequiresPermissions("role:view")
     @PutMapping("/role/change_role/{userName}")
     @ApiOperation(value = "变更角色")
     public ServerResponse changeRoleFromUser(@ApiParam(value = "员工ID", required = true) @PathVariable String userName,

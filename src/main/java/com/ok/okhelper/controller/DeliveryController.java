@@ -8,6 +8,7 @@ import com.ok.okhelper.service.DeliveryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class DeliveryController {
     @Autowired
     private DeliveryService deliveryService;
 
+    @RequiresPermissions("delivery_order:add")
     @PostMapping("/delivery/deliver_goods/{id:\\d+}")
     @ApiOperation(value = "发货/出库")
     public ServerResponse deliverGoods(@ApiParam(value = "销售单Id") @PathVariable Long id, DeliveryDto deliveryDto) {
@@ -39,6 +41,7 @@ public class DeliveryController {
     }
 
 
+    @RequiresPermissions("sale_order:unsend:view")
     @GetMapping("/delivery/unsend_orders")
     @ApiOperation(value = "查询待发货销售订单列表",notes = "排除了未付款状态")
     public ServerResponse<PageModel<SaleOrder>> getUnSendOrder(@Valid PageModel pageModel) {

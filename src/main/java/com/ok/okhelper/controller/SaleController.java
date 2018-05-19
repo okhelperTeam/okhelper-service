@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,7 @@ public class SaleController {
     @Autowired
     private DeliveryService deliveryService;
 
+    @RequiresPermissions("sale_order:view")
     @GetMapping("/sale/sale_table")
     @ApiOperation(value = "获取销售历史订单", notes = "查询指定日期的销售订单列表")
     public ServerResponse<PageModel<SaleOrderVo>> getSaleOrderRecords(@Valid SaleOrderDto saleOrderDto, @Valid PageModel pageModel) {
@@ -77,6 +79,7 @@ public class SaleController {
         return ServerResponse.createBySuccess(saleOrderRecords);
     }
 
+    @RequiresPermissions("sale_order:view")
     @GetMapping("/sale/{id}")
     @ApiOperation(value = "获取指定订单", notes = "查询指定订单")
     public ServerResponse<SaleOrderVo> getSaleOrderRecordOne(@PathVariable Long id) {
@@ -84,6 +87,7 @@ public class SaleController {
         return ServerResponse.createBySuccess(saleOrderRecordOne);
     }
 
+    @RequiresPermissions("sale_order:add")
     @PostMapping("/sale/place_order")
     @ApiOperation(value = "下订单", notes = "只下单不付款")
     public ServerResponse<PlaceOrderVo> placeOrder(@Valid PlaceOrderDto placeOrderDto) {
@@ -98,6 +102,7 @@ public class SaleController {
     }
 
 
+    @RequiresPermissions("sale_order:edit")
     @PostMapping("/sale/confirm_receipt/{id:\\d+}")
     @ApiOperation(value = "确认收货")
     public ServerResponse confirmReceipt(@ApiParam(value = "销售单Id") @PathVariable Long id) {
@@ -105,6 +110,7 @@ public class SaleController {
         return ServerResponse.createBySuccessMessage("确认收货成功");
     }
 
+    @RequiresPermissions("sale_order:edit")
     @PostMapping("/sale/close_order/{id:\\d+}")
     @ApiOperation(value = "关闭订单")
     public ServerResponse closeOrder(@ApiParam(value = "销售单Id") @PathVariable Long id) {
@@ -112,6 +118,7 @@ public class SaleController {
         return ServerResponse.createBySuccessMessage("订单关闭成功");
     }
 
+    @RequiresPermissions("sale_order:pay")
     @PostMapping("/sale/payment/{id:\\d+}")
     @ApiOperation(value = "支付", notes = "支付接口，包括还款，支持支付宝条码支付")
     public ServerResponse payment(@ApiParam(value = "销售单Id") @PathVariable Long id, PaymentDto paymentDto) {

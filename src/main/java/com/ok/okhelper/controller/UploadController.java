@@ -14,6 +14,7 @@ import com.ok.okhelper.util.COSUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -115,6 +116,7 @@ public class UploadController {
     }
 
 
+    @RequiresPermissions("store:edit")
     @PostMapping(value = "/upload/money_code")
     @ApiOperation(value = "上传并修改收款码(支付宝/微信)", notes = "")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))
@@ -155,6 +157,7 @@ public class UploadController {
 
     }
 
+    @RequiresPermissions("store:edit")
     @PostMapping(value = "/upload/store_logo")
     @ApiOperation(value = "上传并修改商铺logo", notes = "")
     @ApiImplicitParams(@ApiImplicitParam(name = "file", value = "文件", required = true, dataType = "File"))

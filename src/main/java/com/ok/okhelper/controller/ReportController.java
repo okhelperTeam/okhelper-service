@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +37,7 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-
+    @RequiresPermissions("report:sales:view")
     @ApiOperation(value = "热/滞销商品")
     @GetMapping("/report/hot_cold_sale")
     public ServerResponse<List<SalesVolumeVo>> getHotProduct(
@@ -52,6 +53,7 @@ public class ReportController {
     }
 
 
+    @RequiresPermissions("report:sales:view")
     @ApiOperation(value = "客户欠款查询")
     @GetMapping("/report/customer_debt")
     public ServerResponse<PageModel<CustomerDebtBo>> getCustomerDebt(@ApiParam(value = "查询条件(客户名字/手机号)")
@@ -62,6 +64,7 @@ public class ReportController {
     }
 
 
+    @RequiresPermissions("report:sales:view")
     @ApiOperation(value = "获取销售汇总", notes = "查询指定范围销售汇总")
     @GetMapping("/sale/total")
     public ServerResponse<SaleTotalVo> getTodaySales(@ApiParam(value = "查询范围(今天->today 昨天->yesterday 三天内->threeDays 一周内->week 近30天->month)") @RequestParam(required = true) String range) {
