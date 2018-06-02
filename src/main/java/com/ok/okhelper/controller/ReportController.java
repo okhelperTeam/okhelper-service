@@ -4,7 +4,7 @@ import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.common.ServerResponse;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.bo.CustomerDebtBo;
-import com.ok.okhelper.pojo.constenum.ConstStr;
+import com.ok.okhelper.common.constenum.ConstStr;
 import com.ok.okhelper.pojo.vo.SaleTotalVo;
 import com.ok.okhelper.pojo.vo.SalesVolumeVo;
 import com.ok.okhelper.service.ReportService;

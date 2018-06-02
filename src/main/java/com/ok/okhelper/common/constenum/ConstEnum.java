@@ -1,12 +1,10 @@
-package com.ok.okhelper.pojo.constenum;
+package com.ok.okhelper.common.constenum;
 
 /*
 *Author:zhangxin_an
 *Description:
 *Data:Created in 9:26 2018/4/16
 */
-
-import lombok.Data;
 
 public enum ConstEnum {
 	STATUSENUM_AVAILABLE("可用",1),

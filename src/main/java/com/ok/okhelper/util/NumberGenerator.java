@@ -1,6 +1,6 @@
 package com.ok.okhelper.util;
 
-import com.ok.okhelper.pojo.constenum.ConstStr;
+import com.ok.okhelper.common.constenum.ConstStr;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;

@@ -1,16 +1,12 @@
 package com.ok.okhelper.task;
 
-import com.ok.okhelper.controller.ReportController;
 import com.ok.okhelper.dao.SaleOrderMapper;
 import com.ok.okhelper.dao.StoreMapper;
-import com.ok.okhelper.pojo.constenum.ConstEnum;
-import com.ok.okhelper.pojo.constenum.ConstStr;
+import com.ok.okhelper.common.constenum.ConstEnum;
 import com.ok.okhelper.pojo.po.SaleOrder;
-import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.service.SaleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -20,7 +16,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Author: zc

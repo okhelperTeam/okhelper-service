@@ -1,4 +1,4 @@
-package com.ok.okhelper.pojo.constenum;
+package com.ok.okhelper.common.constenum;
 
 /**
  * Author: zc

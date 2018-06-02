@@ -1,9 +1,8 @@
 package com.ok.okhelper.shiro;
 
 
-import com.ok.okhelper.dao.PermissionMapper;
 import com.ok.okhelper.dao.UserMapper;
-import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.common.constenum.ConstEnum;
 import com.ok.okhelper.pojo.po.Permission;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.service.PermissionService;

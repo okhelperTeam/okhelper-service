@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.ok.okhelper.common.PageModel;
 import com.ok.okhelper.dao.CustomerMapper;
 import com.ok.okhelper.exception.IllegalException;
-import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.common.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.CustomerConditionDto;
 import com.ok.okhelper.pojo.dto.CustomerDto;
 import com.ok.okhelper.pojo.po.Customer;

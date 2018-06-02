@@ -6,7 +6,7 @@ import com.ok.okhelper.dao.SaleOrderMapper;
 import com.ok.okhelper.dao.StockMapper;
 import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.exception.NotFoundException;
-import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.common.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.DeliverItemDto;
 import com.ok.okhelper.pojo.dto.DeliveryDto;
 import com.ok.okhelper.pojo.dto.PlaceOrderItemDto;

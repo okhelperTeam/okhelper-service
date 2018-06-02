@@ -12,7 +12,7 @@ import com.ok.okhelper.exception.IllegalException;
 import com.ok.okhelper.pojo.bo.IdAndNameBo;
 import com.ok.okhelper.pojo.bo.RoleBo;
 import com.ok.okhelper.pojo.bo.UserBo;
-import com.ok.okhelper.pojo.constenum.ConstEnum;
+import com.ok.okhelper.common.constenum.ConstEnum;
 import com.ok.okhelper.pojo.dto.UserAndStoreDto;
 import com.ok.okhelper.pojo.dto.UserDto;
 import com.ok.okhelper.pojo.dto.UserUpdateDto;
@@ -21,7 +21,6 @@ import com.ok.okhelper.pojo.po.Store;
 import com.ok.okhelper.pojo.po.User;
 import com.ok.okhelper.pojo.vo.EmployeeVo;
 import com.ok.okhelper.pojo.vo.UserVo;
-import com.ok.okhelper.service.PermissionService;
 import com.ok.okhelper.service.UserService;
 import com.ok.okhelper.shiro.JWTUtil;
 import com.ok.okhelper.util.PasswordHelp;
@@ -38,12 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.support.HttpRequestHandlerServlet;
-import sun.security.util.Password;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -437,14 +432,6 @@ public class UserServiceImpl implements UserService {
         String code = SMSUtil.createRandomVcode();
         SMSUtil.sendSMSCode(number, code);
         redisOperator.set("code" + number, code, 10 * 60);
-    }
-
-    public static void main(String[] args) {
-        Date date1 = new Date();
-
-        Date date2 = DateUtils.addHours(new Date(), 1);
-
-        System.out.println(date2.after(date1));
     }
 
     @Override
