@@ -411,7 +411,7 @@ public class UserServiceImpl implements UserService {
         //如果一小时内过期，补签Token
         if (expiresAt != null && date.after(expiresAt)) {
             String token = JWTUtil.sign(user.getId(), user.getUserName(), secret, user.getStoreId());
-            userVo.setToken(secret);
+            userVo.setToken(token);
         }
 
         return userVo;
