@@ -29,8 +29,8 @@ public class Swagger2 {
 //        pars.add(tokenPar.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
-                .pathMapping("/api")
-                .host("139.199.30.155")
+                .pathMapping("/")
+                .host("127.0.0.1")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.ok.okhelper.controller"))
