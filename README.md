@@ -4,7 +4,7 @@
 ##### 设计文档：https://github.com/okhelperTeam/supplies/blob/master/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3.docx
 ##### 云端接口文档：https://coderzc.github.io/okhelperapi/doc.html
 ##### 系统架构图：
-![系统架构图](https://github.com/okhelperTeam/supplies/blob/master/picture/OK%E5%B8%AE%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.png)
+<img src="https://github.com/okhelperTeam/supplies/blob/master/picture/OK%E5%B8%AE%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.png" width = "500" height = "500"/>
 
 ### 注意：
 * 请先将配置文件 /src/main/resources/application.eg.properties 重命名为 application.properties 并完善该文件后再运行（起不来多半是缺少配置文件或配置文件配置错误）
