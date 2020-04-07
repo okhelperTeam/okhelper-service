@@ -1,5 +1,5 @@
 # okhelper-service
-### 统架构图：
+### 系统架构图：
 ![系统架构图](https://github.com/okhelperTeam/supplies/blob/master/picture/OK%E5%B8%AE%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.png)
 ### 说明：
 #### 1.接口文档：http:localhost:8080/doc.html
